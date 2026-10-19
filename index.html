@@ -8,7 +8,8 @@
 <meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
 <meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
 <meta name="theme-color" content="#0A0A0D">
-<link rel="icon" href="simgeler/repertoire.png">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="apple-touch-icon" href="simgeler/logo.png">
 <title>BC Stage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
@@ -52,8 +53,12 @@ a{color:inherit}
 
 /* ---------- üst menü ---------- */
 .menu{display:flex;align-items:center;gap:22px;padding-block:18px;position:relative}
-.logo{display:flex;align-items:baseline;gap:6px;text-decoration:none;font-family:var(--baslik);font-weight:800;font-size:26px;letter-spacing:.01em}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--baslik);font-weight:800;font-size:32px;letter-spacing:.01em;line-height:1}
+.logo img{width:52px;height:52px;border-radius:13px;box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.logo b{font-weight:800}
 .logo span{color:var(--sari)}
+.alt .logo img{width:44px;height:44px;border-radius:11px}
+.alt .logo{font-size:28px;display:flex}
 .menu nav{display:flex;gap:4px;flex:1;justify-content:center}
 .menu nav a{text-decoration:none;color:var(--solgun);font-weight:500;font-size:15px;padding:6px 12px;border-radius:999px}
 .menu nav a:hover,.menu nav a[aria-current="page"]{color:var(--murekkep);background:var(--yuzey)}
@@ -233,6 +238,8 @@ p{max-width:65ch}
 .sekmeler a:hover{transform:translateY(-3px);border-color:var(--sari)}
 .sekmeler img{width:64px;height:64px;object-fit:contain}
 .vitrin .giris{font-size:17px}
+.vitrin h2{font-size:clamp(44px,6.4cqw,84px)}
+.altBaslik{font-family:var(--baslik2);font-weight:700;font-size:clamp(20px,2.2cqw,26px);color:var(--sari);margin:10px 0 0;max-width:none}
 .cipler{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .cipler span{font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--cizgi);color:var(--murekkep);background:var(--yuzey)}
 .fasil + .oy{margin-top:26px}
@@ -332,6 +339,18 @@ p{max-width:65ch}
 .dz.s1{border:2px solid var(--solgun)}.dz.s2{background:var(--turuncu);box-shadow:0 0 10px var(--turuncu)}.dz.s3{background:var(--sari)}
 .kart2{background:var(--yuzey);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
 .kart2 b{font-weight:600;font-size:15px}
+.kart2:has(.oyla){grid-template-columns:auto 1fr;column-gap:12px}
+.kart2:has(.oyla) small{grid-column:2}
+.oyla{grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-width:44px;border:1px solid var(--cizgi);background:var(--zemin);color:var(--solgun);border-radius:12px;padding:6px 4px;cursor:pointer;font:inherit}
+.oyla span{font-size:12px;line-height:1}.oyla em{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--murekkep)}
+.oyla:hover,.oyla.verildi{border-color:var(--sari);color:var(--sari)}
+.simdiYapilan{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:28px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(255,154,46,.14),rgba(255,154,46,.03));border:1px solid rgba(255,154,46,.35)}
+.simdiYapilan b{font-weight:600}
+.simdiYapilan .ayrac{color:var(--sonuk)}
+.canli{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--turuncu);margin-right:6px}
+.canli i{width:8px;height:8px;border-radius:50%;background:var(--turuncu);box-shadow:0 0 0 0 rgba(255,154,46,.6);animation:nabiz 1.6s infinite}
+@keyframes nabiz{0%{box-shadow:0 0 0 0 rgba(255,154,46,.6)}70%{box-shadow:0 0 0 10px rgba(255,154,46,0)}100%{box-shadow:0 0 0 0 rgba(255,154,46,0)}}
+.oyNot{color:var(--solgun);margin:14px 0 0;font-size:15px}
 .kart2 small{color:var(--sonuk);font-family:var(--mono);font-size:11px}
 .akis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:30px;border:1px solid var(--cizgi);border-radius:20px;overflow:hidden}
 .akis div{padding:16px;display:flex;gap:10px;align-items:center;border-left:1px solid var(--cizgi);font-size:14px;color:var(--solgun)}
@@ -441,7 +460,7 @@ p{max-width:65ch}
 
 <!-- ÜST MENÜ -->
 <header class="menu">
-  <a class="logo" href="#ana">BC <span>STAGE</span></a>
+  <a class="logo" href="#ana" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b></a>
   <nav id="nav" aria-label="Site menüsü">
     <a href="#ozellikler" data-en="Features">Özellikler</a>
     <a href="#fiyat" data-en="Pricing">Fiyat</a>
@@ -534,7 +553,8 @@ p{max-width:65ch}
   <div class="fasil ters vitrin" id="karaoke">
     <div>
       <p class="ust">02 · Karaoke <span class="etiket ipadmac" data-en="vocal work: iOS · Mac">ses işleme: iOS · Mac</span></p>
-      <h2 data-en="Sing over the real band">Gerçek grubun üstüne söyle</h2>
+      <h2>Karaoke</h2>
+      <p class="altBaslik" data-en="Sing over the real band.">Gerçek grubun üstüne söyle.</p>
       <p class="giris" data-en="Link an audio file to a song. BC Stage takes the vocal out, lines the words up with the music and fills them in as they are sung.">Bir ses dosyasını şarkıya bağla. BC Stage vokali çıkarır, sözleri müziğe oturtur ve söylendikçe doldurur.</p>
       <div class="cipler"><span data-en="Vocal removal on the device">Cihazda vokal ayırma</span><span data-en="Word-by-word timing">Kelime kelime zamanlama</span><span data-en="Track mixer">İz mikseri</span><span data-en="Fix any word by hand">Her kelimeyi elle düzelt</span></div>
       <p class="cizimNot" style="text-align:left" data-en="Illustration · real screen comes from a live capture">Çizim · gerçek ekran canlı çekimle gelecek</p>
@@ -556,7 +576,8 @@ p{max-width:65ch}
   <div class="fasil vitrin" id="akorbul">
     <div>
       <p class="ust">03 · <span data-en="Chord Finder">Akor Bulma</span> <span class="etiket ipadmac">iPad · Mac</span></p>
-      <h2 data-en="Drop in a song, get the chart">Şarkıyı ver, şemasını al</h2>
+      <h2 data-en="Chord Finder">Akor Bulma</h2>
+      <p class="altBaslik" data-en="Drop in a song, get the chart.">Şarkıyı ver, şemasını al.</p>
       <p class="giris" data-en="BC Stage listens to an audio file and writes out its chords and lyrics, section by section. Nothing leaves your device.">BC Stage bir ses dosyasını dinler, akorlarını ve sözlerini bölüm bölüm yazar. Hiçbir şey cihazından çıkmaz.</p>
       <div class="cipler"><span data-en="Capo plans">Kapo planları</span><span data-en="Sections found for you">Bölümler kendiliğinden</span><span data-en="Lyrics under the chords">Akorların altında söz</span><span data-en="Save as a song">Şarkı olarak kaydet</span></div>
     </div>
@@ -569,7 +590,8 @@ p{max-width:65ch}
   <div class="fasil ters vitrin" id="video">
     <div>
       <p class="ust">04 · Video</p>
-      <h2 data-en="Loop the hard part">Zor yeri döngüye al</h2>
+      <h2>Video</h2>
+      <p class="altBaslik" data-en="Loop the hard part.">Zor yeri döngüye al.</p>
       <p class="giris" data-en="Open a lesson video from your gallery. Mark the passage on the waveform, slow it down, and play it again until your hands know it.">Galerinden bir ders videosu aç. Zor yeri dalga şeridinde işaretle, yavaşlat, ellerin öğrenene kadar tekrar çal.</p>
       <div class="cipler"><span data-en="A–B loop">A–B döngüsü</span><span data-en="Slow down without changing pitch">Tonu bozmadan yavaşlat</span><span data-en="Saved practice spots">Kayıtlı çalışma yerleri</span><span data-en="Speed ladder">Hız merdiveni</span></div>
     </div>
@@ -582,7 +604,8 @@ p{max-width:65ch}
   <div class="fasil vitrin" id="metronombul">
     <div>
       <p class="ust">05 · <span data-en="Beat Finder">Metronom Bul</span> <span class="etiket ipadmac">iPad · Mac</span></p>
-      <h2 data-en="The metronome learns the song">Metronom şarkıyı öğrenir</h2>
+      <h2 data-en="Beat Finder">Metronom Bul</h2>
+      <p class="altBaslik" data-en="The metronome learns the song.">Metronom şarkıyı öğrenir.</p>
       <p class="giris" data-en="Give BC Stage a recording. It finds the tempo, the meter and the first beat, then clicks right along with the song.">BC Stage'e bir kayıt ver. Tempoyu, ölçüyü ve ilk vuruşu bulur, sonra şarkıyla birlikte tık atar.</p>
       <div class="cipler"><span data-en="Tempo and meter">Tempo ve ölçü</span><span data-en="Where beat one falls">Birinci vuruşun yeri</span><span data-en="Click track over the song">Şarkının üstüne tık</span><span data-en="Write out its drums">Davulunu yaz</span></div>
     </div>
@@ -798,10 +821,12 @@ p{max-width:65ch}
     <a class="kat k2" href="#forum"><b data-en="Should be there">Olması gerekenler</b><span data-en="A feature you expected and didn't find.">Beklediğin ama bulamadığın bir özellik.</span></a>
     <a class="kat k3" href="#forum"><b data-en="Ideas for the future">Gelecek için fikirler</b><span data-en="Bigger dreams. We research them together.">Daha büyük hayaller. Birlikte araştırırız.</span></a>
   </div>
+  <div class="simdiYapilan"><span class="canli"><i></i><span data-en="Right now">Şu an yapılıyor</span></span><b>BC Fare</b><span class="ayrac">·</span><b data-en="Fine adjust in editors">Düzenleyicide hassas ayar</b><span class="ayrac">·</span><b data-en="Karaoke tick track">Karaoke tık izi</b></div>
+  <p class="oyNot" data-en="Vote for the ideas you want. The most-voted ones move into the queue first, and every card shows its votes.">İstediğin fikirleri oyla. En çok oy alanlar sıraya önce girer, her kartta oy sayısı görünür.</p>
   <div class="yolHarita">
     <div class="sutun"><h3><span class="dz s1"></span><span data-en="In the queue">Sırada</span></h3>
-      <div class="kart2"><b data-en="Tick track in the karaoke mixer">Karaoke mikserinde tık izi</b><small data-en="Should be there">Olması gerekenler</small></div>
-      <div class="kart2"><b data-en="Send song drums to One Man">Şarkıdan davulu One Man'e aktar</b><small data-en="Ideas">Fikirler</small></div></div>
+      <div class="kart2"><button class="oyla" type="button" aria-label="Oyla"><span>▲</span><em>0</em></button><b data-en="Tick track in the karaoke mixer">Karaoke mikserinde tık izi</b><small data-en="Should be there">Olması gerekenler</small></div>
+      <div class="kart2"><button class="oyla" type="button" aria-label="Oyla"><span>▲</span><em>0</em></button><b data-en="Send song drums to One Man">Şarkıdan davulu One Man'e aktar</b><small data-en="Ideas">Fikirler</small></div></div>
     <div class="sutun"><h3><span class="dz s2"></span><span data-en="In progress">Yapılıyor</span></h3>
       <div class="kart2"><b>BC Fare</b><small data-en="Ideas · Designer working on it">Fikirler · Tasarımcı üzerinde</small></div>
       <div class="kart2"><b data-en="Fine adjust in editors">Düzenleyicide hassas ayar</b><small data-en="Should be there">Olması gerekenler</small></div></div>
@@ -864,7 +889,7 @@ p{max-width:65ch}
 </main>
 
 <footer class="alt">
-  <div><a class="logo" href="#ana" style="padding:0">BC <span>STAGE</span></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
+  <div><a class="logo" href="#ana" style="padding:0" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44"><b>BC <span>STAGE</span></b></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
   <div><h4 data-en="Explore">Keşfet</h4><a href="#ozellikler" data-en="Features">Özellikler</a><a href="#fiyat" data-en="Pricing">Fiyat</a><a href="#kimin" data-en="Who it's for">Kimin için</a></div>
   <div><h4 data-en="Learn">Öğren</h4><a href="#yardim" data-en="Guide">Kılavuz</a><a href="#yardim" data-en="FAQ">Sık sorulanlar</a><a href="#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
   <div><h4 data-en="BC Labs">BC Labs</h4><a href="#hakkinda" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="#forum" data-en="Forum">Forum</a><a href="#destek" data-en="Support">Destek ol</a><a href="#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
@@ -892,7 +917,8 @@ p{max-width:65ch}
   function huzme(x,ox,oy,aci,boy,gen,renk,alfa){x.save();x.translate(ox,oy);x.rotate(aci);const g=x.createLinearGradient(0,0,0,boy);g.addColorStop(0,'rgba('+renk+','+alfa+')');g.addColorStop(.55,'rgba('+renk+','+alfa*.35+')');g.addColorStop(1,'rgba('+renk+',0)');x.fillStyle=g;x.beginPath();x.moveTo(-6,0);x.lineTo(6,0);x.lineTo(gen,boy);x.lineTo(-gen,boy);x.closePath();x.fill();x.restore()}
   let tz=9;const rr=()=>((tz=(tz*16807)%2147483647)/2147483647);
   const zerre=[...Array(70)].map(()=>({x:rr(),y:rr(),r:.6+rr()*1.8,v:.2+rr()*.6,f:rr()*6}));
-  const kalabalik=[...Array(46)].map((_,i)=>({x:i/45+(rr()-.5)*.02,b:.55+rr()*.5,el:rr()<.38,ea:(rr()-.5)*.5,f:rr()*6}));
+  const SIRALAR=[{n:19,o:.58,y:.78,r:'#1a1208',a:.85},{n:13,o:.78,y:.90,r:'#0d0a06',a:.95},{n:9,o:1,y:1.02,r:'#030304',a:1}];
+  const kalabalik=SIRALAR.map((sr,si)=>[...Array(sr.n)].map((_,i)=>({x:(i+.5)/sr.n+(rr()-.5)*.6/sr.n,s:sr.o*(.88+rr()*.24),kol:rr()<.18?2:(rr()<.35?1:(rr()<.25?3:0)),yan:rr()<.5?-1:1,ea:(rr()-.5)*.35,f:rr()*6,eg:(rr()-.5)*.18,sac:rr()<.4})));
   function kahraman(z){const c=document.getElementById('isikKahraman');if(!c||!c.clientWidth)return;const[x,w,h]=tuval(c);
     x.clearRect(0,0,w,h);
     x.globalCompositeOperation='lighter';
@@ -909,11 +935,39 @@ p{max-width:65ch}
     const ark=x.createRadialGradient(w*.5,h*.25,0,w*.5,h*.25,w*.5);ark.addColorStop(0,'rgba(255,201,60,.55)');ark.addColorStop(.4,'rgba(255,154,46,.18)');ark.addColorStop(1,'rgba(255,154,46,0)');x.fillStyle=ark;x.fillRect(0,0,w,h);
     for(let i=0;i<7;i++){const px=(i+.5)/7;huzme(x,w*px,-10,Math.sin(z*.0003+i*1.7)*.4+(px-.5)*.8,h*1.3,w*.07,i%2?'255,154,46':'255,201,60',.16)}
     x.globalCompositeOperation='source-over';
-    x.fillStyle='#050506';
-    kalabalik.forEach(k=>{const bx=k.x*w,by=h*(1-.24*k.b),rb=Math.max(10,w*.018)*(.8+k.b*.4);const sal=Math.sin(z*.002+k.f)*rb*.15;
-      x.beginPath();x.arc(bx,by+sal*.3,rb,0,7);x.fill();
-      x.beginPath();x.ellipse(bx,h,rb*2.2,h-by-rb*.6,0,Math.PI,0);x.lineTo(bx+rb*2.2,h);x.fill();
-      if(k.el){x.save();x.translate(bx+rb*.9,by+rb*.6);x.rotate(-.25+k.ea+Math.sin(z*.003+k.f)*.08);x.fillRect(-rb*.22,-rb*3.6,rb*.44,rb*3.6);x.beginPath();x.arc(0,-rb*3.7,rb*.38,0,7);x.fill();x.restore()}});
+    const birim=Math.max(16,Math.min(w*.048,h*.115));
+    SIRALAR.forEach((sr,si)=>{
+      const tabanY=h*sr.y;
+      kalabalik[si].forEach(p=>{
+        const u=birim*p.s, cx=p.x*w, sal=Math.sin(z*.0018+p.f), omY=tabanY-u*1.15, W=u*1.55;
+        x.fillStyle=sr.r;x.strokeStyle=sr.r;x.globalAlpha=sr.a;
+        // gövde ve omuzlar
+        x.beginPath();x.moveTo(cx-W,h+2);x.lineTo(cx-W,omY+u*.55);x.quadraticCurveTo(cx-W,omY,cx-W*.55,omY-u*.05);x.lineTo(cx+W*.55,omY-u*.05);x.quadraticCurveTo(cx+W,omY,cx+W,omY+u*.55);x.lineTo(cx+W,h+2);x.closePath();x.fill();
+        // boyun
+        x.fillRect(cx-u*.2,omY-u*.42,u*.4,u*.5);
+        // baş
+        const bx=cx+sal*u*.05, by=omY-u*.82;
+        x.save();x.translate(bx,by);x.rotate(p.eg+sal*.04);
+        x.beginPath();x.ellipse(0,0,u*.42,u*.52,0,0,7);x.fill();
+        if(p.sac){x.beginPath();x.ellipse(0,-u*.22,u*.48,u*.34,0,Math.PI,0);x.fill()}
+        x.restore();
+        // kollar
+        const kol=(yon,acı)=>{const sx=cx+yon*W*.72, sy=omY+u*.12, L1=u*1.05, L2=u*.95;
+          const a1=-Math.PI/2+yon*(.38+acı)+sal*.08*yon, ex=sx+Math.cos(a1)*L1, ey=sy+Math.sin(a1)*L1;
+          const a2=a1-yon*.18+sal*.06, hx=ex+Math.cos(a2)*L2, hy=ey+Math.sin(a2)*L2;
+          x.lineCap='round';x.lineJoin='round';x.lineWidth=u*.34;x.beginPath();x.moveTo(sx,sy);x.lineTo(ex,ey);x.lineTo(hx,hy);x.stroke();
+          x.beginPath();x.arc(hx,hy,u*.2,0,7);x.fill();return[hx,hy]};
+        if(p.kol===2){kol(-1,p.ea);kol(1,-p.ea)}
+        else if(p.kol===1){kol(p.yan,p.ea)}
+        else if(p.kol===3){const[hx,hy]=kol(p.yan,p.ea-.2);
+          x.globalAlpha=1;x.save();x.translate(hx,hy-u*.32);x.rotate(p.yan*.12);
+          x.fillStyle='rgba(255,236,190,.95)';x.fillRect(-u*.16,-u*.26,u*.32,u*.52);x.restore();
+          x.globalCompositeOperation='lighter';const g=x.createRadialGradient(hx,hy-u*.32,0,hx,hy-u*.32,u*1.6);g.addColorStop(0,'rgba(255,220,150,.35)');g.addColorStop(1,'rgba(255,220,150,0)');x.fillStyle=g;x.fillRect(hx-u*1.6,hy-u*1.92,u*3.2,u*3.2);x.globalCompositeOperation='source-over'}
+        x.globalAlpha=1;
+      });
+      // sıralar arasına sis: arka sıra ışıkta erisin
+      if(si<SIRALAR.length-1){const sis=x.createLinearGradient(0,tabanY-birim*2.5,0,tabanY);sis.addColorStop(0,'rgba(60,40,10,0)');sis.addColorStop(1,'rgba(40,28,8,.35)');x.fillStyle=sis;x.fillRect(0,tabanY-birim*2.5,w,birim*2.5)}
+    });
     const k=x.createLinearGradient(0,0,0,h);k.addColorStop(0,'rgba(10,10,13,.5)');k.addColorStop(.35,'rgba(10,10,13,0)');k.addColorStop(.75,'rgba(10,10,13,0)');k.addColorStop(1,'rgba(10,10,13,.85)');x.fillStyle=k;x.fillRect(0,0,w,h)}
 
   // --- vitrinler: karaoke, akor bulma, video, metronom bul (uydurma örnek söz)
@@ -1092,6 +1146,8 @@ p{max-width:65ch}
   hb.onclick=()=>{const a=nav.classList.toggle('acik');hb.setAttribute('aria-expanded',a)};
   nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('acik');hb.setAttribute('aria-expanded',false)}});
 
+  // --- forum oyla (taslak: yalnız görsel geri bildirim, forum açılınca sunucuya yazacak)
+  document.querySelectorAll('.oyla').forEach(b=>b.addEventListener('click',()=>{const v=b.classList.toggle('verildi');const e=b.querySelector('em');e.textContent=String(Number(e.textContent)+(v?1:-1))}));
   // --- kopyala
   const kb=document.getElementById('kopyala');
   kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
