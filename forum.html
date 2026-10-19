@@ -123,7 +123,7 @@ footer a{color:var(--solgun);text-decoration:none}
       <button class="dugme ana" id="kodGonder" type="button" data-en="Send code">Kod gönder</button>
     </div>
     <div class="satir" id="adim2" hidden>
-      <input class="kod" id="kod" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
+      <input class="kod" id="kod" type="text" inputmode="numeric" maxlength="10" autocomplete="one-time-code" placeholder="000000">
       <button class="dugme ana" id="kodGir" type="button" data-en="Sign in">Gir</button>
       <button class="ince" id="geriAdim" type="button" data-en="Change">Değiştir</button>
     </div>
@@ -144,7 +144,7 @@ footer a{color:var(--solgun);text-decoration:none}
   <footer><a href="index.html">BC Stage</a><a href="yardim.html" data-en="Help">Yardım</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a><span data-en="No song lyrics, please (copyright). Be kind.">Lütfen şarkı sözü paylaşma (telif). Nazik ol.</span></footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
 <script>
 (function(){
   'use strict';
@@ -198,7 +198,7 @@ footer a{color:var(--solgun);text-decoration:none}
     try{const {durum,j}=await kodIstek({eylem:'gonder',kimlik:k});
       if(durum===429)girisMesaj(t().cokIstek,'hata');else if(j.error==='bad_format')girisMesaj(t().bicim,'hata');else if(durum===200){girisMesaj(t().kodGitti,'iyi');$('adim1').hidden=true;$('adim2').hidden=false;$('kod').focus()}else girisMesaj(t().hataGenel,'hata')}
     catch(e){girisMesaj(t().hataGenel,'hata')}finally{$('kodGonder').disabled=false}};
-  $('kodGir').onclick=async()=>{const k=$('kimlik').value.trim(),kod=$('kod').value.trim();if(kod.length!==6)return;$('kodGir').disabled=true;
+  $('kodGir').onclick=async()=>{const k=$('kimlik').value.trim(),kod=$('kod').value.trim();if(!/^\d{6,10}$/.test(kod))return;$('kodGir').disabled=true;
     try{const {durum,j}=await kodIstek({eylem:'dogrula',kimlik:k,kod});
       if(durum===429)girisMesaj(t().cokIstek,'hata');else if(j.access_token){await sb.auth.setSession({access_token:j.access_token,refresh_token:j.refresh_token});girisMesaj('')}else girisMesaj(t().kodYanlis,'hata')}
     catch(e){girisMesaj(t().hataGenel,'hata')}finally{$('kodGir').disabled=false}};
@@ -210,14 +210,15 @@ footer a{color:var(--solgun);text-decoration:none}
   // ---------- BC ID
   $('bcidKaydet').onclick=async()=>{let v=$('bcidGir').value.trim().toLowerCase().replace(/^@/,'');const m=$('bcidMesaj');
     if(!/^[a-z0-9._]{3,20}$/.test(v)||/(^[._])|([._]$)|([._]{2})/.test(v)){m.textContent=t().gecersiz;m.className='mesaj hata';return}
-    const {error}=await sb.from('profiles').update({username:v}).eq('id',oturum.user.id);
-    if(error){m.textContent=error.code==='23505'?t().alinmis:t().gecersiz;m.className='mesaj hata';return}
+    // claim_username: ayrılmış adları ve biçimi sunucu denetler (0002)
+    const {error}=await sb.rpc('claim_username',{candidate:v});
+    if(error){const msg=String(error.message||'');m.textContent=msg.includes('username_taken')?t().alinmis:t().gecersiz;m.className='mesaj hata';return}
     await profilYukle();ciz()};
 
   async function profilYukle(){
     profil=null;yonetici=false;oylarim=new Set();
     if(!oturum)return;
-    const {data}=await sb.from('profiles').select('username,display_name,member_no').eq('id',oturum.user.id).maybeSingle();
+    const {data}=await sb.from('profiles').select('username,member_no').eq('id',oturum.user.id).maybeSingle();
     profil=data||{};
     const y=await sb.rpc('is_forum_yonetici');yonetici=!!y.data;
     const o=await sb.from('forum_oylar').select('konu_id').eq('kullanici_id',oturum.user.id);
@@ -231,7 +232,7 @@ footer a{color:var(--solgun);text-decoration:none}
   }
 
   // ---------- veri
-  const YAZAR='yazar:profiles!forum_konular_yazar_id_fkey(username,display_name,member_no)';
+  const YAZAR='yazar:forum_yazarlar!yazar_id(username,member_no)';
   async function konulariGetir(){
     let q=sb.from('forum_konular').select('id,kategori,durum,baslik,oy_sayisi,yanit_sayisi,created_at,'+YAZAR);
     if(['hata','olmasi_gereken','fikir'].includes(sekme))q=q.eq('kategori',sekme);
@@ -325,7 +326,7 @@ footer a{color:var(--solgun);text-decoration:none}
     if(yonetici){const sec=el('select',{id:'yDurum'},...Object.keys(t().dur).map(x=>el('option',{value:x,selected:x===k.durum},t().dur[x])));const not=el('textarea',{id:'yNot',style:'min-height:70px',placeholder:t().notYaz},k.yonetici_notu||'');const m=el('p',{class:'mesaj',role:'status'});
       d.append(el('div',{class:'yonetim'},el('label',{class:'alan'},t().durum,sec),el('label',{class:'alan'},t().notYaz,not),el('div',{class:'satir',style:'margin-top:10px'},el('button',{type:'button',class:'dugme ana',onclick:async()=>{const r=await sb.from('forum_konular').update({durum:sec.value,yonetici_notu:not.value.trim()||null}).eq('id',k.id);m.textContent=r.error?t().hataGenel:t().kaydedildi;m.className='mesaj '+(r.error?'hata':'iyi')}},t().kaydet)),m))}
     // yanıtlar
-    const {data:yan}=await sb.from('forum_yanitlar').select('id,govde,yonetici_mi,created_at,yazar_id,yazar:profiles!forum_yanitlar_yazar_id_fkey(username,member_no)').eq('konu_id',k.id).order('created_at');
+    const {data:yan}=await sb.from('forum_yanitlar').select('id,govde,yonetici_mi,created_at,yazar_id,yazar:forum_yazarlar!yazar_id(username,member_no)').eq('konu_id',k.id).order('created_at');
     const yl=el('div',{class:'yanitlar'},el('h3',{style:'margin:0'},t().yanitlar+' · '+((yan||[]).length)));
     (yan||[]).forEach(y=>yl.append(el('div',{class:'yanit'+(y.yonetici_mi?' yon':'')},el('div',{class:'meta',style:'margin:0'},el('span',null,yazarAdi(y.yazar)),y.yonetici_mi?el('span',{class:'yonRozet'},t().yonetici):null,el('span',null,tarih(y.created_at))),el('p',null,y.govde))));
     if(oturum){const ta=el('textarea',{id:'yanitGovde',maxlength:'3000',placeholder:t().yanitYaz,style:'min-height:90px'});const m=el('p',{class:'mesaj',role:'status'});
