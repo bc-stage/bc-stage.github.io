@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="BC Stage: sahnedeki müzisyen için şarkılar, akorlar, listeler, metronom, davul ve looper tek uygulamada. iPad, iPhone, Android ve Mac.">
+<meta property="og:title" content="BC Stage">
+<meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
+<meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
+<meta name="theme-color" content="#0A0A0D">
+<link rel="icon" href="simgeler/repertoire.png">
+<title>BC Stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Düzen: üstte taslak çubuğu (görünüm + dil), altında sitenin kendisi; site bir "kap" — telefon kipinde 390 px'e daralıyor, düzen @container ile değişiyor. Her bölümün altında oy şeridi. */
+:root{
+  color-scheme:dark;
+  --zemin:#0A0A0D; --yuzey:#16161A; --yuzey2:#1E1E24; --cizgi:#2A2A31;
+  --murekkep:#F4F2EC; --solgun:#8B8B95; --sonuk:#57575F;
+  --sari:#FFC93C; --turuncu:#FF9A2E; --sariUstu:#241A00;
+  --sariSis:rgba(255,201,60,.10);
+  --baslik:"Barlow Condensed","Barlow","Arial Narrow",system-ui,sans-serif;
+  --baslik2:"Barlow",system-ui,sans-serif;
+  --govde:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--zemin);color:var(--murekkep);font:16px/1.6 var(--govde);margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sari);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- taslak çubuğu ---------- */
+.taslak{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#000;border-bottom:1px solid var(--cizgi);
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:10px 16px;font-size:13px}
+.taslak b{font-family:var(--mono);font-weight:500;color:var(--sari);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.taslak .bos{flex:1}
+.seg{display:inline-flex;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:999px;padding:3px}
+.seg button{all:unset;cursor:pointer;padding:5px 12px;border-radius:999px;color:var(--solgun);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--sari);color:var(--sariUstu)}
+.seg button:focus-visible{outline:2px solid var(--sari)}
+.taslakNot{color:var(--solgun);max-width:60ch}
+
+/* ---------- site kabı ---------- */
+.sahne{padding:0}
+.site{container:site/inline-size;max-width:1240px;margin-inline:auto;background:var(--zemin);transition:max-width .35s ease}
+.sahne.telefon .site{max-width:390px;border:1px solid var(--cizgi);border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.ic{padding-inline:clamp(18px,4cqw,48px)}
+
+/* ---------- üst menü ---------- */
+.menu{display:flex;align-items:center;gap:22px;padding-block:18px;position:relative}
+.logo{display:flex;align-items:baseline;gap:6px;text-decoration:none;font-family:var(--baslik);font-weight:800;font-size:26px;letter-spacing:.01em}
+.logo span{color:var(--sari)}
+.menu nav{display:flex;gap:4px;flex:1;justify-content:center}
+.menu nav a{text-decoration:none;color:var(--solgun);font-weight:500;font-size:15px;padding:6px 12px;border-radius:999px}
+.menu nav a:hover,.menu nav a[aria-current="page"]{color:var(--murekkep);background:var(--yuzey)}
+.dil{font-family:var(--mono);font-size:12px;color:var(--solgun);border:1px solid var(--cizgi);border-radius:999px;padding:5px 10px;background:none;cursor:pointer}
+.dugme{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;border-radius:14px;padding:12px 18px;border:1px solid transparent;cursor:pointer;font-size:15px;font-family:var(--govde)}
+.dugme.ana{background:var(--sari);color:var(--sariUstu)}
+.dugme.ana:hover{background:#ffd666}
+.dugme.ikinci{border-color:var(--cizgi);color:var(--murekkep);background:var(--yuzey)}
+.dugme.ikinci:hover{border-color:var(--sonuk)}
+.hamburger{display:none;background:none;border:1px solid var(--cizgi);border-radius:12px;color:var(--murekkep);width:42px;height:42px;font-size:18px;cursor:pointer}
+
+/* ---------- sayfa iskeleti ---------- */
+.sayfa{padding-block:20px 10px}
+.bolum{padding-block:clamp(48px,8cqw,96px) 28px;border-top:1px solid var(--cizgi)}
+.bolum:first-child{border-top:0}
+.ust{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sari);margin:0 0 14px}
+h1,h2,h3{font-family:var(--baslik);text-wrap:balance;margin:0;line-height:.98}
+h1{font-size:clamp(48px,8.4cqw,118px);font-weight:800;letter-spacing:-.01em;text-transform:uppercase}
+h2{font-size:clamp(36px,5.4cqw,68px);font-weight:700;text-transform:uppercase}
+h3{font-family:var(--baslik2);font-size:20px;font-weight:700;line-height:1.2}
+.giris{color:var(--solgun);font-size:clamp(17px,1.7cqw,20px);max-width:56ch;margin:18px 0 0}
+p{max-width:65ch}
+
+/* ---------- kahraman ---------- */
+.kahraman{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;min-height:clamp(520px,56cqw,760px);padding-block:40px 30px}
+.kahraman > div{max-width:780px}
+.kahraman h1 em{font-style:normal;color:var(--sari)}
+.magaza{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.magaza .dugme small{display:block;font-size:11px;font-weight:500;opacity:.75;line-height:1.1}
+.magaza .dugme strong{display:block;font-size:17px;line-height:1.15}
+.magaza .ikon{font-size:22px;line-height:1}
+.platform{margin-top:14px;font-size:13px;color:var(--sonuk);font-family:var(--mono)}
+.yer{display:inline-block;border:1px dashed var(--sonuk);color:var(--solgun);font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:6px;vertical-align:middle}
+
+/* ---------- iPad çizimi (yatay / dikey) ---------- */
+.ipad{position:relative;background:#050506;border:1px solid #33333b;border-radius:clamp(18px,2.4cqw,30px);padding:clamp(8px,1.1cqw,14px);box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 6px #111115;max-width:100%}
+.ipad.yatay{aspect-ratio:4/3}
+.ipad.dikey{aspect-ratio:3/4}
+.ekran{position:relative;width:100%;height:100%;border-radius:clamp(10px,1.4cqw,18px);background:var(--zemin);overflow:hidden;display:flex;flex-direction:column;container:ekran/inline-size}
+.ada{display:flex;align-items:center;gap:2cqw;background:var(--yuzey);margin:2cqw 2cqw 0;border-radius:999px;padding:1.4cqw 2.4cqw}
+.ada .ad{font-family:var(--baslik);font-weight:700;font-size:3.4cqw;line-height:1}
+.ada .grup{color:var(--solgun);font-size:2.2cqw}
+.ada .bos{flex:1}
+.ada .hap{font-family:var(--mono);font-size:2cqw;padding:.5cqw 1.4cqw;border-radius:999px;background:var(--yuzey2);color:var(--solgun)}
+.ada .hap.s{background:var(--sari);color:var(--sariUstu)}
+.vurus{display:flex;gap:.8cqw}
+.vurus i{width:1.4cqw;height:1.4cqw;border-radius:50%;background:var(--sonuk)}
+.vurus i.on{background:var(--sari);box-shadow:0 0 1.6cqw var(--sari)}
+.bant{display:flex;gap:1cqw;margin:2cqw 2cqw 0}
+.bant span{flex:1;height:3.6cqw;border-radius:1cqw;background:var(--yuzey2);font-size:1.8cqw;color:var(--solgun);display:flex;align-items:center;padding-left:1.2cqw;white-space:nowrap;overflow:hidden}
+.bant span.simdi{background:var(--sari);color:var(--sariUstu);font-weight:600}
+.sheet{flex:1;padding:3cqw 4cqw;display:grid;grid-template-columns:1fr 1fr;gap:0 5cqw;align-content:start}
+.sheet.tek{grid-template-columns:1fr}
+.blok{margin-bottom:3cqw}
+.blok .bas{font-family:var(--mono);font-size:1.7cqw;color:var(--sari);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1cqw}
+.satir{margin-bottom:1.6cqw}
+.akorlar{display:flex;gap:3.2cqw;font-family:var(--baslik2);font-weight:700;color:var(--sari);font-size:2.5cqw;line-height:1.2}
+.cizgiS{height:1.3cqw;border-radius:1cqw;background:#3a3a42;margin-top:.7cqw}
+.blok.solgun .akorlar{color:#7a6a3a}.blok.solgun .cizgiS{background:#26262c}
+.imlec{position:absolute;left:4cqw;right:4cqw;height:.4cqw;background:var(--turuncu);border-radius:1cqw;box-shadow:0 0 2cqw var(--turuncu);opacity:.9}
+
+/* ---------- kimin için ---------- */
+.kartlar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px}
+.kart{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.kart img{width:76px;height:76px;object-fit:contain}
+.kart p{margin:0;color:var(--solgun);font-size:15px}
+.kart a{margin-top:auto;color:var(--sari);text-decoration:none;font-weight:600;font-size:14px}
+
+/* ---------- özellik bölümleri ---------- */
+.fasil{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(28px,5cqw,72px);align-items:center;margin-top:56px}
+.fasil.ters > :first-child{order:2}
+.fasil h2{font-size:clamp(32px,4.4cqw,54px)}
+.ozellikler{display:grid;gap:4px;margin-top:22px}
+.oz{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;align-items:start;padding:12px 0;border-top:1px solid var(--cizgi)}
+.oz img{width:52px;height:52px;object-fit:contain}
+.oz p{margin:2px 0 0;color:var(--solgun);font-size:15px}
+.etiket{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.etiket.vip{background:var(--sariSis);color:var(--sari)}
+.etiket.yakinda{border:1px solid var(--sonuk);color:var(--solgun)}
+.etiket.ipadmac{border:1px solid #4a3d1c;color:#c9a54a}
+.gorsel{display:flex;justify-content:center;min-width:0}
+.gorsel .ipad.dikey{width:min(100%,420px)}
+.gorsel .ipad.yatay{width:100%}
+
+/* dalga + akor bulma çizimi */
+.dalga{display:flex;align-items:center;gap:.5cqw;height:12cqw;margin:2cqw 4cqw}
+.dalga i{flex:1;background:var(--sonuk);border-radius:1cqw}
+.dalga i.c{background:var(--sari)}
+.akorSerit{display:flex;gap:1.2cqw;margin:0 4cqw 3cqw;flex-wrap:wrap}
+.akorSerit span{font-family:var(--baslik2);font-weight:700;font-size:3cqw;padding:1cqw 2.2cqw;border-radius:1.6cqw;background:var(--yuzey2);color:var(--murekkep)}
+.akorSerit span.on{background:var(--sari);color:var(--sariUstu)}
+.ritim{display:grid;grid-template-columns:7cqw repeat(16,1fr);gap:.6cqw;margin:2cqw 4cqw;align-items:center}
+.ritim b{font-family:var(--mono);font-weight:400;font-size:1.8cqw;color:var(--solgun)}
+.ritim i{aspect-ratio:1;border-radius:.8cqw;background:var(--yuzey2)}
+.ritim i.v{background:var(--sari)}.ritim i.y{background:#8a6d22}
+.loop{margin:2cqw 4cqw;display:grid;gap:1.2cqw}
+.loop div{height:6cqw;border-radius:1.4cqw;background:var(--yuzey2);position:relative;overflow:hidden}
+.loop div::after{content:"";position:absolute;inset:0;width:var(--d);background:linear-gradient(90deg,rgba(255,201,60,.15),rgba(255,201,60,.55));border-right:.4cqw solid var(--turuncu)}
+
+/* ---------- fiyat ---------- */
+.fiyat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px}
+.paket{border:1px solid var(--cizgi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:12px;background:var(--yuzey)}
+.paket.vipP{border-color:var(--sari);background:linear-gradient(180deg,rgba(255,201,60,.08),var(--yuzey) 60%)}
+.paket .tutar{font-family:var(--baslik);font-size:44px;font-weight:700;line-height:1}
+.paket ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+/* ---------- yardım ---------- */
+.adimlar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px;counter-reset:adim}
+.adim{border-top:2px solid var(--sari);padding-top:16px;min-width:0}
+.adim .no{font-family:var(--baslik);font-size:44px;font-weight:700;color:var(--sari);line-height:1}
+.adim p{color:var(--solgun);font-size:15px;margin:6px 0 0}
+.yardimIzgara{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:40px;margin-top:56px}
+.konular{display:grid;gap:6px;align-content:start}
+.konular a{display:flex;justify-content:space-between;text-decoration:none;padding:12px 16px;border-radius:14px;background:var(--yuzey);color:var(--murekkep);font-weight:500}
+.konular a span{color:var(--sonuk);font-family:var(--mono);font-size:12px}
+.sss details{border-top:1px solid var(--cizgi);padding:4px 0}
+.sss summary{cursor:pointer;list-style:none;padding:14px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+.sss summary::after{content:"+";color:var(--sari);font-family:var(--mono)}
+.sss details[open] summary::after{content:"–"}
+.sss details p{color:var(--solgun);margin:0 0 14px}
+
+/* ---------- hakkında ---------- */
+.hakkinda{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5cqw,64px);align-items:start;margin-top:36px}
+.foto{aspect-ratio:4/5;border:1.5px dashed var(--sonuk);border-radius:24px;display:grid;place-items:center;text-align:center;color:var(--solgun);background:repeating-linear-gradient(135deg,var(--yuzey) 0 14px,var(--zemin) 14px 28px);padding:20px;max-width:100%}
+.metinYeri{border:1.5px dashed var(--sonuk);border-radius:18px;padding:22px;color:var(--solgun);margin-top:22px}
+.metinYeri p{margin:0 0 10px}
+.bio p{font-size:17px;line-height:1.7;color:var(--murekkep);margin:0 0 16px}
+.bio p.vurgu{font-family:var(--baslik2);font-weight:600;font-size:20px;line-height:1.45;color:var(--sari);border-left:3px solid var(--sari);padding-left:16px;margin-top:22px}
+.ytDugme{margin-top:14px}
+.ytIkon{display:inline-grid;place-items:center;width:26px;height:18px;border-radius:5px;background:var(--sari);color:var(--sariUstu);font-size:10px}
+.portre{margin:0;aspect-ratio:1/1;border-radius:24px;overflow:hidden;position:relative;max-width:100%;box-shadow:0 30px 70px -20px rgba(0,0,0,.8)}
+.portre img{width:100%;height:100%;object-fit:cover;object-position:30% 40%;display:block;filter:contrast(1.05)}
+.portre::after{content:"";position:absolute;inset:0;background:linear-gradient(200deg,rgba(255,201,60,.18),transparent 45%);mix-blend-mode:screen;pointer-events:none}
+.imza{font-family:var(--baslik);font-size:28px;font-weight:700;margin-top:20px}
+.zaman{display:grid;gap:0;margin-top:26px}
+.zaman div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;padding:10px 0;border-top:1px solid var(--cizgi);font-size:15px}
+.zaman b{font-family:var(--mono);font-weight:500;color:var(--sari);font-size:13px}
+.zaman span{color:var(--solgun)}
+
+/* ---------- teşekkürler ---------- */
+.tesekkur{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 28px;margin-top:40px}
+.tesekkur h3{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sari);font-weight:500;margin-bottom:10px}
+.tesekkur ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tesekkur li strong{display:block;font-family:var(--baslik2);font-weight:700;font-size:17px}
+.tesekkur li span{color:var(--solgun);font-size:14px}
+.uvr{margin-top:40px;border:1px solid var(--sari);border-radius:22px;padding:26px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;background:var(--sariSis)}
+.uvr .buyuk{font-family:var(--baslik);font-size:56px;font-weight:800;color:var(--sari);line-height:1}
+.uvr p{margin:0}
+
+/* ---------- iletişim ---------- */
+.iletisim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:36px}
+.posta{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.adres{font-family:var(--baslik);font-size:clamp(28px,3.6cqw,44px);font-weight:700;color:var(--sari);word-break:break-all;user-select:all}
+.posta ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+/* ---------- alt bilgi ---------- */
+.alt{border-top:1px solid var(--cizgi);padding-block:40px 30px;display:grid;grid-template-columns:1.3fr repeat(3,minmax(0,1fr));gap:28px;font-size:14px}
+.alt h4{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sonuk);margin:0 0 10px}
+.alt a{display:block;color:var(--solgun);text-decoration:none;padding:3px 0}
+.alt a:hover{color:var(--murekkep)}
+.alt p{color:var(--sonuk);margin:8px 0 0}
+
+/* ---------- oy şeridi ---------- */
+.oy{margin-top:34px;border:1px dashed #4a3d1c;border-radius:16px;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:rgba(255,201,60,.035);font-size:13px}
+.oy .ne{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#c9a54a;margin-right:4px}
+.oy button{font:inherit;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--murekkep);border-radius:999px;padding:6px 12px}
+.oy button.secili[data-oy="begen"]{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.oy button.secili[data-oy="begenme"]{background:#3a2a2a;border-color:#7a4a4a;color:#ffd2c8}
+.oy textarea{flex:1 1 260px;min-width:0;min-height:38px;resize:vertical;background:var(--zemin);color:var(--murekkep);border:1px solid var(--cizgi);border-radius:12px;padding:8px 10px;font:inherit}
+.oy .durum{color:var(--sonuk);font-family:var(--mono);font-size:11px;min-width:80px}
+
+
+
+/* ---------- sekme şeridi + vitrinler ---------- */
+.sekmeler{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:30px}
+.sekmeler a{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;padding:16px 8px 14px;border-radius:20px;background:var(--yuzey);border:1px solid var(--cizgi);font-weight:600;font-size:14px;text-align:center;transition:transform .2s,border-color .2s}
+.sekmeler a:hover{transform:translateY(-3px);border-color:var(--sari)}
+.sekmeler img{width:64px;height:64px;object-fit:contain}
+.vitrin .giris{font-size:17px}
+.cipler{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.cipler span{font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--cizgi);color:var(--murekkep);background:var(--yuzey)}
+.fasil + .oy{margin-top:26px}
+/* karaoke */
+.kara{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 24cqw;gap:3cqw;padding:3cqw 3cqw 3cqw 4cqw;min-height:0}
+.sozler{display:flex;flex-direction:column;justify-content:center;gap:2.2cqw}
+.sozler .sat{font-family:var(--baslik2);font-weight:700;font-size:3.6cqw;line-height:1.15;color:#5d5d66;transition:color .3s,opacity .3s}
+.sozler .sat.gecti{color:#7a6a3a;opacity:.6}
+.sozler .sat.simdi{font-size:4.4cqw;color:var(--murekkep)}
+.sozler .k{position:relative;display:inline-block;margin-right:1.1cqw}
+.sozler .k.dolu{color:var(--sari)}
+.sozler .k.dolar{background:linear-gradient(90deg,var(--turuncu) var(--p,0%),var(--murekkep) var(--p,0%));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mikser{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2cqw;align-items:end;background:var(--yuzey);border-radius:2cqw;padding:2cqw 1.6cqw}
+.kanal{display:flex;flex-direction:column;align-items:center;gap:1cqw;height:100%}
+.kanal .ray{flex:1;width:1cqw;border-radius:1cqw;background:var(--yuzey2);position:relative;min-height:20cqw}
+.kanal .ray i{position:absolute;left:0;right:0;bottom:0;border-radius:1cqw;background:linear-gradient(0deg,var(--sari),var(--turuncu));height:var(--s,50%);transition:height .12s}
+.kanal .ray b{position:absolute;left:50%;transform:translate(-50%,50%);bottom:var(--f,60%);width:3.4cqw;height:1.8cqw;border-radius:.6cqw;background:var(--murekkep)}
+.kanal small{font-family:var(--mono);font-size:1.5cqw;color:var(--solgun)}
+.kanal.kapali .ray i{background:#3a3a42}
+/* video */
+.vid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 26cqw;gap:2.4cqw;padding:2.4cqw 3cqw 3cqw;min-height:0}
+.oynatici{position:relative;border-radius:2cqw;overflow:hidden;background:#000;display:flex;flex-direction:column}
+.oynatici canvas{flex:1;width:100%;min-height:0;display:block}
+.zamanCubuk{height:5cqw;position:relative;background:#111114}
+.zamanCubuk::before{content:"";position:absolute;left:3%;right:3%;top:50%;height:.6cqw;transform:translateY(-50%);background:#33333a;border-radius:1cqw}
+.zamanCubuk .bolge{position:absolute;left:30%;width:18%;top:50%;height:1.6cqw;transform:translateY(-50%);background:rgba(255,201,60,.35);border:.3cqw solid var(--sari);border-radius:.6cqw}
+.zamanCubuk .oynat{position:absolute;top:18%;bottom:18%;width:.6cqw;background:var(--turuncu);left:var(--x,32%);box-shadow:0 0 1.5cqw var(--turuncu)}
+.dongu{position:absolute;left:30%;width:18%;bottom:5cqw;display:flex;justify-content:space-between;pointer-events:none}
+.dongu span{font-family:var(--mono);font-size:1.8cqw;background:var(--sari);color:var(--sariUstu);padding:.2cqw 1cqw;border-radius:.6cqw;transform:translateY(-.8cqw)}
+.calismalar{display:flex;flex-direction:column;gap:1.2cqw}
+.cl{background:var(--yuzey);border-radius:1.6cqw;padding:1.6cqw 2cqw;display:flex;flex-direction:column;gap:.3cqw}
+.cl b{font-family:var(--mono);font-weight:500;font-size:1.8cqw;color:var(--sari)}
+.cl span{font-size:2cqw;color:var(--solgun)}
+.cl.on{outline:.3cqw solid var(--sari)}
+.hizlar{display:flex;gap:1cqw;margin-top:auto}
+.hizlar span{flex:1;text-align:center;font-family:var(--mono);font-size:1.9cqw;padding:1cqw 0;border-radius:1cqw;background:var(--yuzey2);color:var(--solgun)}
+.hizlar span.on{background:var(--sari);color:var(--sariUstu)}
+/* metronom bul */
+.mb{flex:1;display:flex;flex-direction:column;gap:2.4cqw;padding:2.6cqw 4cqw 3cqw;min-height:0}
+.mbSonuc{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:2cqw}
+.mbSonuc div{background:var(--yuzey);border-radius:2cqw;padding:1.8cqw 2.4cqw;display:flex;align-items:baseline;gap:1cqw;flex-wrap:wrap}
+.mbSonuc small{flex-basis:100%;font-family:var(--mono);font-size:1.6cqw;color:var(--solgun);letter-spacing:.08em;text-transform:uppercase}
+.mbSonuc b{font-family:var(--baslik);font-size:6.4cqw;line-height:1;font-variant-numeric:tabular-nums}
+.mbSonuc div:first-child b{color:var(--sari)}
+.mbSonuc span{color:var(--solgun);font-size:2cqw}
+.mbDalga{position:relative;flex:1;min-height:14cqw;background:var(--yuzey);border-radius:2cqw;overflow:hidden;display:flex;align-items:center;gap:.35cqw;padding:0 1.5cqw}
+.mbDalga i{flex:1;background:#4a4a54;border-radius:1cqw}
+.mbDalga .izg{position:absolute;top:0;bottom:0;width:.25cqw;background:rgba(255,201,60,.28)}
+.mbDalga .izg.bir{background:var(--sari);width:.45cqw}
+.mbDalga .izg.bir::after{content:attr(data-o);position:absolute;top:.8cqw;left:.8cqw;font-family:var(--mono);font-size:1.6cqw;color:var(--sari)}
+.mbImlec{position:absolute;top:0;bottom:0;width:.5cqw;background:var(--turuncu);box-shadow:0 0 2cqw var(--turuncu);left:var(--x,10%);z-index:2}
+.mbAlt{display:flex;gap:1.2cqw;flex-wrap:wrap}
+.mbAlt .hap{font-family:var(--govde);font-size:2cqw;padding:1cqw 2.2cqw;border-radius:999px;background:var(--yuzey2);color:var(--murekkep)}
+.mbAlt .hap.s{background:var(--sari);color:var(--sariUstu)}
+
+
+/* ---------- katalog ---------- */
+.isaretler{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:22px;font-size:13px;color:var(--solgun)}
+.isaretler .etiket{margin-left:0}
+.isaretler span:not(.etiket){margin-right:10px}
+.etiket.iosmac{border:1px solid #5a4a2a;color:#d9b77a}
+.etiket.net{border:1px dashed var(--sonuk);color:var(--solgun)}
+.suzgec{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.suzgec button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--solgun);border-radius:999px;padding:7px 14px}
+.suzgec button[aria-pressed="true"]{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.katalog{columns:3 300px;column-gap:16px;margin-top:24px}
+.alan{break-inside:avoid;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:18px 18px 14px;margin-bottom:16px;display:block}
+.alan header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.alan header img{width:44px;height:44px;object-fit:contain}
+.alan header h3{flex:1}
+.alan ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.alan li{font-size:14px;color:var(--solgun);line-height:1.5;padding-left:14px;position:relative}
+.alan li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--sari);opacity:.7}
+.alan li .etiket{margin-left:6px;font-size:9.5px}
+.katalogNot{color:var(--sonuk);font-size:13px;font-family:var(--mono)}
+.cevrim{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.cevrim > div{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:20px}
+.cevrim > div:first-child{border-color:#4a3d1c}
+.cevrim h3{margin-bottom:10px}
+.cevrim ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+
+/* ---------- forum + destek ---------- */
+.forumUst{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:24px}
+.kategoriler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.kat{position:relative;overflow:hidden;text-decoration:none;border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;border:1px solid var(--cizgi);background:var(--yuzey);min-height:190px}
+.kat::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;filter:blur(30px);opacity:.5}
+.kat.k1::after{background:#ff6a3d}.kat.k2::after{background:var(--sari)}.kat.k3::after{background:var(--turuncu)}
+.kat b{font-family:var(--baslik);font-size:32px;text-transform:uppercase;line-height:1}
+.kat span{color:var(--solgun);font-size:15px}
+.kat em{margin-top:auto;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--sonuk);display:flex;align-items:center;gap:6px}
+.nokta{width:7px;height:7px;border-radius:50%;background:var(--sari);display:inline-block}
+.yolHarita{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.sutun{background:var(--zemin);border:1px solid var(--cizgi);border-radius:20px;padding:16px;display:grid;gap:10px;align-content:start}
+.sutun h3{display:flex;align-items:center;gap:8px;font-size:16px}
+.dz{width:10px;height:10px;border-radius:50%}
+.dz.s1{border:2px solid var(--solgun)}.dz.s2{background:var(--turuncu);box-shadow:0 0 10px var(--turuncu)}.dz.s3{background:var(--sari)}
+.kart2{background:var(--yuzey);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.kart2 b{font-weight:600;font-size:15px}
+.kart2 small{color:var(--sonuk);font-family:var(--mono);font-size:11px}
+.akis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:30px;border:1px solid var(--cizgi);border-radius:20px;overflow:hidden}
+.akis div{padding:16px;display:flex;gap:10px;align-items:center;border-left:1px solid var(--cizgi);font-size:14px;color:var(--solgun)}
+.akis div:first-child{border-left:0}
+.akis b{font-family:var(--baslik);font-size:30px;color:var(--sari)}
+.kural{color:var(--sonuk);font-size:14px;margin-top:16px}
+.destek{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(28px,5cqw,64px);align-items:start;position:relative;isolation:isolate}
+.destek::before{content:"";position:absolute;left:-10%;top:-30%;width:60%;height:120%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.10),transparent)}
+.destekMetin p{font-size:18px;color:var(--murekkep);line-height:1.65;margin:18px 0 0}
+.destekMetin p:first-child{margin-top:22px}
+.destekKartlar{display:grid;gap:12px;align-content:start;padding-top:8px}
+.dk{display:grid;gap:4px;text-decoration:none;border:1px solid var(--cizgi);background:var(--yuzey);border-radius:18px;padding:18px 20px}
+.dk b{font-family:var(--baslik2);font-size:19px}
+.dk span{color:var(--solgun);font-size:14px}
+.dk.ana2{background:var(--sari);border-color:var(--sari)}.dk.ana2 b,.dk.ana2 span{color:var(--sariUstu)}
+.trNot{margin:0;color:var(--sonuk);font-size:13px;line-height:1.5}
+.dk.bos2{background:none;border-style:dashed}
+
+
+/* ---------- gerçek ekranlar ---------- */
+.ipad.gercek .ekran{background:#0b0b0e}
+.ipad.gercek .ekran img{width:100%;height:100%;object-fit:cover;display:block}
+.galeriUst{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+.galeriSec{display:flex;flex-wrap:wrap;gap:8px}
+.galeriSec button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--solgun);border-radius:999px;padding:7px 14px}
+.galeriSec button[aria-pressed="true"]{color:var(--murekkep);border-color:var(--sari)}
+.galeriSahne{display:flex;justify-content:center;margin-top:26px}
+.galeriSahne .ipad.yatay{width:min(100%,980px)}
+.galeriSahne .ipad.dikey{width:min(100%,560px)}
+.galeriAlt{color:var(--solgun);text-align:center;margin:16px auto 0;font-size:15px}
+.cizimNot{font-family:var(--mono);font-size:11px;color:var(--sonuk);margin-top:10px;text-align:center}
+
+
+/* ---------- kahraman arka planı: eğik düzlemde 3.0 ekranları ---------- */
+.isikli > .arka{position:absolute;top:0;bottom:0;left:calc(-1*clamp(18px,4cqw,48px));width:calc(100% + 2*clamp(18px,4cqw,48px));overflow:hidden;z-index:-2;perspective:1300px;background:var(--zemin);-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+.duzlem{position:absolute;left:58%;top:48%;width:110%;aspect-ratio:4/3;transform-style:preserve-3d;transform:translate(-50%,-50%) rotateX(30deg) rotateZ(-14deg) scale(1.2);animation:kamera 28s ease-in-out infinite alternate}
+@keyframes kamera{0%{transform:translate(-38%,-55%) rotateX(32deg) rotateZ(-15deg) scale(1.12)}50%{transform:translate(-52%,-47%) rotateX(27deg) rotateZ(-10deg) scale(1.3)}100%{transform:translate(-63%,-41%) rotateX(23deg) rotateZ(-7deg) scale(1.44)}}
+.duzlem .kat{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;opacity:0;transform:translate3d(26%,0,0) scale(1.05);filter:brightness(.62) saturate(1.15) blur(10px);transition:transform 1.9s cubic-bezier(.2,.8,.15,1),opacity 1.3s ease,filter 1.6s ease;box-shadow:0 0 120px rgba(255,201,60,.12)}
+.duzlem .kat.on{opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(.62) saturate(1.15) blur(0)}
+.duzlem .kat.cik{opacity:0;transform:translate3d(-26%,0,-60px) scale(.96);filter:brightness(.5) saturate(1.1) blur(10px)}
+.duzlem .parilti{position:absolute;inset:0;border-radius:28px;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,214,120,.42) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;mix-blend-mode:screen;opacity:0}
+.duzlem .parilti.git{animation:parla 1.7s cubic-bezier(.3,.6,.2,1)}
+@keyframes parla{0%{background-position:130% 0;opacity:1}100%{background-position:-30% 0;opacity:0}}
+.kahraman h1,.kahraman .giris{text-shadow:0 2px 30px rgba(0,0,0,.65)}
+.kahraman .giris{color:#d6d3cb}
+@media (prefers-reduced-motion:reduce){.duzlem{animation:none}}
+
+/* ---------- ışıklı arka planlar ---------- */
+.isikli{position:relative;isolation:isolate}
+.isikli > canvas.isik{position:absolute;top:0;bottom:0;left:calc(-1*clamp(18px,4cqw,48px));width:calc(100% + 2*clamp(18px,4cqw,48px));height:100%;z-index:-1;display:block;pointer-events:none}
+.fotoBant{position:relative;isolation:isolate;margin-inline:calc(-1*clamp(18px,4cqw,48px));min-height:clamp(320px,42cqw,520px);display:flex;align-items:flex-end;overflow:hidden;border-top:1px solid var(--cizgi)}
+.fotoBant canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
+.fotoBant .yazi{padding:clamp(22px,4cqw,48px);padding-bottom:clamp(26px,4cqw,52px);max-width:900px}
+.fotoBant h2{font-size:clamp(40px,7cqw,96px);text-shadow:0 4px 40px rgba(0,0,0,.6)}
+.fotoBant h2 em{font-style:normal;color:var(--sari)}
+.fotoBant .yer{margin-top:16px;background:rgba(0,0,0,.5)}
+.fotoBant + .oy{margin-top:18px}
+.fasil{position:relative}
+.fasil .gorsel{position:relative;isolation:isolate}
+.fasil .gorsel::before{content:"";position:absolute;inset:-10% -6%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.16),rgba(255,154,46,.06) 55%,transparent);filter:blur(10px)}
+#tesekkurler{background:radial-gradient(rgba(255,201,60,.07) 1px,transparent 1.4px) 0 0/22px 22px}
+
+/* ---------- dar kap (telefon) ---------- */
+@container site (max-width:900px){
+  .kahraman{grid-template-columns:minmax(0,1fr)}
+  .kartlar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sekmeler{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .adimlar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tesekkur{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fiyat{grid-template-columns:minmax(0,1fr)}
+  .alt{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container site (max-width:700px){
+  .menu nav{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:8px;z-index:5}
+  .menu nav.acik{display:flex}
+  .menu nav a{padding:12px 14px;font-size:16px}
+  .menu{justify-content:space-between}
+  .menu .indir{display:none}
+  .hamburger{display:inline-grid;place-items:center}
+  .fasil,.yardimIzgara,.hakkinda,.iletisim{grid-template-columns:minmax(0,1fr)}
+  .fasil.ters > :first-child{order:0}
+  .kartlar,.adimlar,.tesekkur{grid-template-columns:minmax(0,1fr)}
+  .sekmeler{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sekmeler img{width:52px;height:52px}
+  .kart{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .kart img{width:56px;height:56px}
+  .kart h3{flex:1}
+  .kart p{flex-basis:100%}
+  .alt{grid-template-columns:minmax(0,1fr)}
+  .cevrim,.kategoriler,.yolHarita,.destek{grid-template-columns:minmax(0,1fr)}
+  .akis{grid-template-columns:minmax(0,1fr)}
+  .akis div{border-left:0;border-top:1px solid var(--cizgi)}
+  .akis div:first-child{border-top:0}
+  .uvr{grid-template-columns:minmax(0,1fr)}
+  .magaza .dugme{flex:1 1 100%}
+  .foto{aspect-ratio:1/1}
+}
+</style>
+</head>
+<body>
+
+
+
+<div class="sahne" id="sahne">
+<div class="site" id="site">
+<div class="ic">
+
+<!-- ÜST MENÜ -->
+<header class="menu">
+  <a class="logo" href="#ana">BC <span>STAGE</span></a>
+  <nav id="nav" aria-label="Site menüsü">
+    <a href="#ozellikler" data-en="Features">Özellikler</a>
+    <a href="#fiyat" data-en="Pricing">Fiyat</a>
+    <a href="#yardim" data-en="Help">Yardım</a>
+    <a href="#hakkinda" data-en="About">Hakkında</a>
+    <a href="#tesekkurler" data-en="Thanks">Teşekkürler</a>
+    <a href="#forum" data-en="Forum">Forum</a>
+    <a href="#destek" data-en="Support">Destek ol</a>
+    <a href="#iletisim" data-en="Contact">İletişim</a>
+  </nav>
+  <button class="dil" id="dilDugme" type="button">TR · EN</button>
+  <a class="dugme ana indir" href="#ana" data-en="Download">İndir</a>
+  <button class="hamburger" id="hamburger" type="button" aria-label="Menü" aria-expanded="false">☰</button>
+</header>
+
+<main class="sayfa">
+
+<!-- ANA SAYFA -->
+<section class="bolum isikli" id="ana" style="border-top:0;padding-top:20px">
+  <div class="arka" aria-hidden="true"><div class="duzlem" id="duzlem"><img class="kat on" src="ekranlar/3/metronom_bul_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/video_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/one_man_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/akor_bulma_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/sarkilar_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/sahne_yatay.jpg" alt=""><span class="parilti" id="parilti"></span></div></div>
+  <canvas class="isik" id="isikKahraman" aria-hidden="true"></canvas>
+  <div class="kahraman">
+    <div>
+      <p class="ust" data-en="For musicians on stage">Sahnedeki müzisyen için</p>
+      <h1><span data-en="Your whole set">Bütün repertuvarın</span> <em data-en="on one screen.">tek ekranda.</em></h1>
+      <p class="giris" data-en="Songs, chords, setlists, a metronome and a drummer that follows you. BC Stage is built for the moment you walk on stage.">Şarkılar, akorlar, çalma listeleri, metronom ve seni izleyen bir davulcu. BC Stage sahneye çıktığın an için yapıldı.</p>
+      <div class="magaza">
+        <a class="dugme ana" href="#ana"><span class="ikon"></span><span><small data-en="Download on the">İndir</small><strong>App Store</strong></span></a>
+        <a class="dugme ikinci" href="https://play.google.com/store/apps/details?id=com.bariscekergil.bcstage" target="_blank" rel="noopener"><span class="ikon">▶</span><span><small data-en="Get it on">Edin</small><strong>Google Play</strong></span></a>
+      </div>
+      <p class="platform">iPad · iPhone · Android · Mac &nbsp;<span class="yer" data-en="App Store link pending">App Store bağlantısı bekleniyor</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- KİMİN İÇİN -->
+<section class="bolum" id="kimin">
+  <p class="ust" data-en="Start here">Buradan başla</p>
+  <h2 data-en="Who plays with BC Stage?">BC Stage kiminle çalar?</h2>
+  <p class="giris" data-en="Eight kinds of musicians, one app. Pick yours.">Sekiz çeşit müzisyen, tek uygulama. Kendini seç.</p>
+  <div class="kartlar">
+    <div class="kart"><img src="simgeler/singer_vocal.png" alt=""><h3 data-en="Singers">Şarkıcı</h3><p data-en="Lyrics and chords together, big enough to read from a meter away. Change key with one tap; stage notes show as a card.">Söz ve akor bir arada, bir metreden okunacak büyüklükte. Ton tek dokunuşla değişir, sahne notu kart olarak görünür.</p><a href="#ozellikler" data-en="Stage page →">Sahne sayfası →</a></div>
+    <div class="kart"><img src="simgeler/acoustic-guitar.png" alt=""><h3 data-en="Guitarists">Gitarist</h3><p data-en="Chord dictionary and voicings, Guitar Pro tabs, scales, arpeggios, exercises. Capo plans for fewer barre chords.">Akor sözlüğü ve çevrimler, Guitar Pro tabları, gamlar, arpejler, egzersizler. Kapo planıyla daha az barre.</p><a href="#katalog" data-en="Chords & tabs →">Akor ve tab →</a></div>
+    <div class="kart"><img src="simgeler/ai_drums.png" alt=""><h3 data-en="Drummers">Davulcu ve perküsyoncu</h3><p data-en="Read a song's drums and find its style. Build your own kit with AI, practise with 6,401 patterns, add conga and bongo.">Bir şarkının davulunu okut, tarzını bul. AI ile kendi kitini üret, 6.401 kalıpla çalış, konga ve bongo ekle.</p><a href="#ritimF" data-en="Rhythm →">Ritim →</a></div>
+    <div class="kart"><img src="simgeler/one_man_band.png" alt=""><h3 data-en="One-person band">Tek kişilik grup</h3><p data-en="Drum grid, looper and metronome share one clock. Fills, finale and looper record from the pedal, hands on the instrument.">Davul ızgarası, looper ve metronom aynı saati tutar. Pedalla fill, final ve looper kaydı, eller çalgıda.</p><a href="#ritimF" data-en="One Man Band →">One Man Band →</a></div>
+    <div class="kart"><img src="simgeler/playlist.png" alt=""><h3 data-en="Bands">Grup</h3><p data-en="The leader opens a song and everyone on the same Wi-Fi follows. Talkback, polls, stage notes, no internet needed.">Lider şarkıyı açar, aynı Wi-Fi'daki herkes izler. Bas-konuş, anketler, sahne notları, internet gerekmez.</p><a href="#katalog" data-en="Group sync →">Grup senkronu →</a></div>
+    <div class="kart"><img src="simgeler/video.png" alt=""><h3 data-en="Students">Öğrenci</h3><p data-en="Loop and slow down the hard part of a lesson video. Speed trainer, practice plans, saved sessions.">Ders videosunda zor yeri döngüye al ve yavaşlat. Hız antrenörü, çalışma programı, kayıtlı çalışmalar.</p><a href="#video" data-en="Video practice →">Video çalışma →</a></div>
+    <div class="kart"><img src="simgeler/karaoke.png" alt=""><h3 data-en="Karaoke and vocal practice">Karaoke ve vokal çalışan</h3><p data-en="Turn the vocal off and sing with words that fill as you go. Speed and key control, tap a line to jump.">Vokali kapat, kelime kelime dolan sözle söyle. Hız ve ton ayarı, satıra dokunup atlama.</p><a href="#karaoke" data-en="Karaoke →">Karaoke →</a></div>
+    <div class="kart"><img src="simgeler/arrangements.png" alt=""><h3 data-en="Arrangers and tab writers">Aranjör ve tab yazan</h3><p data-en="iReal-style chord charts, odd meters, repeats. Write tabs, save losslessly, send to a person by BC ID.">iReal tarzı akor şemaları, aksak usuller, röprizler. Tab yaz, kayıpsız kaydet, BC ID ile kişiye gönder.</p><a href="#katalog" data-en="Charts & tabs →">Aranje ve tab →</a></div>
+  </div>
+</section>
+
+<!-- ÖZELLİKLER -->
+<section class="bolum" id="ozellikler">
+  <p class="ust" data-en="Features">Özellikler</p>
+  <h2 data-en="Everything a gig needs">Bir konserin ihtiyacı olan her şey</h2>
+  <p class="giris" data-en="Eleven tabs, one clock. Everything that plays together keeps the same time.">On bir sekme, tek saat. Birlikte çalan her şey aynı zamanı tutar.</p>
+  <div class="sekmeler" role="list">
+    <a role="listitem" href="#ozellikler"><img src="simgeler/repertoire.png" alt=""><span data-en="Songs">Şarkılar</span></a>
+    <a role="listitem" href="#ozellikler"><img src="simgeler/playlist.png" alt=""><span data-en="Setlists">Listeler</span></a>
+    <a role="listitem" href="#ozellikler"><img src="simgeler/acoustic-guitar.png" alt=""><span data-en="Chords">Akorlar</span></a>
+    <a role="listitem" href="#ozellikler"><img src="simgeler/pick.png" alt=""><span data-en="Tabs">Tablar</span></a>
+    <a role="listitem" href="#ozellikler"><img src="simgeler/arrangements.png" alt=""><span data-en="Arrangements">Aranjeler</span></a>
+    <a role="listitem" href="#karaoke"><img src="simgeler/karaoke.png" alt=""><span>Karaoke</span></a>
+    <a role="listitem" href="#ritimF"><img src="simgeler/looper.png" alt=""><span>Looper</span></a>
+    <a role="listitem" href="#video"><img src="simgeler/video.png" alt=""><span>Video</span></a>
+    <a role="listitem" href="#ritimF"><img src="simgeler/ai_drums.png" alt=""><span data-en="AI Drums">AI Davul</span></a>
+    <a role="listitem" href="#akorbul"><img src="simgeler/chord_finder.png" alt=""><span data-en="Chord Finder">Akor Bulma</span></a>
+    <a role="listitem" href="#metronombul"><img src="simgeler/metronome.png" alt=""><span data-en="Beat Finder">Metronom Bul</span></a>
+    <a role="listitem" href="#ritimF"><img src="simgeler/one_man_band.png" alt=""><span>One Man Band</span></a>
+  </div>
+
+  <div class="fasil">
+    <div>
+      <p class="ust">01 · <span data-en="Stage">Sahne</span></p>
+      <h2 data-en="Read it from a meter away">Bir metreden oku</h2>
+      <div class="ozellikler">
+        <div class="oz"><img src="simgeler/repertoire.png" alt=""><div><h3 data-en="Songs and the stage page">Şarkılar ve sahne sayfası</h3><p data-en="Sections in a band at the top, chords above the lines, the whole song fitted to the screen.">Bölümler üstte bir bantta, akorlar satırların üstünde, şarkının tamamı ekrana sığdırılmış.</p></div></div>
+        <div class="oz"><img src="simgeler/playlist.png" alt=""><div><h3 data-en="Setlists">Çalma listeleri</h3><p data-en="Order the night's songs, swap one in a second, keep notes per song.">Gecenin şarkılarını sırala, birini saniyede değiştir, her şarkıya not düş.</p></div></div>
+        <div class="oz"><img src="simgeler/arrangements.png" alt=""><div><h3><span data-en="Group sync">Grup senkronu</span><span class="etiket vip">VIP</span></h3><p data-en="The leader opens a song; every device on the same Wi-Fi follows. No internet, no server.">Lider şarkıyı açar, aynı Wi-Fi'daki bütün cihazlar izler. İnternet de sunucu da gerekmez.</p></div></div>
+        <div class="oz"><img src="simgeler/pick.png" alt=""><div><h3><span data-en="Foot pedal">Pedal</span><span class="etiket vip">VIP</span></h3><p data-en="Bluetooth page turners and MIDI pedals: next song, next section, drums start and stop, looper record. Hands stay on the instrument.">Bluetooth sayfa çevirici ve MIDI pedal: sonraki şarkı, sonraki bölüm, ritmi başlat/durdur, looper kaydı. Ellerin çalgıda kalır.</p></div></div>
+      </div>
+    </div>
+    <div class="gorsel">
+      <div class="ipad dikey gercek"><div class="ekran"><img src="ekranlar/3/sahne_dikey.jpg" alt="BC Stage iPad dikey: Amazing Grace, akorlar sözün üstünde" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <!-- KARAOKE -->
+  <div class="fasil ters vitrin" id="karaoke">
+    <div>
+      <p class="ust">02 · Karaoke <span class="etiket ipadmac" data-en="vocal work: iOS · Mac">ses işleme: iOS · Mac</span></p>
+      <h2 data-en="Sing over the real band">Gerçek grubun üstüne söyle</h2>
+      <p class="giris" data-en="Link an audio file to a song. BC Stage takes the vocal out, lines the words up with the music and fills them in as they are sung.">Bir ses dosyasını şarkıya bağla. BC Stage vokali çıkarır, sözleri müziğe oturtur ve söylendikçe doldurur.</p>
+      <div class="cipler"><span data-en="Vocal removal on the device">Cihazda vokal ayırma</span><span data-en="Word-by-word timing">Kelime kelime zamanlama</span><span data-en="Track mixer">İz mikseri</span><span data-en="Fix any word by hand">Her kelimeyi elle düzelt</span></div>
+      <p class="cizimNot" style="text-align:left" data-en="Illustration · real screen comes from a live capture">Çizim · gerçek ekran canlı çekimle gelecek</p>
+    </div>
+    <div class="gorsel">
+      <div class="ipad yatay" aria-label="iPad yatay: Karaoke">
+        <div class="ekran">
+          <div class="ada"><span class="ad">Gece Treni</span><span class="grup">Karaoke</span><span class="bos"></span><span class="hap">−2</span><span class="hap s">1:12</span></div>
+          <div class="kara">
+            <div class="sozler" id="sozler"></div>
+            <div class="mikser" id="mikser"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AKOR BULMA -->
+  <div class="fasil vitrin" id="akorbul">
+    <div>
+      <p class="ust">03 · <span data-en="Chord Finder">Akor Bulma</span> <span class="etiket ipadmac">iPad · Mac</span></p>
+      <h2 data-en="Drop in a song, get the chart">Şarkıyı ver, şemasını al</h2>
+      <p class="giris" data-en="BC Stage listens to an audio file and writes out its chords and lyrics, section by section. Nothing leaves your device.">BC Stage bir ses dosyasını dinler, akorlarını ve sözlerini bölüm bölüm yazar. Hiçbir şey cihazından çıkmaz.</p>
+      <div class="cipler"><span data-en="Capo plans">Kapo planları</span><span data-en="Sections found for you">Bölümler kendiliğinden</span><span data-en="Lyrics under the chords">Akorların altında söz</span><span data-en="Save as a song">Şarkı olarak kaydet</span></div>
+    </div>
+    <div class="gorsel">
+      <div class="ipad dikey gercek"><div class="ekran"><img src="ekranlar/3/akor_bulma_dikey.jpg" alt="BC Stage 3.0 Akor Bulma: Scarborough Fair, ton Dm, akorlar ve sözler" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <!-- VİDEO -->
+  <div class="fasil ters vitrin" id="video">
+    <div>
+      <p class="ust">04 · Video</p>
+      <h2 data-en="Loop the hard part">Zor yeri döngüye al</h2>
+      <p class="giris" data-en="Open a lesson video from your gallery. Mark the passage on the waveform, slow it down, and play it again until your hands know it.">Galerinden bir ders videosu aç. Zor yeri dalga şeridinde işaretle, yavaşlat, ellerin öğrenene kadar tekrar çal.</p>
+      <div class="cipler"><span data-en="A–B loop">A–B döngüsü</span><span data-en="Slow down without changing pitch">Tonu bozmadan yavaşlat</span><span data-en="Saved practice spots">Kayıtlı çalışma yerleri</span><span data-en="Speed ladder">Hız merdiveni</span></div>
+    </div>
+    <div class="gorsel">
+      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/video_yatay.jpg" alt="BC Stage 3.0 Video: Greensleeves solo dersi, A–B döngüsü, %75 hız, çalışmalar" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <!-- METRONOM BUL -->
+  <div class="fasil vitrin" id="metronombul">
+    <div>
+      <p class="ust">05 · <span data-en="Beat Finder">Metronom Bul</span> <span class="etiket ipadmac">iPad · Mac</span></p>
+      <h2 data-en="The metronome learns the song">Metronom şarkıyı öğrenir</h2>
+      <p class="giris" data-en="Give BC Stage a recording. It finds the tempo, the meter and the first beat, then clicks right along with the song.">BC Stage'e bir kayıt ver. Tempoyu, ölçüyü ve ilk vuruşu bulur, sonra şarkıyla birlikte tık atar.</p>
+      <div class="cipler"><span data-en="Tempo and meter">Tempo ve ölçü</span><span data-en="Where beat one falls">Birinci vuruşun yeri</span><span data-en="Click track over the song">Şarkının üstüne tık</span><span data-en="Write out its drums">Davulunu yaz</span></div>
+    </div>
+    <div class="gorsel">
+      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/metronom_bul_yatay.jpg" alt="BC Stage 3.0 Metronom Bul: Amazing Grace 88 BPM, vuruş ızgarası, Davulunu yaz" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <div class="fasil ters" id="ritimF">
+    <div>
+      <p class="ust">06 · <span data-en="Rhythm">Ritim</span></p>
+      <h2 data-en="A drummer that waits for you">Seni bekleyen bir davulcu</h2>
+      <div class="ozellikler">
+        <div class="oz"><img src="simgeler/ai_drums.png" alt=""><div><h3><span data-en="AI Drums">AI Davul</span><span class="etiket ipadmac">iPad · Mac</span></h3><p data-en="Generate kicks, snares, hi-hats and whole kits on the device, then play them through 6,401 patterns in 17 styles.">Kick, snare, hi-hat ve bütün kitleri cihazda üret, 17 tarzda 6.401 kalıpla çal.</p></div></div>
+        <div class="oz"><img src="simgeler/one_man_band.png" alt=""><div><h3><span data-en="One Man Band">One Man Band</span><span class="etiket vip">VIP</span></h3><p data-en="A five-lane step sequencer you play live: A/B/C variations, fills, finale, odd meters, MIDI grooves.">Canlı çalınan beş kanallı ızgara: A/B/C varyasyonları, fill, final, aksak ölçüler, MIDI groove.</p></div></div>
+        <div class="oz"><img src="simgeler/looper.png" alt=""><div><h3 data-en="Looper">Looper</h3><p data-en="Loops locked to the metronome. Come in late and BC Stage still puts you on the one.">Metronoma kilitli döngüler. Geç girsen bile BC Stage seni birinci vuruşa oturtur.</p></div></div>
+        <div class="oz"><img src="simgeler/ai_drums.png" alt=""><div><h3><span data-en="Drums from a song">Şarkıdan davul</span><span class="etiket ipadmac">iPad · Mac</span></h3><p data-en="BC Stage reads a recording's drums, offers 4–6 matching styles and plays the one you pick with your own kit.">BC Stage kaydın davulunu okur, 4–6 tarz adayı çıkarır, seçtiğini kendi kitinle çalar.</p></div></div>
+      </div>
+    </div>
+    <div class="gorsel">
+      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/one_man_yatay.jpg" alt="BC Stage iPad yatay: One Man Mode davul ızgarası" loading="lazy"></div></div>
+    </div>
+  </div>
+  <div class="fasil">
+    <div>
+      <p class="ust" data-en="Coming soon">Yakında</p>
+      <h2 data-en="Precise touch">Milimetrik dokunuş</h2>
+      <div class="ozellikler">
+        <div class="oz"><img src="simgeler/pick.png" alt=""><div><h3><span>BC Fare</span><span class="etiket yakinda" data-en="soon">yakında</span></h3><p data-en="A cursor on screen and a small touch pad: tap, drag and scroll precisely without your finger covering anything. For editing lyrics, writing chords and fine adjustment.">Ekranda bir imleç ve küçük bir dokunmatik yüzey: parmağın hiçbir şeyi kapatmadan milimetrik dokun, sürükle ve kaydır. Söz düzenlerken, akor yazarken, ince ayarda.</p></div></div>
+        <div class="oz"><img src="simgeler/karaoke.png" alt=""><div><h3><span data-en="Fine adjust">Hassas ayar</span><span class="etiket yakinda" data-en="soon">yakında</span></h3><p data-en="Long-press a marker in an editor and move it to the millisecond.">Düzenleyicide bir işarete uzun bas, milisaniyesine kadar kaydır.</p></div></div>
+      </div>
+    </div>
+    <div class="gorsel"><div class="ipad yatay" style="width:100%" aria-label="iPad yatay: BC Fare (tasarım, yakında)"><div class="ekran"><img src="ekranlar/bc_fare_ipad_yatay.jpg" alt="BC Fare: imleç bir akor yuvasının üstünde, sağ altta dokunmatik yüzey" style="width:100%;height:100%;object-fit:cover;display:block"></div></div></div>
+  </div>
+</section>
+
+<!-- GERÇEK EKRANLAR -->
+<section class="bolum" id="ekranlar">
+  <p class="ust" data-en="Screens">Ekranlar</p>
+  <h2 data-en="The real app">Uygulamanın kendisi</h2>
+  <p class="giris" data-en="BC Stage 3.0 on iPad, with public-domain songs.">iPad'de BC Stage 3.0, telifi bitmiş şarkılarla.</p>
+  <div class="galeriUst">
+    <div class="seg" role="group" aria-label="Yön"><button type="button" id="yYatay" aria-pressed="true" data-en="Landscape">Yatay</button><button type="button" id="yDikey" aria-pressed="false" data-en="Portrait">Dikey</button></div>
+    <div class="galeriSec" id="galeriSec"></div>
+  </div>
+  <div class="galeriSahne"><div class="ipad yatay gercek" id="galeriIpad"><div class="ekran"><img id="galeriImg" src="ekranlar/3/sarkilar_yatay.jpg" alt=""></div></div></div>
+  <p class="galeriAlt" id="galeriAlt"></p>
+</section>
+
+<!-- BÜTÜN ÖZELLİKLER -->
+<section class="bolum" id="katalog">
+  <p class="ust" data-en="Every feature">Bütün özellikler</p>
+  <h2 data-en="Down to the last detail">En ince ayrıntısına kadar</h2>
+  <p class="giris" data-en="Everything BC Stage does today, area by area. Marks show what is VIP, what needs an iPad or Mac and what needs the internet.">BC Stage'in bugün yaptığı her şey, alan alan. İşaretler neyin VIP olduğunu, neyin iPad ya da Mac istediğini ve neyin internet gerektirdiğini gösteriyor.</p>
+  <div class="isaretler"><span class="etiket vip">VIP</span><span data-en="locked or limited in the free version">ücretsizde kilitli ya da sınırlı</span><span class="etiket ipadmac">iPad · Mac</span><span data-en="tablet and computer only">yalnız tablet ve bilgisayar</span><span class="etiket iosmac">iOS · Mac</span><span data-en="not on Android yet">Android'de henüz yok</span><span class="etiket net" data-en="internet">internet</span><span data-en="needs a connection">bağlantı ister</span></div>
+  <div class="suzgec" role="group" aria-label="Alan süzgeci" id="suzgec"></div>
+  <div class="katalog" id="katalogIzgara"></div>
+  </section>
+
+<!-- FOTOĞRAF BANDI -->
+<div class="fotoBant" id="bant">
+  <canvas id="isikKalabalik" aria-hidden="true"></canvas>
+  <div class="yazi">
+    <h2><span data-en="Every night,">Her gece</span> <em data-en="a different stage.">başka bir sahne.</em></h2>
+    <span class="yer" data-en="your concert photo can go here">buraya senin konser fotoğrafın gelebilir</span>
+  </div>
+</div>
+
+<!-- FİYAT -->
+<section class="bolum" id="fiyat">
+  <p class="ust" data-en="Pricing">Fiyat</p>
+  <h2 data-en="Free to start.">Ücretsiz başla.</h2>
+  <p class="giris"><span class="yer" data-en="VIP model is being renewed: prices and limits are placeholders">VIP modeli yenileniyor: fiyat ve sınırlar yer tutucu</span></p>
+  <div class="fiyat">
+    <div class="paket"><h3 data-en="Free">Ücretsiz</h3><div class="tutar">0</div>
+      <ul><li data-en="30 songs, 2 setlists, 10 arrangements">30 şarkı, 2 liste, 10 aranje</li><li data-en="Chords, metronome, lyric search">Akorlar, metronom, söz arama</li><li data-en="Backup and export">Yedekleme ve dışa aktarma</li></ul></div>
+    <div class="paket vipP"><h3>VIP</h3><div class="tutar"><span class="yer" data-en="price">fiyat</span></div>
+      <ul><li data-en="One payment, no subscription">Tek ödeme, abonelik yok</li><li data-en="Unlimited songs and setlists">Sınırsız şarkı ve liste</li><li data-en="One Man Band, group sync, pedal">One Man Band, grup senkronu, pedal</li><li data-en="Scales, arpeggios, exercises">Gamlar, arpejler, egzersizler</li></ul>
+      <a class="dugme ana" href="#ana" style="margin-top:auto;justify-content:center" data-en="Get BC Stage">BC Stage'i indir</a></div>
+    <div class="paket"><h3 data-en="Try first">Önce dene</h3><div class="tutar" data-en="3 days">3 gün</div>
+      <ul><li data-en="Every VIP feature, free for three days">Bütün VIP özellikleri üç gün ücretsiz</li><li data-en="Starts the first time you open One Man Band">One Man Band'i ilk açtığında başlar</li></ul></div>
+  </div>
+</section>
+
+<!-- YARDIM -->
+<section class="bolum" id="yardim">
+  <p class="ust" data-en="Help">Yardım</p>
+  <h2 data-en="From first song to stage">İlk şarkıdan sahneye</h2>
+  <div class="adimlar">
+    <div class="adim"><div class="no">1</div><h3 data-en="Add a song">Şarkı ekle</h3><p data-en="Type the title, paste the chords, or import a file.">Adını yaz, akorları yapıştır ya da bir dosya al.</p></div>
+    <div class="adim"><div class="no">2</div><h3 data-en="Set it up">Ayarla</h3><p data-en="Key, capo, tempo and sections. BC Stage remembers them.">Ton, kapo, tempo ve bölümler. BC Stage hepsini hatırlar.</p></div>
+    <div class="adim"><div class="no">3</div><h3 data-en="Build the setlist">Listeyi kur</h3><p data-en="Drag the night's songs into order.">Gecenin şarkılarını sürükleyip sırala.</p></div>
+    <div class="adim"><div class="no">4</div><h3 data-en="Go on stage">Sahneye çık</h3><p data-en="Open the stage page. The pedal or a swipe takes you to the next song.">Sahne sayfasını aç. Pedal ya da bir kaydırma seni sonraki şarkıya götürür.</p></div>
+  </div>
+  <div class="yardimIzgara">
+    <div class="konular">
+      <h3 style="margin-bottom:8px" data-en="Guide">Kılavuz</h3>
+      <a href="#yardim"><b data-en="Songs and stage page">Şarkılar ve sahne sayfası</b><span>→</span></a>
+      <a href="#yardim"><b data-en="Setlists and group sync">Listeler ve grup senkronu</b><span>→</span></a>
+      <a href="#yardim"><b data-en="Chord Finder and karaoke">Akor Bulma ve karaoke</b><span>→</span></a>
+      <a href="#yardim"><b data-en="Metronome and looper">Metronom ve looper</b><span>→</span></a>
+      <a href="#yardim"><b data-en="One Man Band and AI Drums">One Man Band ve AI Davul</b><span>→</span></a>
+      <a href="#yardim"><b data-en="Pedals and MIDI">Pedal ve MIDI</b><span>→</span></a>
+      <a href="#yardim"><b data-en="Backup and your account">Yedek ve hesap</b><span>→</span></a>
+    </div>
+    <div class="sss">
+      <h3 style="margin-bottom:8px" data-en="Frequently asked">Sık sorulanlar</h3>
+      <details open><summary data-en="Does BC Stage need the internet on stage?">Sahnede internet gerekiyor mu?</summary><p data-en="No. Songs, the stage page, the metronome, drums, looper and group sync all work offline. Group sync only needs every device on the same Wi-Fi network.">Hayır. Şarkılar, sahne sayfası, metronom, davul, looper ve grup senkronu internetsiz çalışır. Grup senkronu için cihazların aynı Wi-Fi ağında olması yeter.</p></details>
+      <details><summary data-en="Does group sync work without internet?">Grup senkronu internetsiz çalışır mı?</summary><p data-en="Yes. The leader announces itself on the local network and the others connect to it directly. Nothing goes to a server. All devices must be on the same Wi-Fi.">Evet. Lider kendini yerel ağda duyurur, öteki cihazlar ona doğrudan bağlanır. Hiçbir şey sunucuya gitmez. Bütün cihazlar aynı Wi-Fi ağında olmalı.</p></details>
+      <details><summary data-en="Is my audio uploaded anywhere?">Ses dosyalarım bir yere yükleniyor mu?</summary><p data-en="No. Chord finding, vocal separation and tempo finding run on your device.">Hayır. Akor bulma, vokal ayırma ve tempo bulma cihazında çalışır.</p></details>
+      <details><summary data-en="Which pedals work?">Hangi pedallar çalışıyor?</summary><p data-en="Bluetooth page turners that act like a keyboard (AirTurn, PageFlip style) and Bluetooth MIDI pedals. Press Learn and step on the button you want.">Klavye gibi davranan Bluetooth sayfa çeviriciler (AirTurn, PageFlip tarzı) ve Bluetooth MIDI pedallar. "Öğret"e bas, istediğin düğmeye dokun.</p></details>
+      <details><summary data-en="Why are some features iPad and Mac only?">Bazı özellikler neden yalnız iPad ve Mac'te?</summary><p data-en="Chord Finder, AI Drums and Beat Finder run large models on the device; phones don't have the memory for them yet. Vocal separation and lyric alignment work on iPhone, iPad and Mac, not yet on Android.">Akor Bulma, AI Davul ve Metronom Bul cihazda büyük modeller çalıştırıyor, telefonların belleği bunlara henüz yetmiyor. Vokal ayırma ve söz hizalama iPhone, iPad ve Mac'te var, Android'de henüz yok.</p></details>
+      <details><summary data-en="I bought VIP. How do I get it on a new device?">VIP aldım, yeni cihaza nasıl taşırım?</summary><p data-en="Sign in with the same store account and tap Restore purchases in settings.">Aynı mağaza hesabıyla gir ve ayarlarda Satın alımları geri yükle'ye dokun.</p></details>
+    </div>
+  </div>
+  <div class="cevrim">
+    <div><h3 data-en="Works with no internet">İnternetsiz çalışır</h3><ul>
+      <li data-en="Library, stage page, setlists">Kütüphane, sahne sayfası, listeler</li>
+      <li data-en="Metronome, One Man Band, looper">Metronom, One Man Band, looper</li>
+      <li data-en="Group sync, talkback, polls (same Wi-Fi)">Grup senkronu, bas-konuş, anketler (aynı Wi-Fi)</li>
+      <li data-en="Vocal separation, Chord Finder, Beat Finder">Vokal ayırma, Akor Bulma, Metronom Bul</li>
+      <li data-en="Chord dictionary, exercises, video practice">Akor sözlüğü, egzersizler, video çalışma</li>
+      <li data-en="Local backup and restore">Yerel yedek ve geri yükleme</li></ul></div>
+    <div><h3 data-en="Needs internet">İnternet ister</h3><ul>
+      <li data-en="Lyric and chord search">Söz ve akor getirme</li>
+      <li data-en="Cloud sync to your own iCloud, Dropbox or Google Drive">Kendi iCloud, Dropbox ya da Google Drive hesabına bulut eşitleme</li>
+      <li data-en="Online tempo search, artist cards">İnternetten tempo bulma, sanatçı kartı</li>
+      <li data-en="BC account, BC Board, sending tabs to a person">BC hesabı, BC Pano, kişiye tab gönderme</li>
+      <li data-en="First-time model downloads: lyric recognition, alignment, AI Drums (then offline)">İlk kullanımda model indirme: söz tanıma, hizalama, AI Davul (sonra internetsiz)</li></ul></div>
+  </div>
+</section>
+
+<!-- HAKKINDA -->
+<section class="bolum" id="hakkinda">
+  <p class="ust" data-en="About">Hakkında</p>
+  <h2 data-en="Made by a musician">Bir müzisyenin elinden</h2>
+  <p class="giris" data-en="Guitarist · vocalist · guitar teacher">Gitarist · vokalist · gitar eğitmeni</p>
+  <div class="hakkinda">
+    <figure class="portre"><img src="ekranlar/baris.jpg" alt="Barış Çekergil sahnede, altı telli bas gitarla, spot ışığı ve sis"></figure>
+    <div>
+      <div class="bio">
+        <p data-en="Born in Istanbul in 1977, Barış Çekergil is a guitarist, vocalist and guitar teacher. Alongside more than twenty-seven years of professional stage experience, he works across music through studio sessions, teaching and digital content.">1977 İstanbul doğumlu Barış Çekergil, gitarist, vokalist ve gitar eğitmenidir. Yirmi yedi yılı aşkın profesyonel sahne deneyiminin yanı sıra stüdyo çalışmaları, müzik eğitimi ve dijital içerik üretimiyle müziğin farklı alanlarında çalışmalarını sürdürmektedir.</p>
+        <p data-en="Living in Fethiye, he shares guitar lessons and his musical experience on his own YouTube channel. His teaching brings technique, harmony and practice on real songs together, so musicians can carry what they learn into their own playing.">Fethiye'de yaşayan Çekergil, kendi adını taşıyan YouTube kanalında gitar dersleri ve müzikal deneyimlerini paylaşır. Eğitimlerinde tekniği, armoniyi ve şarkı üzerinde uygulamayı bir araya getirerek müzisyenlerin öğrendiklerini kendi çalımlarına taşımasına odaklanır.</p>
+        <p data-en="His interest in music technology led him to build tools for the needs he met on stage. BC Stage, which brings repertoire, lyrics, chords and live performance tools together, was born directly from that stage experience.">Müzik teknolojilerine duyduğu ilgi, onu sahnede karşılaştığı ihtiyaçlara yönelik araçlar geliştirmeye yöneltmiştir. Geliştirdiği BC Stage; repertuvarı, sözleri, akorları ve canlı performans araçlarını bir araya getiren, doğrudan sahne deneyiminden doğmuş bir uygulamadır.</p>
+        <p class="vurgu" data-en="At the heart of his work: less time spent on preparation and technical details, more room for the music.">Çekergil'in çalışmalarının merkezinde, müzisyenin hazırlığa ve teknik ayrıntılara harcadığı zamanı azaltıp müziğe daha fazla alan açmak vardır.</p>
+      </div>
+      <div class="imza">Barış Çekergil</div>
+      <a class="dugme ikinci ytDugme" href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener"><span class="ytIkon" aria-hidden="true">▶</span><span data-en="Guitar lessons on YouTube">YouTube'da gitar dersleri</span></a>
+      <div class="zaman">
+        <div><b>1977</b><span data-en="Born in Istanbul">İstanbul'da doğdu</span></div>
+        <div><b>27+</b><span data-en="years on professional stages">yıl profesyonel sahne</span></div>
+        <div><b>Fethiye</b><span><span data-en="Lives and teaches; guitar lessons on">Yaşıyor ve ders veriyor; gitar dersleri</span> <a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener" style="color:var(--sari)">YouTube</a></span></div>
+        <div><b>2026</b><span data-en="BC Stage on the App Store and Google Play">BC Stage App Store ve Google Play'de</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEŞEKKÜRLER -->
+<section class="bolum" id="tesekkurler">
+  <p class="ust" data-en="Thanks">Teşekkürler</p>
+  <h2 data-en="Built on other people's work">Başkalarının emeğiyle</h2>
+  <p class="giris" data-en="BC Stage stands on open research and free sound libraries. These people made it possible.">BC Stage açık araştırmaların ve özgür ses kütüphanelerinin üstünde duruyor. Bunu mümkün kılan insanlar:</p>
+  <div class="uvr">
+    <div class="buyuk">UVR</div>
+    <p><strong>Ultimate Vocal Remover</strong> · Anjok07, aufr33<br><span style="color:var(--solgun)" data-en="Every vocal BC Stage separates is separated by their models. Thank you.">BC Stage'in ayırdığı her vokal onların modelleriyle ayrılıyor. Teşekkürler.</span></p>
+  </div>
+  <div class="tesekkur">
+    <div><h3 data-en="Voice and lyrics">Ses ve söz</h3><ul>
+      <li><strong>Whisper · whisper.cpp</strong><span data-en="OpenAI, Georgi Gerganov · lyric transcription">OpenAI, Georgi Gerganov · söz tanıma</span></li>
+      <li><strong>wav2vec2</strong><span data-en="mpoyraz, jonatasgrosman, oliverguhr, fairseq · lyric alignment">mpoyraz, jonatasgrosman, oliverguhr, fairseq · söz hizalama</span></li>
+      <li><strong>Spleeter</strong><span data-en="Deezer · drum separation">Deezer · davul ayırma</span></li>
+    </ul></div>
+    <div><h3 data-en="Rhythm and time">Ritim ve zaman</h3><ul>
+      <li><strong>Beat This!</strong><span data-en="CPJKU · tempo and beat finding">CPJKU · tempo ve vuruş bulma</span></li>
+      <li><strong>Onsets and Frames Drums</strong><span data-en="Magenta, E-GMD · drum transcription">Magenta, E-GMD · davul yazma</span></li>
+      <li><strong>Stable Audio Open Small</strong><span data-en="Powered by Stability AI · AI Drums">Powered by Stability AI · AI Davul</span></li>
+      <li><strong>Signalsmith Stretch</strong><span data-en="pitch and speed">ton ve hız</span></li>
+    </ul></div>
+    <div><h3 data-en="Chords and tabs">Akor ve tab</h3><ul>
+      <li><strong>lv-chordia</strong><span data-en="Music X Lab · Jiang, Chen, Li, Xia · chord recognition">Music X Lab · Jiang, Chen, Li, Xia · akor tanıma</span></li>
+      <li><strong>alphaTab</strong><span data-en="CoderLine · guitar tab">CoderLine · gitar tab</span></li>
+      <li><strong>GeneralUser GS</strong><span>S. Christian Collins · <span data-en="tab sound bank">tab ses bankası</span></span></li>
+    </ul></div>
+    <div><h3 data-en="Sounds">Sesler</h3><ul>
+      <li><strong>DRSKit</strong><span>DrumGizmo &amp; DRSDrums · ride</span></li>
+      <li><strong>OLPC · Open Path Music</strong><span data-en="conga, tumba">konga, tumba</span></li>
+      <li><strong>VCSL · Sonivox</strong><span data-en="hand percussion, sound bank">el perküsyonu, ses bankası</span></li>
+    </ul></div>
+    <div><h3>Freesound</h3><ul>
+      <li><strong>kwazi · Geoff-Bremner-Audio</strong><span data-en="shaker loops">shaker loop'ları</span></li>
+      <li><strong>funkologic</strong><span data-en="tambourine loop">tef loop'u</span></li>
+      <li><strong>Nox_Sound · johnnyguitar01</strong><span data-en="room recordings">oda kayıtları</span></li>
+    </ul></div>
+    <div><h3 data-en="And">Ve</h3><ul>
+      <li><strong data-en="The Flutter community">Flutter topluluğu</strong><span data-en="every open package in the app">uygulamadaki bütün açık paketler</span></li>
+      <li><strong data-en="Our testers">Deneyenlerimiz</strong><span data-en="who reported every bug from the stage">her hatayı sahneden bildirenler</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- FORUM -->
+<section class="bolum" id="forum">
+  <p class="ust" data-en="Forum">Forum</p>
+  <h2 data-en="Tell us. We build it.">Sen yaz, biz yapalım.</h2>
+  <p class="giris" data-en="Report a bug, ask for what's missing, share an idea. Sign in with the same BC account you use in the app.">Bir hata bildir, eksik olanı iste, bir fikir paylaş. Uygulamada kullandığın BC hesabınla gir.</p>
+  <div class="forumUst">
+    <button class="dugme ana" type="button" id="forumGir" data-en="Sign in with BC account">BC hesabıyla gir</button>
+    <span class="etiket yakinda" data-en="opening soon">yakında açılıyor</span>
+  </div>
+  <div class="kategoriler">
+    <a class="kat k1" href="#forum"><b data-en="Bugs">Hatalar</b><span data-en="Something broke on stage? Tell us what you tapped, in order.">Sahnede bir şey mi bozuldu? Neye, hangi sırayla dokunduğunu yaz.</span></a>
+    <a class="kat k2" href="#forum"><b data-en="Should be there">Olması gerekenler</b><span data-en="A feature you expected and didn't find.">Beklediğin ama bulamadığın bir özellik.</span></a>
+    <a class="kat k3" href="#forum"><b data-en="Ideas for the future">Gelecek için fikirler</b><span data-en="Bigger dreams. We research them together.">Daha büyük hayaller. Birlikte araştırırız.</span></a>
+  </div>
+  <div class="yolHarita">
+    <div class="sutun"><h3><span class="dz s1"></span><span data-en="In the queue">Sırada</span></h3>
+      <div class="kart2"><b data-en="Tick track in the karaoke mixer">Karaoke mikserinde tık izi</b><small data-en="Should be there">Olması gerekenler</small></div>
+      <div class="kart2"><b data-en="Send song drums to One Man">Şarkıdan davulu One Man'e aktar</b><small data-en="Ideas">Fikirler</small></div></div>
+    <div class="sutun"><h3><span class="dz s2"></span><span data-en="In progress">Yapılıyor</span></h3>
+      <div class="kart2"><b>BC Fare</b><small data-en="Ideas · Designer working on it">Fikirler · Tasarımcı üzerinde</small></div>
+      <div class="kart2"><b data-en="Fine adjust in editors">Düzenleyicide hassas ayar</b><small data-en="Should be there">Olması gerekenler</small></div></div>
+    <div class="sutun"><h3><span class="dz s3"></span><span data-en="Done">Yapıldı</span></h3>
+      <div class="kart2"><b data-en="Charts follow repeats and D.S./Coda">Şema röprizleri ve D.S./Coda'yı takip ediyor</b><small>2.1</small></div>
+      <div class="kart2"><b data-en="Beat Finder tab">Metronom Bul sekmesi</b><small>2.1</small></div></div>
+  </div>
+    <div class="akis">
+    <div><b>1</b><span data-en="You write">Sen yazarsın</span></div>
+    <div><b>2</b><span data-en="Our web assistant reads and sorts it">Web asistanımız okur, sınıflar</span></div>
+    <div><b>3</b><span data-en="Bugs go to the designer; ideas get researched">Hata tasarımcıya gider, fikir araştırılır</span></div>
+    <div><b>4</b><span data-en="The card moves to Done and you get a note">Kart "Yapıldı"ya geçer, sana haber gelir</span></div>
+  </div>
+  <p class="kural" data-en="Forum rules: be kind, one topic per post, and no song lyrics (copyright).">Forum kuralları: nazik ol, her konuya bir başlık, şarkı sözü paylaşma (telif).</p>
+</section>
+
+<!-- DESTEK -->
+<section class="bolum" id="destek">
+  <div class="destek">
+    <div>
+      <p class="ust" data-en="Support BC Stage">BC Stage'e destek ol</p>
+      <h2 data-en="Let's grow it together">Birlikte büyütelim</h2>
+      <div class="destekMetin">
+        <p data-en="BC Stage is made by one musician, between gigs. No ads. We don't sell your data. We don't even have a server for your songs: they live on your device and in your own cloud.">BC Stage'i bir müzisyen, sahne aralarında yapıyor. Reklam yok. Verini satmıyoruz. Şarkıların için bir sunucumuz bile yok: hepsi senin cihazında ve senin bulutunda duruyor.</p>
+        <p data-en="We walked the first stretch on our own means. Keeping it this way has costs: devices to test on, store fees, the hours that go into every feature.">İlk yolu kendi imkânlarımızla yürüdük. Böyle kalmasının bir bedeli var: test edilecek cihazlar, mağaza ücretleri, her özelliğe giden saatler.</p>
+        <p data-en="If BC Stage helps you on stage, you can walk the next stretch with us. Every bit of support brings the next feature closer.">BC Stage sahnede işine yarıyorsa, sonraki yolu bizimle yürüyebilirsin. Her destek bir sonraki özelliği yaklaştırır.</p>
+      </div>
+    </div>
+    <div class="destekKartlar">
+      <a class="dk ana2" href="#destek"><b data-en="Support on Patreon">Patreon'dan destek ol</b><span data-en="Monthly support, your name on the supporters wall">Aylık destek, adın destekçiler duvarında</span></a>
+      <p class="trNot" data-en="From Türkiye: Patreon takes card payments in dollars; your bank may add a foreign-currency or international transaction fee.">Türkiye'den destek olacaklar için: Patreon kartla dolar üzerinden ödeme alır, bankan döviz ya da yurt dışı işlem ücreti kesebilir.</p>
+      <div class="dk bos2"><b data-en="Other ways to help">Başka yollar</b><span data-en="Rate us in the store · show a friend · report a bug in the forum">Mağazada puan ver · bir arkadaşına göster · forumda hata bildir</span></div>
+      <span class="yer" data-en="Patreon link pending">Patreon bağlantısı bekleniyor</span>
+    </div>
+  </div>
+</section>
+
+<!-- İLETİŞİM -->
+<section class="bolum" id="iletisim">
+  <p class="ust" data-en="Contact">İletişim</p>
+  <h2 data-en="Write to us">Bize yaz</h2>
+  <div class="iletisim">
+    <div class="posta">
+      <span class="ust" style="margin:0" data-en="Email">E-posta</span>
+      <div class="adres" id="adres">destek@bcstage.app</div>
+      <span class="yer" style="align-self:flex-start" data-en="address not confirmed">adres onaylanmadı</span>
+      <button class="dugme ikinci" id="kopyala" type="button" style="align-self:flex-start" data-en="Copy address">Adresi kopyala</button>
+    </div>
+    <div class="posta">
+      <h3 data-en="To get an answer faster">Daha hızlı yanıt için</h3>
+      <ul>
+        <li data-en="Your device and BC Stage version (Settings → About)">Cihazın ve BC Stage sürümü (Ayarlar → Hakkında)</li>
+        <li data-en="What you tapped, in order">Neye, hangi sırayla dokunduğun</li>
+        <li data-en="A screenshot or a short screen recording">Bir ekran görüntüsü ya da kısa ekran kaydı</li>
+      </ul>
+      <p style="color:var(--sonuk);margin:0;font-size:14px" data-en="We answer in Turkish and English.">Türkçe ve İngilizce yanıtlıyoruz.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="alt">
+  <div><a class="logo" href="#ana" style="padding:0">BC <span>STAGE</span></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
+  <div><h4 data-en="Explore">Keşfet</h4><a href="#ozellikler" data-en="Features">Özellikler</a><a href="#fiyat" data-en="Pricing">Fiyat</a><a href="#kimin" data-en="Who it's for">Kimin için</a></div>
+  <div><h4 data-en="Learn">Öğren</h4><a href="#yardim" data-en="Guide">Kılavuz</a><a href="#yardim" data-en="FAQ">Sık sorulanlar</a><a href="#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
+  <div><h4 data-en="BC Labs">BC Labs</h4><a href="#hakkinda" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="#forum" data-en="Forum">Forum</a><a href="#destek" data-en="Support">Destek ol</a><a href="#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
+</footer>
+<div style="height:30px"></div>
+
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+    // --- çizimler: dalga ve ritim ızgarası (tohumlu, her açılışta aynı)
+  let t=7; const r=()=>((t=(t*16807)%2147483647)/2147483647);
+  const d=document.getElementById('dalga');
+  if(d){for(let i=0;i<64;i++){const e=document.createElement('i');const h=18+Math.abs(Math.sin(i*.37))*55+r()*25;e.style.height=Math.min(100,h)+'%';if(i>=26&&i<34)e.className='c';d.appendChild(e);}}
+  const rt=document.getElementById('ritim');
+  if(rt){const satirlar=[['HH','v.v.v.v.v.v.v.v.'],['SN','....v..y.y..v...'],['KK','v..y..v...v..y..'],['BAS','v..y..v...v..y..']];
+    satirlar.forEach(([ad,k])=>{const b=document.createElement('b');b.textContent=ad;rt.appendChild(b);for(const c of k){const i=document.createElement('i');if(c==='v')i.className='v';if(c==='y')i.className='y';rt.appendChild(i);}});}
+
+
+  // --- sahne ışıkları (kahraman) ve kalabalık bandı
+  const azHareket=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tuval(c){const dpr=Math.min(2,devicePixelRatio||1);const w=c.clientWidth,h=c.clientHeight;if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr)}const x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);return[x,w,h]}
+  function huzme(x,ox,oy,aci,boy,gen,renk,alfa){x.save();x.translate(ox,oy);x.rotate(aci);const g=x.createLinearGradient(0,0,0,boy);g.addColorStop(0,'rgba('+renk+','+alfa+')');g.addColorStop(.55,'rgba('+renk+','+alfa*.35+')');g.addColorStop(1,'rgba('+renk+',0)');x.fillStyle=g;x.beginPath();x.moveTo(-6,0);x.lineTo(6,0);x.lineTo(gen,boy);x.lineTo(-gen,boy);x.closePath();x.fill();x.restore()}
+  let tz=9;const rr=()=>((tz=(tz*16807)%2147483647)/2147483647);
+  const zerre=[...Array(70)].map(()=>({x:rr(),y:rr(),r:.6+rr()*1.8,v:.2+rr()*.6,f:rr()*6}));
+  const kalabalik=[...Array(46)].map((_,i)=>({x:i/45+(rr()-.5)*.02,b:.55+rr()*.5,el:rr()<.38,ea:(rr()-.5)*.5,f:rr()*6}));
+  function kahraman(z){const c=document.getElementById('isikKahraman');if(!c||!c.clientWidth)return;const[x,w,h]=tuval(c);
+    x.clearRect(0,0,w,h);
+    x.globalCompositeOperation='lighter';
+    const L=[[.18,'255,201,60',.20,.55],[.42,'255,154,46',.13,-.35],[.66,'255,201,60',.16,.25],[.9,'255,220,150',.10,-.5]];
+    L.forEach(([px,renk,a,faz],i)=>huzme(x,w*px,-10,Math.sin(z*.00025+faz*3)*.32+(px-.5)*.5,h*1.25,w*.16,renk,a));
+    const zemin=x.createRadialGradient(w*.62,h*1.02,0,w*.62,h*1.02,w*.55);zemin.addColorStop(0,'rgba(255,190,70,.16)');zemin.addColorStop(1,'rgba(255,190,70,0)');x.fillStyle=zemin;x.fillRect(0,0,w,h);
+    zerre.forEach(p=>{const yy=((p.y-z*.000012*p.v)%1+1)%1;const xx=p.x+Math.sin(z*.0004+p.f)*.01;x.fillStyle='rgba(255,215,130,'+(.12+.25*Math.abs(Math.sin(z*.001+p.f)))+')';x.beginPath();x.arc(xx*w,yy*h,p.r,0,7);x.fill()});
+    x.globalCompositeOperation='source-over';
+    const ust=x.createLinearGradient(0,0,0,h);ust.addColorStop(0,'rgba(10,10,13,0)');ust.addColorStop(.85,'rgba(10,10,13,.2)');ust.addColorStop(1,'rgba(10,10,13,1)');x.fillStyle=ust;x.fillRect(0,0,w,h);
+    const sol=x.createLinearGradient(0,0,w*.85,0);sol.addColorStop(0,'rgba(10,10,13,.92)');sol.addColorStop(.45,'rgba(10,10,13,.6)');sol.addColorStop(1,'rgba(10,10,13,.1)');x.fillStyle=sol;x.fillRect(0,0,w,h)}
+  function bant(z){const c=document.getElementById('isikKalabalik');if(!c||!c.clientWidth)return;const[x,w,h]=tuval(c);
+    const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'#1a1206');g.addColorStop(.6,'#2a1a05');g.addColorStop(1,'#0A0A0D');x.fillStyle=g;x.fillRect(0,0,w,h);
+    x.globalCompositeOperation='lighter';
+    const ark=x.createRadialGradient(w*.5,h*.25,0,w*.5,h*.25,w*.5);ark.addColorStop(0,'rgba(255,201,60,.55)');ark.addColorStop(.4,'rgba(255,154,46,.18)');ark.addColorStop(1,'rgba(255,154,46,0)');x.fillStyle=ark;x.fillRect(0,0,w,h);
+    for(let i=0;i<7;i++){const px=(i+.5)/7;huzme(x,w*px,-10,Math.sin(z*.0003+i*1.7)*.4+(px-.5)*.8,h*1.3,w*.07,i%2?'255,154,46':'255,201,60',.16)}
+    x.globalCompositeOperation='source-over';
+    x.fillStyle='#050506';
+    kalabalik.forEach(k=>{const bx=k.x*w,by=h*(1-.24*k.b),rb=Math.max(10,w*.018)*(.8+k.b*.4);const sal=Math.sin(z*.002+k.f)*rb*.15;
+      x.beginPath();x.arc(bx,by+sal*.3,rb,0,7);x.fill();
+      x.beginPath();x.ellipse(bx,h,rb*2.2,h-by-rb*.6,0,Math.PI,0);x.lineTo(bx+rb*2.2,h);x.fill();
+      if(k.el){x.save();x.translate(bx+rb*.9,by+rb*.6);x.rotate(-.25+k.ea+Math.sin(z*.003+k.f)*.08);x.fillRect(-rb*.22,-rb*3.6,rb*.44,rb*3.6);x.beginPath();x.arc(0,-rb*3.7,rb*.38,0,7);x.fill();x.restore()}});
+    const k=x.createLinearGradient(0,0,0,h);k.addColorStop(0,'rgba(10,10,13,.5)');k.addColorStop(.35,'rgba(10,10,13,0)');k.addColorStop(.75,'rgba(10,10,13,0)');k.addColorStop(1,'rgba(10,10,13,.85)');x.fillStyle=k;x.fillRect(0,0,w,h)}
+
+  // --- vitrinler: karaoke, akor bulma, video, metronom bul (uydurma örnek söz)
+  const SOZ=[['Son','tren','geçti,','peron','boş','kaldı'],['Işıklar','sönerken','adını','andım'],['Bir','bilet','aldım,','dönüşü','yok'],['Gece','treni','beni','bekleme']];
+  const sozEl=document.getElementById('sozler');
+  if(sozEl){SOZ.forEach(s=>{const d=document.createElement('div');d.className='sat';s.forEach(w=>{const k=document.createElement('span');k.className='k';k.textContent=w;d.appendChild(k)});sozEl.appendChild(d)})}
+  const KAN=[['VOK',.0,1],['DAVUL',.0,1],['DİĞER',.7,0],['BİZİM',.8,0],['TIK',.4,0]];
+  const mk=document.getElementById('mikser');
+  if(mk){KAN.forEach(([ad,f,kapali])=>{const k=document.createElement('div');k.className='kanal'+(kapali?' kapali':'');k.innerHTML='<div class="ray" style="--f:'+(f*100)+'%"><i></i><b></b></div><small>'+ad+'</small>';mk.appendChild(k)})}
+  const akorS=[...document.querySelectorAll('#akorSerit span')];
+  const mbD=document.getElementById('mbDalga');
+  if(mbD){for(let i=0;i<72;i++){const e=document.createElement('i');e.style.height=(20+Math.abs(Math.sin(i*.9))*50*(i%6===0?1.3:.8)+rr()*15)+'%';mbD.appendChild(e)}
+    for(let i=0;i<16;i++){const g=document.createElement('div');g.className='izg'+(i%4===0?' bir':'');if(i%4===0)g.dataset.o=String(i/4+1);g.style.left=(6+i*5.9)+'%';mbD.appendChild(g)}}
+  const vidT=document.getElementById('vidTuval');
+  function videoCiz(z){if(!vidT||!vidT.clientWidth)return;const[x,w,h]=tuval(vidT);
+    const g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,'#1b140a');g.addColorStop(1,'#060608');x.fillStyle=g;x.fillRect(0,0,w,h);
+    const s=x.createRadialGradient(w*.7,h*.1,0,w*.7,h*.1,w*.7);s.addColorStop(0,'rgba(255,190,80,.35)');s.addColorStop(1,'rgba(255,190,80,0)');x.fillStyle=s;x.fillRect(0,0,w,h);
+    x.save();x.translate(w*.08,h*.62);x.rotate(-.18);const L=w*.95,K=h*.2;
+    x.fillStyle='#3b2715';x.fillRect(0,-K/2,L,K);
+    x.strokeStyle='#bfb59a';for(let i=1;i<14;i++){const fx=L*(1-Math.pow(.92,i))*1.9;if(fx>L)break;x.lineWidth=2;x.beginPath();x.moveTo(fx,-K/2);x.lineTo(fx,K/2);x.stroke()}
+    for(let t=0;t<6;t++){const ty=-K/2+K*(t+.5)/6;const tit=(t===2)?Math.sin(z*.05)*1.2:0;x.strokeStyle='rgba(230,225,210,'+(.5+t*.06)+')';x.lineWidth=.8+t*.25;x.beginPath();x.moveTo(0,ty+tit);x.lineTo(L,ty);x.stroke()}
+    const pz=(Math.sin(z*.0016)+1)/2;const fx=L*(.22+pz*.12);
+    x.fillStyle='rgba(255,201,60,.95)';[[fx,1],[fx+L*.07,3],[fx+L*.035,2]].forEach(([px,t])=>{x.beginPath();x.arc(px,-K/2+K*(t+.5)/6,K*.07,0,7);x.fill()});
+    x.restore();
+    x.fillStyle='rgba(0,0,0,.35)';x.fillRect(0,0,w,h*.12);x.fillStyle='rgba(244,242,236,.85)';x.font='600 '+Math.max(10,w*.028)+'px Geist, system-ui';x.fillText('0:47 / 3:12',w*.03,h*.08)}
+  function vitrin(z){
+    const T=z/1000;
+    if(sozEl){const sat=[...sozEl.children];const tum=SOZ.flat().length;const hiz=2.6;const n=(T*hiz)%(tum+3);let say=0;
+      sat.forEach((d,si)=>{const ks=[...d.children];const bas=say,son=say+ks.length;d.className='sat'+(n>=son?' gecti':(n>=bas?' simdi':''));
+        ks.forEach((k,ki)=>{const idx=bas+ki;if(n>=idx+1){k.className='k dolu';k.style.removeProperty('--p')}else if(n>=idx){k.className='k dolar';k.style.setProperty('--p',((n-idx)*100).toFixed(0)+'%')}else{k.className='k';k.style.removeProperty('--p')}});say=son})}
+    if(mk){[...mk.children].forEach((k,i)=>{const v=k.classList.contains('kapali')?.12:(.35+.45*Math.abs(Math.sin(T*(3+i*1.3)+i))*(.7+.3*Math.sin(T*9+i)));k.querySelector('i').style.height=(v*100).toFixed(0)+'%'})}
+    if(akorS.length){const ai=Math.floor(T/1.25)%akorS.length;akorS.forEach((e,i)=>e.classList.toggle('on',i===ai))}
+    const bpm=96,vur=60/bpm,ilk=Math.floor(T/vur);
+    document.querySelectorAll('#mbVurus i').forEach((e,i)=>e.classList.toggle('on',i===ilk%4&&(T%vur)<vur*.45));
+    const im=document.getElementById('mbImlec');if(im){const yuz=(T/(vur*16))%1;im.style.setProperty('--x',(6+yuz*94.4).toFixed(2)+'%')}
+    const vi=document.getElementById('oynatImlec');if(vi){vi.style.setProperty('--x',(30+((T*0.06)%1)*18).toFixed(2)+'%')}
+    videoCiz(z)}
+
+  // --- kahraman arka planı: ekranlar sırayla geçer
+  const katlar=[...document.querySelectorAll('#duzlem .kat')];
+  if(katlar.length&&!azHareket){let ki=0;const par=document.getElementById('parilti');
+    setInterval(()=>{const eski=katlar[ki];eski.classList.remove('on');eski.classList.add('cik');setTimeout(()=>eski.classList.remove('cik'),2000);
+      ki=(ki+1)%katlar.length;katlar[ki].classList.add('on');if(par){par.classList.remove('git');void par.offsetWidth;par.classList.add('git')}},4600)}
+  function ciz(z){kahraman(z);bant(z);vitrin(z);if(!azHareket)requestAnimationFrame(ciz)}
+  requestAnimationFrame(z=>ciz(azHareket?9000:z));
+  addEventListener('resize',()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}});
+  new ResizeObserver(()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}}).observe(document.getElementById('site'));
+
+
+  // --- katalog: envanterden (2026-10-18), geliştirmedekiler yok. v=VIP i=iPad·Mac o=iOS·Mac n=internet
+  const KAT=[
+   ['sahne','Şarkılar ve sahne sayfası','repertoire',[
+    'Kategori, etiket ve renkle kütüphane; ada, sanatçıya ya da söze göre arama','Akıllı klasörler: Favoriler, En çok çalınan, Unutulanlar',
+    'Söz+akor ya da yalnız söz; iki parmakla yakınlaştır, yana kaydırıp komşu şarkıya geç, otomatik kaydırma','Sözü ortala, ekrana sığdır, ekran kapanmasın, sahnede akor şemaları',
+    'Üstte bölüm bandı ("Nakarat 2/3"), dokununca o bölüme gider; bölüm sırası ve ×N tekrarları','Transpoze, ton seçimi, kapo 0–11; ton ve BPM rozetleri',
+    'Akor kipi: sözün üstüne kelime kelime akor yerleştir, hizala, ortala','Şarkı başına resim, yazı tipi, punto ve renk; sahne notu kart olarak',
+    'PDF olarak dışa aktar, PDF\'ten içe al','Sanatçı kartı: resim, biyografi, kütüphanendeki şarkı sayısı|n',
+    'İçe alma: ChordPro, düz metin, SongBook, OnSong arşivi, Dropbox klasörü','Hızlı şarkı: ad ya da bir dize yaz, sözüyle gelsin|n','Ücretsiz sürümde 30 şarkı|v']],
+   ['sahne','Listeler','playlist',[
+    'Renkli listeler, elle sıralama, set başlıklarıyla bölme','Toplam süre; şarkı başına süre',
+    'Set raporu: art arda aynı ton, tempo sıçraması, tekdüze tempo, eksik bilgiler','Listeye ritim atama',
+    'Eksik sözleri toplu getirme|n','Liste, .txt ya da paket olarak paylaş; gruba gönder','Ücretsiz sürümde 2 liste|v']],
+   ['grup','Grup senkronu','arrangements',[
+    'Lider açar; şarkı, liste, bölüm ve kaydırma konumu bütün cihazlarda','Takipçinin kütüphanesinde şarkının olması gerekmez, içeriğiyle gider',
+    'İnternet gerekmez, aynı Wi-Fi yeter; sunucu yok','Bas-konuş: herkese, lidere ya da tek kişiye',
+    '"Gruba sor" anketleri, şarkıya yıldız','Liderden not, sahne notları; şarkı, liste ve tab gönderme','Lider olmak da katılmak da VIP, 3 gün deneme|v']],
+   ['sahne','Pedal ve MIDI','pick',[
+    'Bluetooth sayfa çevirici ve MIDI pedal; "Öğret" ile eşle','Sonraki/önceki şarkı, bölüm, ölçü; kaydırma; bas-konuş',
+    'Ritim çal/dur, fill, final, A/B/C, crash; looper kaydet ve geri al','MIDI çıkışı: şarkı açılınca klavyelerde ses değişir (Program Change, iki klavye)',
+    'MIDI cihazları ve MIDI kaydı penceresi','Pedal desteği VIP, 3 gün deneme|v']],
+   ['calisma','Akorlar','acoustic-guitar',[
+    'Gitar, ukulele ve piyano akor sözlüğü; dokununca çalar','Her akorun öteki basış yerleri; kendi akor şeklini çiz',
+    'Piyanoda 1–3 oktav, temel ve çevrimler','Şarkı sayfasında diyagram şeridi',
+    'Web\'den akor getir, sözüne yerleştir; dokuz dilde akor siteleri|n']],
+   ['calisma','Gamlar, arpejler, egzersizler','acoustic-guitar',[
+    'Sapta gam, dereceler ya da nota adları, gamın akorları ve ödünç akorlar','Arpejler sapın her yerinde, drop çevrimler',
+    'Parmak egzersizi aileleri, tempo artışlı çalışma programı, tık alt bölümleri','Akor dizisi yaz, uyan gamları bul; piyano eşliği',
+    'Şarkının akorlarını tek dokunuşla egzersize taşı','Hepsi VIP, 3 gün deneme|v']],
+   ['calisma','Tablar ve BC Tab','pick',[
+    'Guitar Pro (.gp3–.gp7, .gpx) ve MusicXML aç','Kanal kanal çalma, çalgı seçimi, sustur/solo, mikser',
+    'Ölçü döngüsü, %50–100 hız, hız antrenörü, geri sayım','Kayan şerit ya da nota defteri görünümü',
+    'Tab yaz: teknikler, üçlemeler, röpriz, D.S. al Coda, bölüm renkleri','Kayıpsız kaydet (.bctab), dosya olarak paylaş',
+    'BC ID ile kişiye gönder, 7 gün bekler|n','Ücretsiz sürümde 10 tab|v']],
+   ['calisma','Akor şemaları (aranjeler)','arrangements',[
+    'iReal tarzı şema: bölümler, ölçüler, vuruşlar; söz yok','4/4\'ten 9/8\'e usuller, parça ortasında usul değişimi',
+    'Akor klavyesi: bas notası, es, ritim çizgisi, %; klavye kısayolları','Röpriz, 1./2. son, D.C., D.S., Segno, Coda, Fine işaretleri',
+    'Metronomla yürüme: röprizleri, 1./2. sonları ve D.S./Coda\'yı çalınış sırasıyla takip eder, sonda başa döner; piyano eşliği','Karaokeye bağlı şemada kayıtla birlikte yürüme ve döngü',
+    'Sesten otomatik şema: ton, tempo, usul, bölüm, akor|o','Ücretsiz sürümde 10 şema|v']],
+   ['calisma','Karaoke','karaoke',[
+    'Ses dosyasını şarkıya bağla ya da .bckaraoke paketi aç','Cihazda vokal ayırma, model uygulamanın içinde|o',
+    'Sözleri kelime kelime zamana oturtma, dokuz dil|o','Sözleri sesten çıkar (Whisper, ilk kullanımda iner)|n',
+    'Kelime kelime dolan söz, akorlar kelimenin üstünde, satıra dokunup atla','Düzenleyici: kelime blokları, vurarak işaretle, hız, ton, gecikme',
+    'Şarkı çözümleme: ton, tempo, usul, akor, vokal aralığı, bölümler|o','İz mikseri: vokal, asıl davul, diğer, bizim davul; hazır ayarlar|i']],
+   ['calisma','Akor Bulma','chord_finder',[
+    'Ses dosyasından söz ve akor: ayır, yaz, zamana oturt, akorları bul','Hepsi cihazda; söz dili otomatik, Türkçe ya da İngilizce',
+    'Ton, akor cetveli, kapo planları ("Kapo 2 · N barre")','Şarkılar\'a ve Karaoke\'ye tek pencereden kaydet',
+    'Yalnız iPad ve Mac|i']],
+   ['calisma','Video çalışma','video',[
+    'Galeriden video, video kütüphanesi ve listeler','0,25×–1,0× yavaşlatma, ses kalınlaşmaz',
+    'Dalga şeridinde A–B seçimi, ×120\'ye kadar yakınlaştırma','Döngü kilidi, hız merdiveni (her turda hızlanır)',
+    'Döngüyü adıyla kaydet','iPad, Mac ve yatay telefonda']],
+   ['calisma','Metronom Bul','metronome',[
+    'Şarkıyı seç, metronom şarkının vuruşuna oturur; şarkı gerilmez','Klikli kayıt ya da canlı kayıt; canlıda tempoyu izler',
+    'İnce ayar: tempo katı, "1"in yeri, faz; "Vuruşa vur" ile düzelt','Davulunu yaz: 4–6 tarz adayı, kendi kitinle çalar, bitiş seçenekleri',
+    'Yalnız iPad ve Mac|i']],
+   ['ritim','Metronom','metronome',[
+    'BPM, tap tempo, ölçüde 2–7 vuruş, vurgulu ilk vuruş','Klasik, tahta blok, bip, klave sesleri',
+    'Sessiz kip (yalnız ışık), yalnız kulaklıkla, titreşim','İnternetten tempo bulma|n','Ses gecikmesini ölçüp tıkı düzeltme']],
+   ['ritim','AI Davul','ai_drums',[
+    'Cihazda yapay zekâyla kick, snare, hi-hat, tom; dört aday, dinle, kaydet','Akustik, elektronik ya da fırça kit; ses başına yeniden üret',
+    'Tom seti, açık hi-hat, cross-stick; konga, bongo, tef, shaker','Oda: kuru, küçük oda, stüdyo, salon',
+    'Kit mikseri; kitler One Man ve "Davulunu yaz"da','17 tarzda 6.401 kalıp, bölüme göre ve Şarkı kipinde','Model ilk kullanımda iner|n','Yalnız iPad ve Mac|i']],
+   ['ritim','One Man Mode','one_man_band',[
+    'Beş kanallı onaltılık ızgara, vuruş şiddeti, kopyala/yapıştır','Canlı: ölçü başında gir, fill, final, A/B/C, crash',
+    '2/4\'ten 13/8\'e ölçüler','MIDI groove al (GM, EZdrummer, Superior, Addictive)',
+    'Şarkı sayfasında ve looper\'da ritim şeridi','VIP, 3 gün deneme|v']],
+   ['ritim','Looper','looper',[
+    'Metronoma kilitli döngüler, birden çok klip, overdub','Ölçülü ya da serbest uzunluk; /2 ve ×2',
+    'Giriş sayımı, 1. vuruşa ve ızgaraya oturtma','Geriye dönük yakalama: çaldığını sonradan al',
+    'Mikser, quantize (1/4–1/16, swing)','Döngü düzenleyici: atakları sürükle, tempoyu döngüden bul','Altta davul çubuğu; pedalla kayıt']],
+   ['ayar','Yedek, bulut, hesap','repertoire',[
+    'Otomatik ve elle yerel yedek, geri yükleme','Kendi iCloud, Dropbox ya da Google Drive hesabına eşitleme; bizim sunucumuza gitmez|n',
+    'BC hesabı isteğe bağlı; Apple ile ya da e-posta koduyla giriş|n','Gitar + vokal, Şarkıcı, Tek kişilik grup kipleri',
+    'Söz, başlık, akor ve arayüz için ayrı yazı tipi ve boyut']],
+   ['ayar','Temalar ve diller','playlist',[
+    '20 hazır tema, 10 koyu ve 10 açık','Kendi temanı kur: zemin, vurgu, kutular, canlı önizleme',
+    '9 arayüz dili: English, Türkçe, Deutsch, Français, Español, Português, Русский, 日本語, 中文','iPad ve Mac\'te kenar çubuğu']],
+   ['grup','BC Pano ve topluluk','singer_vocal',[
+    'Herkese açık profil, @kullanıcı adı, gizlilik anahtarları','Konserler: mekân, bilet, yol tarifi, hatırlatma',
+    'Ekipmanım: satılık işareti, teklif','Müzisyen arama: enstrüman, tür, il, ilçe, müsait',
+    'Repertuvarı profilde yayınla (söz yayınlanmaz)','BC hesabı ve internet gerekir|n']]
+  ];
+  const ALAN=[['hepsi','Hepsi'],['sahne','Sahne'],['calisma','Çalışma'],['ritim','Ritim'],['grup','Grup ve topluluk'],['ayar','Ayarlar']];
+  const ET={v:'<span class="etiket vip">VIP</span>',i:'<span class="etiket ipadmac">iPad · Mac</span>',o:'<span class="etiket iosmac">iOS · Mac</span>',n:'<span class="etiket net">internet</span>'};
+  const kiz=document.getElementById('katalogIzgara'),sz=document.getElementById('suzgec');
+  const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function katalogCiz(f){kiz.innerHTML=KAT.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
+    sz.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===f))}
+  if(kiz){ALAN.forEach(([f,ad])=>{const b=document.createElement('button');b.type='button';b.dataset.f=f;b.textContent=ad;b.onclick=()=>katalogCiz(f);sz.appendChild(b)});katalogCiz('hepsi')}
+
+  // --- dil: data-en'li öğelerin Türkçesi saklanıp değiştiriliyor
+  const ogeler=[...document.querySelectorAll('[data-en]')];
+  ogeler.forEach(e=>e.dataset.tr=e.textContent);
+    let dil='tr';
+  function gorselDil(d){document.querySelectorAll('img[src*="ekranlar/3/"]').forEach(im=>{const tr=im.getAttribute('src').replace('ekranlar/3/en/','ekranlar/3/');const yeni=d==='en'?tr.replace('ekranlar/3/','ekranlar/3/en/'):tr;if(yeni===im.getAttribute('src'))return;im.onerror=()=>{im.onerror=null;im.src=tr};im.src=yeni})}
+  function dilKur(d){dil=d;gorselDil(d);ogeler.forEach(e=>e.textContent=e.dataset[d]);document.documentElement.lang=d;document.getElementById('dilDugme').textContent=d==='tr'?'TR · EN':'EN · TR';try{localStorage.setItem('bcsite_dil',d)}catch(e){}}
+    document.getElementById('dilDugme').onclick=()=>{dilKur(dil==='tr'?'en':'tr');window._galeri&&window._galeri()};
+  let ilkDil=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilkDil=k}catch(e){}
+  if(location.hash==='#en')ilkDil='en';if(location.hash==='#tr')ilkDil='tr';
+  if(ilkDil==='en')dilKur('en');
+
+
+  // --- galeri
+  const GAL=[['sarkilar','Şarkılar','Songs','Liste, kapaklar ve şarkı ayrıntısı: ton, tempo, kapo, akorlar.','List, covers and song details: key, tempo, capo, chords.'],
+   ['sahne','Sahne sayfası','Stage page','Akorlar sözün üstünde, bölümler üstte.','Chords above the words, sections on top.'],
+   ['setlist','Liste','Setlist','Gecenin sırası, ton ve tempo her satırda.','The night\'s order, key and tempo on every row.'],
+   ['akorlar','Akorlar','Chords','Akor sözlüğü, gamlar, arpejler, egzersizler.','Chord dictionary, scales, arpeggios, exercises.'],
+   ['tablar','Tablar','Tabs','Guitar Pro tabları, kanal kanal çalma.','Guitar Pro tabs, channel by channel.'],
+   ['duzenlemeler','Akor şemaları','Charts','iReal tarzı şema, metronomla yürür.','iReal-style chart that walks with the metronome.'],
+   ['karaoke','Karaoke','Karaoke','Karaoke listesi; yarım kalanlar işaretli.','Karaoke list; unfinished ones marked.'],
+   ['looper','Looper','Looper','Metronoma kilitli döngüler.','Loops locked to the metronome.'],
+   ['ai_davul','AI Davul','AI Drums','Cihazda davul sesi ve kit üretimi.','Drum sounds and kits made on the device.'],
+   ['one_man','One Man Mode','One Man Mode','Beş kanallı davul ızgarası, fill, final, A/B/C.','Five-lane drum grid, fill, finale, A/B/C.'],
+   ['pano','BC Pano','BC Board','Konserler, profil ve müzisyen topluluğu.','Gigs, profile and the musician community.']];
+  let gSec='sarkilar',gYon='yatay';
+  const gs=document.getElementById('galeriSec'),gi=document.getElementById('galeriImg'),gp=document.getElementById('galeriIpad'),ga=document.getElementById('galeriAlt');
+  function galeri(){const g=GAL.find(x=>x[0]===gSec);const trYol='ekranlar/3/'+gSec+'_'+gYon+'.jpg';gi.onerror=()=>{gi.onerror=null;gi.src=trYol};gi.src=dil==='en'?trYol.replace('ekranlar/3/','ekranlar/3/en/'):trYol;gi.alt=g[1];gp.className='ipad '+gYon+' gercek';ga.textContent=dil==='en'?g[4]:g[3];
+    gs.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.g===gSec);b.textContent=dil==='en'?GAL.find(x=>x[0]===b.dataset.g)[2]:GAL.find(x=>x[0]===b.dataset.g)[1]});
+    document.getElementById('yYatay').setAttribute('aria-pressed',gYon==='yatay');document.getElementById('yDikey').setAttribute('aria-pressed',gYon==='dikey')}
+  if(gs){GAL.forEach(g=>{const b=document.createElement('button');b.type='button';b.dataset.g=g[0];b.onclick=()=>{gSec=g[0];galeri()};gs.appendChild(b)});
+    document.getElementById('yYatay').onclick=()=>{gYon='yatay';galeri()};document.getElementById('yDikey').onclick=()=>{gYon='dikey';galeri()};}
+  if(gs)galeri();
+  window._galeri=galeri;
+  // --- menü (telefon)
+  const hb=document.getElementById('hamburger'),nav=document.getElementById('nav');
+  hb.onclick=()=>{const a=nav.classList.toggle('acik');hb.setAttribute('aria-expanded',a)};
+  nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('acik');hb.setAttribute('aria-expanded',false)}});
+
+  // --- kopyala
+  const kb=document.getElementById('kopyala');
+  kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
+    const bitti=m=>{kb.textContent=m;setTimeout(()=>kb.textContent=eski,1600)};
+    if(navigator.clipboard)navigator.clipboard.writeText(a).then(()=>bitti(dil==='tr'?'Kopyalandı':'Copied'),()=>{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')});
+    else{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')}};
+
+})();
+</script>
+
+</body>
+</html>
