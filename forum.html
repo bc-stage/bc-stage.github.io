@@ -117,9 +117,9 @@ footer a{color:var(--solgun);text-decoration:none}
   <!-- GİRİŞ -->
   <section class="kutu" id="giris" hidden>
     <h2 data-en="Sign in with your BC account">BC hesabınla gir</h2>
-    <p data-en="Type your BC ID or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">BC ID'ni ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
+    <p data-en="Type your BC ID, your member number or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">BC ID'ni, üye numaranı ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
     <div class="satir" id="adim1">
-      <input class="genis" id="kimlik" type="text" autocomplete="username" placeholder="@bcid ya da e-posta">
+      <input class="genis" id="kimlik" type="text" autocomplete="username" placeholder="@bcid, ID no ya da e-posta">
       <button class="dugme ana" id="kodGonder" type="button" data-en="Send code">Kod gönder</button>
     </div>
     <div class="satir" id="adim2" hidden>
@@ -363,7 +363,7 @@ footer a{color:var(--solgun);text-decoration:none}
   // ---------- dil
   const ogeler=[...document.querySelectorAll('[data-en]')];ogeler.forEach(e=>e.dataset.tr=e.textContent);
   function dilKur(d){dil=d;document.documentElement.lang=d;ogeler.forEach(e=>e.textContent=e.dataset[d]);$('dil').textContent=d==='tr'?'TR · EN':'EN · TR';
-    $('kimlik').placeholder=d==='en'?'@bcid or email':'@bcid ya da e-posta';$('bcidGir').placeholder=d==='en'?'username':'kullaniciadi';
+    $('kimlik').placeholder=d==='en'?'@bcid, ID number or email':'@bcid, ID no ya da e-posta';$('bcidGir').placeholder=d==='en'?'username':'kullaniciadi';
     try{localStorage.setItem('bcsite_dil',d)}catch(e){}ciz()}
   $('dil').onclick=()=>dilKur(dil==='tr'?'en':'tr');
   let ilk=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilk=k}catch(e){}
