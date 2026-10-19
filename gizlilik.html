@@ -11,17 +11,21 @@
 :root{color-scheme:dark;--zemin:#0A0A0D;--yuzey:#16161A;--cizgi:#2A2A31;--murekkep:#F4F2EC;--solgun:#8B8B95;--sonuk:#57575F;--sari:#FFC93C;--sariUstu:#241A00}
 *{box-sizing:border-box}
 body{margin:0;background:var(--zemin);color:var(--murekkep);font:16px/1.7 "Geist",system-ui,-apple-system,sans-serif}
-.ic{max-width:760px;margin:0 auto;padding:28px 18px 80px}
+.ic{max-width:780px;margin:0 auto;padding:28px 18px 80px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px}
 .logo{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;text-decoration:none;color:var(--murekkep)}
 .logo span{color:var(--sari)}
 .dil{font:12px "Geist Mono",monospace;color:var(--solgun);background:none;border:1px solid var(--cizgi);border-radius:999px;padding:6px 12px;cursor:pointer}
 h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(40px,8vw,64px);line-height:1;margin:0 0 10px}
-h2{font-family:"Barlow",sans-serif;font-size:21px;margin:36px 0 8px}
+h2{font-family:"Barlow",sans-serif;font-size:21px;margin:38px 0 8px}
+h3{font-family:"Barlow",sans-serif;font-size:17px;margin:22px 0 4px;color:var(--murekkep)}
 p,li{color:#d6d3cb}
 ul{padding-left:20px}
+li{margin-bottom:4px}
 .tarih{font:12px "Geist Mono",monospace;color:var(--sonuk);letter-spacing:.08em;text-transform:uppercase}
 .kisa{background:var(--yuzey);border:1px solid var(--cizgi);border-left:3px solid var(--sari);border-radius:14px;padding:16px 18px;margin-top:24px}
+.kisa p{margin:0}
+.bekle{display:inline-block;border:1px dashed var(--sonuk);color:var(--solgun);font:11px "Geist Mono",monospace;padding:1px 6px;border-radius:6px;margin-left:4px}
 a{color:var(--sari)}
 [lang-blok]{display:none}
 html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
@@ -35,7 +39,10 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <article lang-blok="tr">
 <h1>Gizlilik</h1>
 <p class="tarih">Son güncelleme: 19 Ekim 2026</p>
-<div class="kisa"><p style="margin:0">Kısaca: BC Stage reklam göstermez, verini satmaz. Şarkıların cihazında ve kendi bulut hesabında durur. Ses işleme cihazında yapılır.</p></div>
+<div class="kisa"><p>Kısaca: BC Stage reklam ağı ya da izleme aracı kullanmaz, verini satmaz. Analitik ve çökme raporlama yazılımı yoktur. Şarkıların cihazında ve kendi bulut hesabında durur, ses işleme cihazında yapılır. Sunucumuzda yalnız isteğe bağlı BC hesabını açanların hesap ve topluluk verisi tutulur.</p></div>
+
+<h2>Veri sorumlusu</h2>
+<p>Barış Çekergil (Türkiye). İletişim: <span class="bekle">destek adresi eklenecek</span></p>
 
 <h2>Bu web sitesi</h2>
 <ul>
@@ -44,35 +51,82 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li>Yazı tipleri Google Fonts'tan yüklenir. Bu sırada Google tarayıcının IP adresini görebilir.</li>
 </ul>
 
+<h2>BC Stage uygulaması</h2>
+<h3>Cihazında kalanlar</h3>
+<ul>
+<li>Uygulamanın tamamı hesapsız çalışır.</li>
+<li>Şarkıların, listelerin, tabların, kayıtların ve ayarların cihazında saklanır.</li>
+<li>Ses işleme (vokal ayırma, akor bulma, tempo bulma, söz tanıma ve hizalama) cihazında yapılır. Ses dosyaların hiçbir yere yüklenmez.</li>
+<li>Uygulamanın tanı günlüğü cihazında kalır.</li>
+</ul>
+
+<h3>Bulut eşitleme (isteğe bağlı)</h3>
+<p>Açarsan verilerin <b>kendi</b> iCloud Drive, Dropbox ya da Google Drive (yalnız Android) hesabına gider. Bizim sunucumuza gitmez.</p>
+
+<h3>İzinler ve neden istendikleri</h3>
+<ul>
+<li><b>Mikrofon:</b> Looper kaydı, karaoke ve ses kaydı, grup senkronundaki bas-konuş ve gecikme ölçümü için. Yalnız sen başlatınca kullanılır. Kayıtlar cihazında kalır, bas-konuş sesi yalnız aynı Wi-Fi'daki grup cihazlarına gider.</li>
+<li><b>Yerel ağ:</b> Grup senkronu için. Cihazlar aynı Wi-Fi üzerinden birbirine doğrudan bağlanır, araya sunucu girmez.</li>
+<li><b>Bluetooth:</b> Bluetooth MIDI pedallar, sayfa çeviriciler ve denetleyiciler için.</li>
+<li><b>Fotoğraflar:</b> Şarkıya, profiline, ekipmanına ya da sanatçıya resim eklemek için. Yalnız seçtiğin resim alınır.</li>
+<li><b>Bildirimler (Android):</b> Cihazında kurduğun konser hatırlatmaları ve arka planda çalarken görünen oynatma bildirimi için. Sunucudan bildirim gönderilmez.</li>
+<li>Konum izni istenmez. Şehir bilgisi yalnız elle seçtiğin şehirdir.</li>
+</ul>
+
+<h3>İsteğe bağlı BC hesabı ve BC Pano</h3>
+<p>BC hesabını Apple ile ya da e-posta koduyla açabilirsin. Hesap açarsan şu bilgiler sunucumuzda (Supabase<span class="bekle">sunucu bölgesi eklenecek</span>) tutulur:</p>
+<ul>
+<li>E-posta adresin (ya da Apple'ın verdiği gizli adres).</li>
+<li>Profilin: kullanıcı adı, görünen ad, profil fotoğrafı, şehir, çalgılar, türler, biyografi.</li>
+<li>Grupların ve üyeleri, takip ettiklerin, konserlerin.</li>
+<li>Ekipman ilanların ve teklifler.</li>
+<li>Paylaştığın performans videoları (YouTube bağlantısı olarak).</li>
+<li>Yayımladığın çalma listeleri ve oyları, etkinlik akışın.</li>
+<li>Başkasına gönderdiğin tablar (pakette şarkı sözü yoktur).</li>
+<li>Şikâyet ve engellemeler.</li>
+</ul>
+<p><b>Herkese açık olanlar:</b> Profilin, konserlerin, ekipman ilanların ve yayımladığın listeler diğer kullanıcılara görünür. <b>Profil ve ekipman fotoğrafları sunucuya yüklenir ve herkese açık bir adresle görünür.</b> Gizlilik anahtarlarıyla neyin görüneceğini seçebilirsin.</p>
+<p><span class="bekle">Uygulamadaki kampanya gösterim sayıları: kullanıcıya bağlı olup olmadığı doğrulanacak</span></p>
+
+<h3>Üçüncü taraflara giden bilgiler</h3>
+<p>Aşağıdaki özellikleri kullandığında aradığın şarkı ya da sanatçı adı ilgili hizmete gider. Bu hizmetlerin kendi gizlilik kuralları geçerlidir.</p>
+<ul>
+<li>Söz arama: LRCLIB, sarki.alternatifim.com.</li>
+<li>Akor siteleri (akorlar.com, Cifra Club ve diğerleri): uygulama içi tarayıcıda açılır, bu siteler kendi çerezlerini kullanabilir.</li>
+<li>Sanatçı bilgisi ve fotoğrafları: Wikipedia, Wikidata, Wikimedia Commons, iTunes Search, Deezer.</li>
+<li>Şarkı bağlantıları: song.link. Tempo arama: songbpm. Web'de arama: Google.</li>
+<li>Gömülü oynatıcılar: YouTube (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google gizlilik politikası</a>) ve Spotify (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify gizlilik politikası</a>). Bu oynatıcılar kendi verilerini toplar.</li>
+<li>Model indirmeleri (söz tanıma, hizalama, AI Davul) ilk kullanımda bizim depolamamızdan ve Hugging Face'ten iner.</li>
+</ul>
+
+<h3>Satın alma</h3>
+<p>Satın almalar App Store ya da Google Play üzerinden yapılır. Ödeme bilgilerini biz görmeyiz.</p>
+
 <h2>Forum</h2>
 <ul>
 <li>Foruma BC hesabınla girersin. Giriş için e-posta adresine tek kullanımlık bir kod gönderilir.</li>
-<li>Saklananlar: e-posta adresin, görünen adın, yazdığın konular, yanıtlar ve verdiğin oylar.</li>
-<li>Yazdıkların forumu açan herkese görünür. E-posta adresin görünmez.</li>
-<li>Forum verisi BC Stage'in hesap altyapısında (Supabase) tutulur.</li>
+<li>Saklananlar: e-posta adresin, görünen adın, yazdığın konular, yanıtlar ve oyların.</li>
+<li>Yazdıkların forumu açan herkese görünür, e-posta adresin görünmez.</li>
 <li>Şarkı sözü paylaşmak yasaktır (telif).</li>
 </ul>
 
-<h2>BC Stage uygulaması</h2>
-<ul>
-<li><b>Hesap gerekmez.</b> Uygulamanın tamamı hesapsız çalışır.</li>
-<li><b>Şarkıların ve ayarların cihazında saklanır.</b> Bulut eşitlemeyi açarsan kendi iCloud, Dropbox ya da Google Drive hesabına gider. Bizim sunucumuza gitmez.</li>
-<li><b>Ses işleme cihazında yapılır.</b> Vokal ayırma, akor bulma, tempo bulma ve söz hizalama için ses dosyaların hiçbir yere yüklenmez.</li>
-<li><b>Mikrofon</b> yalnız looper kaydı, grup senkronundaki bas-konuş ve gecikme ölçümü gibi senin başlattığın işlerde kullanılır. Looper kayıtları cihazında kalır. Bas-konuş sesi yalnız aynı Wi-Fi'daki grup cihazlarına gider.</li>
-<li><b>Yerel ağ</b> izni grup senkronu içindir. Cihazlar aynı Wi-Fi üzerinden birbirine doğrudan bağlanır, araya sunucu girmez.</li>
-<li><b>İsteğe bağlı BC hesabı:</b> Apple ile ya da e-posta koduyla açılır. BC Pano'da profilini, konserlerini ve ekipmanını yayınlarsan bunlar diğer kullanıcılara görünür. Konum yalnız açıkça seçtiğin şehir düzeyindedir. Hesabını uygulamanın içinden silebilirsin.</li>
-<li><b>İnternet isteyen özellikler:</b> Söz ve akor ararken aradığın şarkının adı ilgili sitelere (ör. LRCLIB) gider. Tempo bulma, sanatçı bilgisi ve model indirme de internet kullanır.</li>
-<li><b>Satın alma</b> App Store ya da Google Play üzerinden yapılır. Ödeme bilgilerini biz görmeyiz.</li>
-</ul>
+<h2>Saklama ve silme</h2>
+<p>Hesabını uygulamanın içinden silebilirsin (BC hesabı → Hesabı sil).<span class="bekle">silinen veriler (fotoğraflar dahil mi) doğrulanacak</span> Cihazındaki veriler uygulamayı silene kadar cihazında kalır.</p>
 
-<h2>İletişim</h2>
-<p>Sorular ve silme istekleri için: <span id="posta">(destek adresi eklenecek)</span></p>
+<h2>Hakların</h2>
+<p>KVKK ve GDPR kapsamında verine erişme, düzeltme, silme ve itiraz etme hakkın var. İstekler için bize yaz.</p>
+
+<h2>Çocuklar</h2>
+<p>BC Stage çocuklara yönelik değildir. BC hesabı ve BC Pano için yaş sınırı mağaza yaş derecelendirmesine uyar.</p>
 </article>
 
 <article lang-blok="en">
 <h1>Privacy</h1>
 <p class="tarih">Last updated: 19 October 2026</p>
-<div class="kisa"><p style="margin:0">In short: BC Stage shows no ads and does not sell your data. Your songs stay on your device and in your own cloud account. Audio processing happens on your device.</p></div>
+<div class="kisa"><p>In short: BC Stage uses no ad networks or trackers and does not sell your data. There is no analytics or crash-reporting software. Your songs stay on your device and in your own cloud account, and audio processing happens on your device. Our server only holds account and community data for people who choose to create a BC account.</p></div>
+
+<h2>Data controller</h2>
+<p>Barış Çekergil (Türkiye). Contact: <span class="bekle">support address coming</span></p>
 
 <h2>This website</h2>
 <ul>
@@ -81,29 +135,73 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li>Fonts load from Google Fonts, so Google may see your browser's IP address.</li>
 </ul>
 
+<h2>The BC Stage app</h2>
+<h3>What stays on your device</h3>
+<ul>
+<li>The whole app works without an account.</li>
+<li>Your songs, setlists, tabs, recordings and settings are stored on your device.</li>
+<li>Audio processing (vocal separation, chord finding, tempo finding, lyric recognition and alignment) runs on your device. Your audio is never uploaded.</li>
+<li>The app's diagnostic log stays on your device.</li>
+</ul>
+
+<h3>Cloud sync (optional)</h3>
+<p>If you turn it on, your data goes to <b>your own</b> iCloud Drive, Dropbox or Google Drive (Android only) account, never to our server.</p>
+
+<h3>Permissions and why we ask</h3>
+<ul>
+<li><b>Microphone:</b> for looper recording, karaoke and audio recording, talkback in group sync, and latency measurement. Used only when you start it. Recordings stay on your device; talkback audio only goes to the group's devices on the same Wi-Fi.</li>
+<li><b>Local network:</b> for group sync. Devices connect directly over the same Wi-Fi with no server in between.</li>
+<li><b>Bluetooth:</b> for Bluetooth MIDI pedals, page turners and controllers.</li>
+<li><b>Photos:</b> to add an image to a song, your profile, your gear or an artist. Only the image you pick is used.</li>
+<li><b>Notifications (Android):</b> for gig reminders set on your device and the playback notification while playing in the background. No notifications are sent from a server.</li>
+<li>No location permission. Your city is only the one you pick by hand.</li>
+</ul>
+
+<h3>Optional BC account and BC Board</h3>
+<p>You can create a BC account with Apple or an email code. If you do, we keep the following on our server (Supabase<span class="bekle">server region coming</span>):</p>
+<ul>
+<li>Your email address (or the private relay address Apple gives).</li>
+<li>Your profile: username, display name, profile photo, city, instruments, genres, bio.</li>
+<li>Your bands and members, who you follow, your gigs.</li>
+<li>Your gear listings and offers.</li>
+<li>Performance videos you share (as YouTube links).</li>
+<li>Setlists you publish and their votes, your activity feed.</li>
+<li>Tabs you send to someone (song lyrics are never included).</li>
+<li>Reports and blocks.</li>
+</ul>
+<p><b>What is public:</b> your profile, gigs, gear listings and published setlists are visible to other users. <b>Profile and gear photos are uploaded to our server and shown at a public address.</b> Privacy switches let you choose what is shown.</p>
+<p><span class="bekle">In-app campaign view counts: whether they are linked to a user is being checked</span></p>
+
+<h3>Information sent to third parties</h3>
+<p>When you use these features, the song or artist name you search for goes to the relevant service. Their own privacy rules apply.</p>
+<ul>
+<li>Lyric search: LRCLIB, sarki.alternatifim.com.</li>
+<li>Chord sites (akorlar.com, Cifra Club and others): opened in an in-app browser; these sites may set their own cookies.</li>
+<li>Artist info and photos: Wikipedia, Wikidata, Wikimedia Commons, iTunes Search, Deezer.</li>
+<li>Song links: song.link. Tempo search: songbpm. Web search: Google.</li>
+<li>Embedded players: YouTube (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy policy</a>) and Spotify (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify privacy policy</a>). These players collect their own data.</li>
+<li>Model downloads (lyric recognition, alignment, AI Drums) come from our storage and from Hugging Face on first use.</li>
+</ul>
+
+<h3>Purchases</h3>
+<p>Purchases go through the App Store or Google Play. We never see your payment details.</p>
+
 <h2>Forum</h2>
 <ul>
 <li>You sign in to the forum with your BC account. A one-time code is sent to your email address.</li>
 <li>We store your email address, display name, the topics and replies you write, and your votes.</li>
-<li>What you write is visible to everyone who opens the forum. Your email address is not.</li>
-<li>Forum data is kept in BC Stage's account service (Supabase).</li>
+<li>What you write is visible to everyone who opens the forum; your email address is not.</li>
 <li>Posting song lyrics is not allowed (copyright).</li>
 </ul>
 
-<h2>The BC Stage app</h2>
-<ul>
-<li><b>No account needed.</b> The whole app works without one.</li>
-<li><b>Your songs and settings are stored on your device.</b> If you turn on cloud sync, they go to your own iCloud, Dropbox or Google Drive account, never to our servers.</li>
-<li><b>Audio processing happens on your device.</b> Vocal separation, chord finding, tempo finding and lyric alignment never upload your audio.</li>
-<li><b>The microphone</b> is used only for things you start, such as looper recording, talkback in group sync and latency measurement. Looper recordings stay on your device. Talkback audio only goes to the group's devices on the same Wi-Fi.</li>
-<li><b>Local network</b> access is for group sync. Devices connect directly over the same Wi-Fi with no server in between.</li>
-<li><b>Optional BC account:</b> created with Apple or an email code. If you publish a profile, gigs or gear on the BC Board, other users can see them. Location is only the city you choose. You can delete your account inside the app.</li>
-<li><b>Features that use the internet:</b> lyric and chord search sends the song title you search for to the relevant sites (e.g. LRCLIB). Tempo search, artist info and model downloads also use the internet.</li>
-<li><b>Purchases</b> go through the App Store or Google Play. We never see your payment details.</li>
-</ul>
+<h2>Retention and deletion</h2>
+<p>You can delete your account inside the app (BC account → Delete account).<span class="bekle">what gets deleted (photos included?) is being checked</span> Data on your device stays there until you delete the app.</p>
 
-<h2>Contact</h2>
-<p>Questions and deletion requests: <span id="postaEn">(support address coming)</span></p>
+<h2>Your rights</h2>
+<p>Under KVKK and GDPR you can access, correct, delete and object to the processing of your data. Write to us for any request.</p>
+
+<h2>Children</h2>
+<p>BC Stage is not directed at children. The age limit for the BC account and BC Board follows the store age rating.</p>
 </article>
 </div>
 <script>
