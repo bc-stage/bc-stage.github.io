@@ -213,7 +213,8 @@ footer a{color:var(--solgun);text-decoration:none}
   $('geriAdim').onclick=()=>{$('adim1').hidden=false;$('adim2').hidden=true;$('kod').value='';girisMesaj('')};
   $('kimlik').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGonder').click()});
   $('kod').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGir').click()});
-  $('cikis').onclick=async()=>{await sb.auth.signOut()};
+  // scope 'local': sunucu reddetse de (ör. kapatılmış hesap) tarayıcıdaki oturum silinir
+  $('cikis').onclick=async()=>{try{await sb.auth.signOut({scope:'local'})}catch(e){}oturum=null;await profilYukle();ciz()};
 
   // ---------- BC ID
   $('bcidKaydet').onclick=async()=>{let v=$('bcidGir').value.trim().toLowerCase().replace(/^@/,'');const m=$('bcidMesaj');
@@ -387,7 +388,9 @@ footer a{color:var(--solgun);text-decoration:none}
 
   // ---------- oturum
   sb.auth.onAuthStateChange(async(olay,s)=>{const once=oturum&&oturum.user.id;oturum=s;if((s&&s.user.id)!==once){await profilYukle();ciz()}});
-  (async()=>{const {data}=await sb.auth.getSession();oturum=data.session;await profilYukle();dilKur(ilk)})();
+  (async()=>{const {data}=await sb.auth.getSession();oturum=data.session;
+    if(oturum){const u=await sb.auth.getUser();if(u.error||!u.data||!u.data.user){try{await sb.auth.signOut({scope:'local'})}catch(e){}oturum=null}}
+    await profilYukle();dilKur(ilk)})();
 })();
 </script>
 
