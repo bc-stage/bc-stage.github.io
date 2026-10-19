@@ -424,7 +424,22 @@ p{max-width:65ch}
 .kod{display:inline-block;margin-left:8px;font-family:var(--mono);font-size:13px;color:var(--sari);background:var(--sariSis);padding:2px 8px;border-radius:8px}
 .kimlikIki p{color:var(--solgun);font-size:15px;margin:8px 0 0}
 .panoIzgara{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:48px}
-.pz{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:18px;min-width:0;transition:border-color .2s,transform .2s}
+.pz{display:block;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:18px;min-width:0;transition:border-color .2s,transform .2s}
+.pzDaha{display:block;margin-top:10px;color:var(--sari);font-size:13px;font-weight:600}
+.pzPerde{position:fixed;inset:0;z-index:100;background:rgba(5,5,7,.78);backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px}
+.pzPencere{width:min(1100px,100%);max-height:calc(100dvh - 40px);overflow:auto;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:24px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);animation:pzAc .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes pzAc{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.pzResim{background:#050506;display:flex;align-items:center;padding:16px}
+.pzResim img{width:100%;border-radius:14px;display:block}
+.pzYazi{padding:26px 26px 22px;display:flex;flex-direction:column;gap:12px}
+.pzYazi h3{font-family:var(--baslik);font-size:36px;text-transform:uppercase;line-height:1}
+.pzYazi p{color:var(--murekkep);margin:0;font-size:16px}
+.pzYazi ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+.pzAlt{display:flex;gap:8px;margin-top:auto;padding-top:10px}
+.pzAlt button{font:inherit;cursor:pointer;border:1px solid var(--cizgi);background:var(--zemin);color:var(--murekkep);border-radius:12px;padding:9px 14px}
+.pzAlt .kapat{margin-left:auto;background:var(--sari);color:var(--sariUstu);border-color:var(--sari);font-weight:600}
+@container site (max-width:700px){.pzPencere{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.pzPencere{grid-template-columns:minmax(0,1fr)}}
 .pz:hover{border-color:#4a3d1c;transform:translateY(-2px)}
 .pzIk{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--sariSis);color:var(--sari);font-size:16px;margin-bottom:10px}
 .pz h3{font-size:16px;margin-bottom:6px}
@@ -703,18 +718,19 @@ p{max-width:65ch}
   </div>
 
   <div class="panoIzgara">
-    <div class="pz"><span class="pzIk">◷</span><h3 data-en="Next gig">Sıradaki konser</h3><p data-en="Venue, date and time, ticket link, directions and a reminder on your device. Show it on your profile.">Mekân, tarih ve saat, bilet bağlantısı, yol tarifi ve cihazında hatırlatma. İstersen profilinde göster.</p></div>
-    <div class="pz"><span class="pzIk">●</span><h3 data-en="Open to gigs">Konserlere açığım</h3><p data-en="Turn it on and you show up in searches with your city, genres and instruments. Offers come straight to you.">Açınca şehrin, türlerin ve çalgılarınla aramalarda görünürsün. Teklifler doğrudan sana gelir.</p></div>
-    <div class="pz"><span class="pzIk">♫</span><h3 data-en="My gear">Ekipmanım</h3><p data-en="Your instruments and gear with photos and years. Mark one for sale, set a price, take or turn down offers.">Çalgıların ve ekipmanın, fotoğrafı ve yılıyla. Birini satılık işaretle, fiyat koy, teklifleri kabul et ya da reddet.</p></div>
-    <div class="pz"><span class="pzIk">◎</span><h3 data-en="My bands">Gruplarım</h3><p data-en="A page for each band, member invites and social links.">Her grubun bir sayfası, üye daveti ve sosyal bağlantılar.</p></div>
-    <div class="pz"><span class="pzIk">⌕</span><h3 data-en="Find musicians">Müzisyen bul</h3><p data-en="Filter by instrument, genre, stage role, country, province, district and who is free. Follow them and get reminded of their gigs.">Çalgı, tür, sahne rolü, ülke, il, ilçe ve "müsait" süzgeçleri. Takip et, konserlerini hatırlat.</p></div>
-    <div class="pz"><span class="pzIk">≡</span><h3 data-en="Repertoire">Repertuvar</h3><p data-en="Publish your song list on your profile, in full or as a summary. Lyrics are never published.">Şarkı listeni profilinde yayınla, tamamını ya da özetini. Sözler asla yayınlanmaz.</p></div>
-    <div class="pz"><span class="pzIk">▶</span><h3 data-en="Stage videos">Sahne videoları</h3><p data-en="Your live videos on your profile; YouTube plays inside the app.">Canlı videoların profilinde; YouTube uygulamanın içinde oynar.</p></div>
-    <div class="pz"><span class="pzIk">✦</span><h3 data-en="Artists and news">Sanatçılar ve haberler</h3><p data-en="Artist pages with Wikipedia biographies and discographies, plus music news.">Wikipedia biyografisi ve diskografiyle sanatçı sayfaları, müzik haberleri.</p></div>
-    <div class="pz"><span class="pzIk">↻</span><h3 data-en="Activity">Hareket akışı</h3><p data-en="Who followed you, who visited, which offers came in.">Kim takip etti, kim ziyaret etti, hangi teklifler geldi.</p></div>
-    <div class="pz"><span class="pzIk">⚿</span><h3 data-en="Your privacy">Gizliliğin</h3><p data-en="Switches for what is public. Location is only the city you pick. Report and block in one tap.">Neyin herkese açık olacağını anahtarlarla seçersin. Konum yalnız seçtiğin şehir. Bildir ve engelle tek dokunuşta.</p></div>
+    <button type="button" class="pz" data-pz="konser"><span class="pzIk">◷</span><h3 data-en="Next gig">Sıradaki konser</h3><p data-en="Venue, date and time, ticket link, directions and a reminder on your device. Show it on your profile.">Mekân, tarih ve saat, bilet bağlantısı, yol tarifi ve cihazında hatırlatma. İstersen profilinde göster.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="musait"><span class="pzIk">●</span><h3 data-en="Open to gigs">Konserlere açığım</h3><p data-en="Turn it on and you show up in searches with your city, genres and instruments. Offers come straight to you.">Açınca şehrin, türlerin ve çalgılarınla aramalarda görünürsün. Teklifler doğrudan sana gelir.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="ekipman"><span class="pzIk">♫</span><h3 data-en="My gear">Ekipmanım</h3><p data-en="Your instruments and gear with photos and years. Mark one for sale, set a price, take or turn down offers.">Çalgıların ve ekipmanın, fotoğrafı ve yılıyla. Birini satılık işaretle, fiyat koy, teklifleri kabul et ya da reddet.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="gruplar"><span class="pzIk">◎</span><h3 data-en="My bands">Gruplarım</h3><p data-en="A page for each band, member invites and social links.">Her grubun bir sayfası, üye daveti ve sosyal bağlantılar.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="muzisyen_bul"><span class="pzIk">⌕</span><h3 data-en="Find musicians">Müzisyen bul</h3><p data-en="Filter by instrument, genre, stage role, country, province, district and who is free. Follow them and get reminded of their gigs.">Çalgı, tür, sahne rolü, ülke, il, ilçe ve "müsait" süzgeçleri. Takip et, konserlerini hatırlat.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="repertuvar"><span class="pzIk">≡</span><h3 data-en="Repertoire">Repertuvar</h3><p data-en="Publish your song list on your profile, in full or as a summary. Lyrics are never published.">Şarkı listeni profilinde yayınla, tamamını ya da özetini. Sözler asla yayınlanmaz.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="videolar"><span class="pzIk">▶</span><h3 data-en="Stage videos">Sahne videoları</h3><p data-en="Your live videos on your profile; YouTube plays inside the app.">Canlı videoların profilinde; YouTube uygulamanın içinde oynar.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="sanatcilar"><span class="pzIk">✦</span><h3 data-en="Artists and news">Sanatçılar ve haberler</h3><p data-en="Artist pages with Wikipedia biographies and discographies, plus music news.">Wikipedia biyografisi ve diskografiyle sanatçı sayfaları, müzik haberleri.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="akis"><span class="pzIk">↻</span><h3 data-en="Activity">Hareket akışı</h3><p data-en="Who followed you, who visited, which offers came in.">Kim takip etti, kim ziyaret etti, hangi teklifler geldi.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
+    <button type="button" class="pz" data-pz="gizlilik"><span class="pzIk">⚿</span><h3 data-en="Your privacy">Gizliliğin</h3><p data-en="Switches for what is public. Location is only the city you pick. Report and block in one tap.">Neyin herkese açık olacağını anahtarlarla seçersin. Konum yalnız seçtiğin şehir. Bildir ve engelle tek dokunuşta.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
   </div>
   <p class="panoNot"><span class="etiket net" data-en="internet">internet</span> <span data-en="BC Board needs a BC account and an internet connection. Everything else in BC Stage works without both.">BC Pano için BC hesabı ve internet gerekir. BC Stage'in geri kalanı ikisi olmadan da çalışır.</span></p>
+  <div class="pzPerde" id="pzPerde" hidden role="dialog" aria-modal="true" aria-labelledby="pzBaslik"><div class="pzPencere"><div class="pzResim"><img id="pzImg" alt=""></div><div class="pzYazi"><h3 id="pzBaslik"></h3><p id="pzGiris"></p><ul id="pzMaddeler"></ul><div class="pzAlt"><button type="button" id="pzOnce" aria-label="Önceki">←</button><button type="button" id="pzSonra" aria-label="Sonraki">→</button><button type="button" class="kapat" id="pzKapat">Kapat</button></div></div></div></div>
 </section>
 
 <!-- GERÇEK EKRANLAR -->
@@ -977,6 +993,7 @@ p{max-width:65ch}
 
 <script>
 (function(){
+  let dil='tr';
     // --- çizimler: dalga ve ritim ızgarası (tohumlu, her açılışta aynı)
   let t=7; const r=()=>((t=(t*16807)%2147483647)/2147483647);
   const d=document.getElementById('dalga');
@@ -1046,12 +1063,18 @@ p{max-width:65ch}
     const k=x.createLinearGradient(0,0,0,h);k.addColorStop(0,'rgba(10,10,13,.5)');k.addColorStop(.35,'rgba(10,10,13,0)');k.addColorStop(.75,'rgba(10,10,13,0)');k.addColorStop(1,'rgba(10,10,13,.85)');x.fillStyle=k;x.fillRect(0,0,w,h)}
 
   // --- vitrinler: karaoke, akor bulma, video, metronom bul (uydurma örnek söz)
-  const SOZ=[['Son','tren','geçti,','peron','boş','kaldı'],['Işıklar','sönerken','adını','andım'],['Bir','bilet','aldım,','dönüşü','yok'],['Gece','treni','beni','bekleme']];
+  const SOZ_TR=[['Son','tren','geçti,','peron','boş','kaldı'],['Işıklar','sönerken','adını','andım'],['Bir','bilet','aldım,','dönüşü','yok'],['Gece','treni','beni','bekleme']];
+  const SOZ_EN=[['The','last','train','left','the','station'],['I','called','your','name','again'],['One','ticket','and','no','way','back'],['Night','train,','don\'t','wait','up']];
+  let SOZ=SOZ_TR;
   const sozEl=document.getElementById('sozler');
-  if(sozEl){SOZ.forEach(s=>{const d=document.createElement('div');d.className='sat';s.forEach(w=>{const k=document.createElement('span');k.className='k';k.textContent=w;d.appendChild(k)});sozEl.appendChild(d)})}
+  function sozKur(){if(!sozEl)return;SOZ=dil==='en'?SOZ_EN:SOZ_TR;sozEl.innerHTML='';SOZ.forEach(s=>{const d=document.createElement('div');d.className='sat';s.forEach(w=>{const k=document.createElement('span');k.className='k';k.textContent=w;d.appendChild(k)});sozEl.appendChild(d)});
+    if(mk)[...mk.querySelectorAll('small')].forEach((e,i)=>e.textContent=(dil==='en'?KAN_EN:KAN)[i][0])}
+  window._sozKur=sozKur;
   const KAN=[['VOK',.0,1],['DAVUL',.0,1],['DİĞER',.7,0],['BİZİM',.8,0],['TIK',.4,0]];
+  const KAN_EN=[['VOX'],['DRUMS'],['OTHER'],['OURS'],['CLICK']];
   const mk=document.getElementById('mikser');
   if(mk){KAN.forEach(([ad,f,kapali])=>{const k=document.createElement('div');k.className='kanal'+(kapali?' kapali':'');k.innerHTML='<div class="ray" style="--f:'+(f*100)+'%"><i></i><b></b></div><small>'+ad+'</small>';mk.appendChild(k)})}
+  sozKur();
   const akorS=[...document.querySelectorAll('#akorSerit span')];
   const mbD=document.getElementById('mbDalga');
   if(mbD){for(let i=0;i<72;i++){const e=document.createElement('i');e.style.height=(20+Math.abs(Math.sin(i*.9))*50*(i%6===0?1.3:.8)+rr()*15)+'%';mbD.appendChild(e)}
@@ -1175,20 +1198,104 @@ p{max-width:65ch}
     'Ekipmanım: satılık işareti, teklif','Müzisyen arama: enstrüman, tür, il, ilçe, müsait',
     'Repertuvarı profilde yayınla (söz yayınlanmaz)','BC hesabı ve internet gerekir|n']]
   ];
-  const ALAN=[['hepsi','Hepsi'],['sahne','Sahne'],['calisma','Çalışma'],['ritim','Ritim'],['grup','Grup ve topluluk'],['ayar','Ayarlar']];
+  const KAT_EN=[
+   ['sahne','Songs and the stage page','repertoire',[
+    'Library with categories, tags and colours; search by title, artist or lyrics','Smart folders: Favourites, Most played, Forgotten',
+    'Lyrics with chords or lyrics only; pinch to zoom, swipe to the next song, auto-scroll','Centre lyrics, fit to screen, keep screen awake, chord diagrams on stage',
+    'Section band on top ("Chorus 2/3"), tap to jump; section order and ×N repeats','Transpose, key choice, capo 0–11; key and BPM badges',
+    'Chord mode: place chords word by word over the lyrics, align, centre','Per-song image, font, size and colour; stage note as a card',
+    'Export to PDF, import from PDF','Artist card: photo, biography, songs in your library|n',
+    'Import: ChordPro, plain text, SongBook, OnSong archive, Dropbox folder','Quick song: type a title or a line and the lyrics come with it|n','30 songs in the free version|v']],
+   ['sahne','Setlists','playlist',[
+    'Coloured setlists, manual order, split with set headers','Total length; length per song',
+    'Set report: same key back to back, tempo jumps, flat tempo, missing info','Assign a rhythm to a setlist',
+    'Fetch missing lyrics in one go|n','Share as a list, .txt or package; send to the group','2 setlists in the free version|v']],
+   ['grup','Group sync','arrangements',[
+    'The leader opens it; song, setlist, section and scroll position on every device','Followers don\'t need the song in their library; it travels with its content',
+    'No internet needed, the same Wi-Fi is enough; no server','Talkback: to everyone, to the leader or to one person',
+    '"Ask the group" polls, star ratings for songs','Notes from the leader, stage notes; send songs, setlists and tabs','Leading and joining are VIP, 3-day trial|v']],
+   ['sahne','Pedals and MIDI','pick',[
+    'Bluetooth page turners and MIDI pedals; pair with Learn','Next/previous song, section, bar; scrolling; talkback',
+    'Drums play/stop, fill, finale, A/B/C, crash; looper record and undo','MIDI out: keyboards change sounds when a song opens (Program Change, two keyboards)',
+    'MIDI devices and a MIDI log window','Pedal support is VIP, 3-day trial|v']],
+   ['calisma','Chords','acoustic-guitar',[
+    'Guitar, ukulele and piano chord dictionary; tap to hear','Other voicings for every chord; draw your own shapes',
+    'Piano across 1–3 octaves, root position and inversions','Chord diagram strip on the song page',
+    'Fetch chords from the web and place them on your lyrics; chord sites in nine languages|n']],
+   ['calisma','Scales, arpeggios, exercises','acoustic-guitar',[
+    'Scales on the neck, degrees or note names, the scale\'s chords and borrowed chords','Arpeggios all over the neck, drop voicings',
+    'Families of finger exercises, practice plans with tempo steps, click subdivisions','Write a progression, find the scales that fit; piano backing',
+    'Send a song\'s chords to the exercises with one tap','All VIP, 3-day trial|v']],
+   ['calisma','Tabs and BC Tab','pick',[
+    'Open Guitar Pro (.gp3–.gp7, .gpx) and MusicXML','Channel-by-channel playback, instrument choice, mute/solo, mixer',
+    'Bar loop, 50–100% speed, speed trainer, count-in','Scrolling strip or sheet view',
+    'Write tabs: techniques, tuplets, repeats, D.S. al Coda, section colours','Lossless save (.bctab), share as a file',
+    'Send to a person by BC ID; waits 7 days|n','10 tabs in the free version|v']],
+   ['calisma','Chord charts (arrangements)','arrangements',[
+    'iReal-style chart: sections, bars, beats; no lyrics','Meters from 4/4 to 9/8, meter changes mid-song',
+    'Chord keyboard: bass note, rest, rhythm slash, %; keyboard shortcuts','Repeat signs, 1st/2nd endings, D.C., D.S., Segno, Coda, Fine',
+    'Walks with the metronome: follows repeats, 1st/2nd endings and D.S./Coda in playing order, back to the top at the end; piano backing','Charts linked to karaoke walk with the recording and loop',
+    'Automatic chart from audio: key, tempo, meter, sections, chords|o','10 charts in the free version|v']],
+   ['calisma','Karaoke','karaoke',[
+    'Link an audio file to a song or open a .bckaraoke package','Vocal separation on the device, model built into the app|o',
+    'Word-by-word lyric timing, nine languages|o','Lyrics from audio (Whisper, downloads on first use)|n',
+    'Words fill as they are sung, chords above the words, tap a line to jump','Editor: word blocks, tap to mark, speed, key, latency',
+    'Song analysis: key, tempo, meter, chords, vocal range, sections|o','Track mixer: vocal, original drums, other, our drums; presets|i']],
+   ['calisma','Chord Finder','chord_finder',[
+    'Lyrics and chords from an audio file: separate, transcribe, time, find chords','All on the device; lyric language automatic, Turkish or English',
+    'Key, chord chart, capo plans ("Capo 2 · N barre")','Save to Songs and Karaoke from one window',
+    'iPad and Mac only|i']],
+   ['calisma','Video practice','video',[
+    'Videos from your gallery, a video library and playlists','Slow down 0.25×–1.0× without lowering the pitch',
+    'A–B selection on the waveform, zoom up to ×120','Loop lock, speed ladder (faster every pass)',
+    'Save a loop with a name','On iPad, Mac and phones in landscape']],
+   ['calisma','Beat Finder','metronome',[
+    'Pick a song and the metronome locks to its beat; the song is not stretched','Click-track or live recording; follows the tempo of live takes',
+    'Fine tuning: tempo multiple, where "1" falls, phase; fix it with Tap along','Write its drums: 4–6 style candidates, played with your own kit, ending options',
+    'iPad and Mac only|i']],
+   ['ritim','Metronome','metronome',[
+    'BPM, tap tempo, 2–7 beats per bar, accented first beat','Classic, woodblock, beep and clave sounds',
+    'Silent mode (light only), headphones only, vibration','Tempo search online|n','Measure audio latency and correct the click']],
+   ['ritim','AI Drums','ai_drums',[
+    'Kick, snare, hi-hat and toms made with AI on the device; four candidates, listen, save','Acoustic, electronic or brush kit; regenerate any sound',
+    'Tom set, open hi-hat, cross-stick; conga, bongo, tambourine, shaker','Room: dry, small room, studio, hall',
+    'Kit mixer; kits work in One Man and Write its drums','6,401 patterns in 17 styles, by section and in Song mode','Model downloads on first use|n','iPad and Mac only|i']],
+   ['ritim','One Man Mode','one_man_band',[
+    'Five-lane sixteenth grid, velocity, copy/paste','Live: enter on the bar, fill, finale, A/B/C, crash',
+    'Meters from 2/4 to 13/8','Import MIDI grooves (GM, EZdrummer, Superior, Addictive)',
+    'Drum strip on the song page and in the looper','VIP, 3-day trial|v']],
+   ['ritim','Looper','looper',[
+    'Loops locked to the metronome, several clips, overdub','Bar-based or free length; /2 and ×2',
+    'Count-in, snap to beat one and the grid','Retrospective capture: grab what you just played',
+    'Mixer, quantize (1/4–1/16, swing)','Loop editor: drag transients, find the tempo from the loop','Drum bar underneath; record from the pedal']],
+   ['ayar','Backup, cloud, account','repertoire',[
+    'Automatic and manual local backup, restore','Sync to your own iCloud, Dropbox or Google Drive; never to our server|n',
+    'BC account is optional; sign in with Apple or an email code|n','Guitar + vocals, Singer, One-person band modes',
+    'Separate fonts and sizes for lyrics, titles, chords and the interface']],
+   ['ayar','Themes and languages','playlist',[
+    '20 ready-made themes, 10 dark and 10 light','Build your own theme: background, accent, boxes, live preview',
+    '9 interface languages: English, Türkçe, Deutsch, Français, Español, Português, Русский, 日本語, 中文','Sidebar on iPad and Mac']],
+   ['grup','BC Board and community','singer_vocal',[
+    'Public profile, @username, privacy switches','Gigs: venue, tickets, directions, reminder',
+    'My gear: for-sale mark, offers','Musician search: instrument, genre, province, district, available',
+    'Publish your repertoire on your profile (lyrics never published)','Needs a BC account and internet|n']]
+  ];
+  const ALAN=[['hepsi','Hepsi','All'],['sahne','Sahne','Stage'],['calisma','Çalışma','Practice'],['ritim','Ritim','Rhythm'],['grup','Grup ve topluluk','Group and community'],['ayar','Ayarlar','Settings']];
+  let katF='hepsi';
   const ET={v:'<span class="etiket vip">VIP</span>',i:'<span class="etiket ipadmac">iPad · Mac</span>',o:'<span class="etiket iosmac">iOS · Mac</span>',n:'<span class="etiket net">internet</span>'};
   const kiz=document.getElementById('katalogIzgara'),sz=document.getElementById('suzgec');
   const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function katalogCiz(f){kiz.innerHTML=KAT.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
-    sz.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===f))}
+  function katalogCiz(f){katF=f;const KK=dil==='en'?KAT_EN:KAT;kiz.innerHTML=KK.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
+    sz.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.f===f);const al=ALAN.find(x=>x[0]===b.dataset.f);b.textContent=dil==='en'?al[2]:al[1]})}
+  window._katalog=()=>katalogCiz(katF);
   if(kiz){ALAN.forEach(([f,ad])=>{const b=document.createElement('button');b.type='button';b.dataset.f=f;b.textContent=ad;b.onclick=()=>katalogCiz(f);sz.appendChild(b)});katalogCiz('hepsi')}
 
   // --- dil: data-en'li öğelerin Türkçesi saklanıp değiştiriliyor
   const ogeler=[...document.querySelectorAll('[data-en]')];
   ogeler.forEach(e=>e.dataset.tr=e.textContent);
-    let dil='tr';
+    dil='tr';
   function gorselDil(d){document.querySelectorAll('img[src*="ekranlar/3/"]').forEach(im=>{const tr=im.getAttribute('src').replace('ekranlar/3/en/','ekranlar/3/');const yeni=d==='en'?tr.replace('ekranlar/3/','ekranlar/3/en/'):tr;if(yeni===im.getAttribute('src'))return;im.onerror=()=>{im.onerror=null;im.src=tr};im.src=yeni})}
-  function dilKur(d){dil=d;gorselDil(d);ogeler.forEach(e=>e.textContent=e.dataset[d]);document.documentElement.lang=d;document.getElementById('dilDugme').textContent=d==='tr'?'TR · EN':'EN · TR';try{localStorage.setItem('bcsite_dil',d)}catch(e){}}
+  function dilKur(d){dil=d;gorselDil(d);setTimeout(()=>{window._katalog&&window._katalog();window._sozKur&&window._sozKur()},0);ogeler.forEach(e=>e.textContent=e.dataset[d]);document.documentElement.lang=d;document.getElementById('dilDugme').textContent=d==='tr'?'TR · EN':'EN · TR';try{localStorage.setItem('bcsite_dil',d)}catch(e){}}
     document.getElementById('dilDugme').onclick=()=>{dilKur(dil==='tr'?'en':'tr');window._galeri&&window._galeri()};
   let ilkDil=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilkDil=k}catch(e){}
   if(location.hash==='#en')ilkDil='en';if(location.hash==='#tr')ilkDil='tr';
@@ -1223,6 +1330,45 @@ p{max-width:65ch}
 
   // --- forum oyla (taslak: yalnız görsel geri bildirim, forum açılınca sunucuya yazacak)
   document.querySelectorAll('.oyla').forEach(b=>b.addEventListener('click',()=>{const v=b.classList.toggle('verildi');const e=b.querySelector('em');e.textContent=String(Number(e.textContent)+(v?1:-1))}));
+
+  // --- BC Pano ayrıntı pencereleri (görsel yoksa genel pano görseli)
+  const PZ={
+   konser:{tr:['Sıradaki konser','Bir sonraki sahnen panonun en üstünde durur. Konseri bir kez gir, gerisini BC Stage hatırlar.',['Mekânı ara ya da elle yaz, tarih ve saati seç','Bilet bağlantısı ekle; dinleyicin tek dokunuşla ulaşsın','Yol tarifi düğmesi haritayı açar','Konserden önce cihazında hatırlatma','İstersen konserlerin profilinde görünür, takipçilerine de hatırlatılır']],
+           en:['Next gig','Your next show sits at the top of the board. Enter it once and BC Stage remembers the rest.',['Search for the venue or type it, pick the date and time','Add a ticket link so your audience is one tap away','Directions opens the map','A reminder on your device before the gig','Show your gigs on your profile; your followers get reminded too']]},
+   musait:{tr:['Konserlere açığım','Tek anahtarla müzisyen aramalarında görünür olursun. Grup ya da mekân seni şehrine, türüne ve çalgına göre bulur.',['Anahtarı aç, durumun profilinde görünsün','Şehrini, türlerini ve çalgılarını seç','Ücretli, ücretsiz gibi koşulları belirt','Teklifler doğrudan sana gelir, hareket akışında görünür','Kapattığın an aramalardan çıkarsın']],
+           en:['Open to gigs','One switch makes you visible in musician searches. Bands and venues find you by city, genre and instrument.',['Turn it on and your status shows on your profile','Pick your city, genres and instruments','Set terms such as paid or free','Offers come straight to you and show in your activity','Turn it off and you leave the searches at once']]},
+   ekipman:{tr:['Ekipmanım','Çalgılarını ve ekipmanını fotoğrafı ve yılıyla bir vitrine diz. Satmak istediğini işaretle, teklifleri yönet.',['Fotoğraf, ad, tür ve yıl ile ekle','"Satılık" işaretle, fiyat koy','Gelen teklifleri kabul et ya da reddet','Beğendiğin ekipmanı kaydet','Fotoğraflar herkese açık bir adresle görünür']],
+           en:['My gear','Line up your instruments and gear with photos and years. Mark what you want to sell and handle the offers.',['Add a photo, name, type and year','Mark it for sale and set a price','Accept or decline the offers you get','Save gear you like','Photos are shown at a public address']]},
+   gruplar:{tr:['Gruplarım','Her grubun kendi sayfası olur: üyeler, bağlantılar ve konserler bir arada.',['Grup kur, adını ve fotoğrafını ekle','Üyeleri BC ID ile davet et','Sosyal bağlantıları ekle','Grubun konserleri herkesin panosunda','Grubu kuran ayrılsa da grup üyeleri için kalır']],
+           en:['My bands','Every band gets its own page: members, links and gigs together.',['Create a band, add its name and photo','Invite members by BC ID','Add social links','The band\'s gigs appear on every member\'s board','If the founder leaves, the band stays for its members']]},
+   muzisyen_bul:{tr:['Müzisyen bul','Bu akşam bir basçıya mı ihtiyacın var? Süzgeçleri seç, yakınındaki müzisyenleri gör.',['Çalgı, tür ve sahne rolü','Ülke, il, ilçe ve şehir','Yalnız "müsait" olanları göster','Profilini aç, takip et','Takip ettiklerinin konserleri sana hatırlatılır']],
+           en:['Find musicians','Need a bass player tonight? Pick the filters and see the musicians near you.',['Instrument, genre and stage role','Country, province, district and city','Show only those who are available','Open a profile and follow','You get reminded of the gigs of people you follow']]},
+   repertuvar:{tr:['Repertuvar','Çaldığın şarkıları profilinde göster; mekânlar ve gruplar neler çalabildiğini bilsin.',['Listenin tamamını ya da yalnız özetini yayınla','Şarkı adı, sanatçı, ton ve tempo görünür','Sözler asla yayınlanmaz','Yayınlanan listeler oylanabilir','İstediğin an yayından kaldır']],
+           en:['Repertoire','Show the songs you play on your profile so venues and bands know what you can do.',['Publish the full list or just a summary','Title, artist, key and tempo are shown','Lyrics are never published','Published setlists can be voted on','Unpublish whenever you like']]},
+   videolar:{tr:['Sahne videoları','Canlı performanslarını profiline ekle. YouTube videoları uygulamanın içinde oynar.',['YouTube bağlantısını yapıştır','Başlık ve tarih ekle','Videolar profilinde sıralanır','İzleyen uygulamadan çıkmadan izler']],
+           en:['Stage videos','Add your live performances to your profile. YouTube videos play inside the app.',['Paste a YouTube link','Add a title and date','Videos line up on your profile','Viewers watch without leaving the app']]},
+   sanatcilar:{tr:['Sanatçılar ve haberler','Çaldığın sanatçılar hakkında okumak için uygulamadan çıkma.',['Wikipedia biyografisi','Diskografi','Kütüphanendeki şarkıları','Müzik haberleri','Resimler yalnız özgür lisanslı kaynaklardan, künyesiyle']],
+           en:['Artists and news','Read about the artists you play without leaving the app.',['Wikipedia biography','Discography','Their songs in your library','Music news','Images only from freely licensed sources, with credits']]},
+   akis:{tr:['Hareket akışı','Seninle ilgili olan her şey tek akışta.',['Seni kim takip etti','Profilini kim ziyaret etti','Hangi teklifler geldi','Grup davetleri']],
+           en:['Activity','Everything about you in one feed.',['Who followed you','Who visited your profile','Which offers came in','Band invites']]},
+   gizlilik:{tr:['Gizliliğin','Neyin görüneceğine sen karar verirsin.',['Profil, konser, ekipman ve repertuvar için ayrı anahtarlar','Konum yalnız seçtiğin şehir; konum izni istenmez','Rahatsız eden profili tek dokunuşla bildir ya da engelle','Hesabını uygulamadan sil; profilin ve fotoğrafların silinir']],
+           en:['Your privacy','You decide what is shown.',['Separate switches for profile, gigs, gear and repertoire','Location is only the city you pick; no location permission','Report or block a profile in one tap','Delete your account in the app; your profile and photos go with it']]}
+  };
+  const pzSira=Object.keys(PZ);let pzAcik=0,pzOnceki=null;
+  const pzP=document.getElementById('pzPerde');
+  function pzGoster(i){pzAcik=(i+pzSira.length)%pzSira.length;const k=pzSira[pzAcik],v=PZ[k][dil==='en'?'en':'tr'];
+    const img=document.getElementById('pzImg');const yol='ekranlar/3/'+(dil==='en'?'en/':'')+'pano_'+k+'_yatay.jpg';
+    img.onerror=()=>{img.onerror=null;img.src='ekranlar/3/'+(dil==='en'?'en/':'')+'pano_yatay.jpg'};img.src=yol;img.alt=v[0];
+    document.getElementById('pzBaslik').textContent=v[0];document.getElementById('pzGiris').textContent=v[1];
+    const ul=document.getElementById('pzMaddeler');ul.innerHTML='';v[2].forEach(m=>{const li=document.createElement('li');li.textContent=m;ul.appendChild(li)});
+    document.getElementById('pzKapat').textContent=dil==='en'?'Close':'Kapat'}
+  function pzAc(k){pzOnceki=document.activeElement;pzGoster(pzSira.indexOf(k));pzP.hidden=false;document.getElementById('pzKapat').focus()}
+  function pzKapa(){pzP.hidden=true;pzOnceki&&pzOnceki.focus()}
+  if(pzP)document.body.appendChild(pzP); // site kabı container olduğu için fixed oraya göre kalıyordu
+  if(pzP){document.querySelectorAll('.pz').forEach(b=>b.addEventListener('click',()=>pzAc(b.dataset.pz)));
+    document.getElementById('pzKapat').onclick=pzKapa;document.getElementById('pzOnce').onclick=()=>pzGoster(pzAcik-1);document.getElementById('pzSonra').onclick=()=>pzGoster(pzAcik+1);
+    pzP.addEventListener('click',e=>{if(e.target===pzP)pzKapa()});
+    document.addEventListener('keydown',e=>{if(pzP.hidden)return;if(e.key==='Escape')pzKapa();if(e.key==='ArrowRight')pzGoster(pzAcik+1);if(e.key==='ArrowLeft')pzGoster(pzAcik-1)})}
   // --- kopyala
   const kb=document.getElementById('kopyala');
   kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
