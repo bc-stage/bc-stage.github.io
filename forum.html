@@ -59,7 +59,7 @@ label.alan{display:grid;gap:6px;margin-top:12px;font-size:14px;color:var(--solgu
 .dugme.apple{background:#fff;color:#000;border-color:#fff;font-size:16px;padding:11px 20px}
 .dugme.apple span:first-child{font-size:18px;line-height:1}
 .veya{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sonuk);margin:14px 0 8px}
-.kod{letter-spacing:.4em;font:600 22px var(--mono);width:9ch;text-align:center}
+.kod{letter-spacing:.25em;font:600 22px var(--mono);width:13ch;max-width:100%;text-align:center}
 nav.sekmeler{display:flex;gap:6px;overflow-x:auto;margin-top:26px;padding-bottom:4px;border-bottom:1px solid var(--cizgi)}
 nav.sekmeler button{flex:none;background:none;border:0;color:var(--solgun);padding:10px 14px;border-radius:12px 12px 0 0;cursor:pointer;font-weight:600}
 nav.sekmeler button[aria-selected="true"]{color:var(--sariUstu);background:var(--sari)}
@@ -120,7 +120,7 @@ footer a{color:var(--solgun);text-decoration:none}
   <!-- GİRİŞ -->
   <section class="kutu" id="giris" hidden>
     <h2 data-en="Sign in with your BC account">BC hesabınla gir</h2>
-    <p data-en="Signed up with Apple in the app? Use Sign in with Apple. Otherwise type your BC ID, your member number or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">Uygulamada Apple ile kaydolduysan Apple ile gir. Değilse BC ID'ni, üye numaranı ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
+    <p data-en="Signed up with Apple in the app? Use Sign in with Apple. Otherwise type your BC ID, your member number or your email. We'll send a sign-in code to the email on your account. New here? Type your email and an account is created.">Uygulamada Apple ile kaydolduysan Apple ile gir. Değilse BC ID'ni, üye numaranı ya da e-postanı yaz. Hesabındaki e-postaya bir giriş kodu göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
     <div class="satir"><button class="dugme apple" id="appleGir" type="button"><span aria-hidden="true"></span> <span data-en="Sign in with Apple">Apple ile gir</span></button></div>
     <p class="veya" data-en="or with a code">ya da kodla</p>
     <div class="satir" id="adim1">
@@ -128,7 +128,7 @@ footer a{color:var(--solgun);text-decoration:none}
       <button class="dugme ana" id="kodGonder" type="button" data-en="Send code">Kod gönder</button>
     </div>
     <div class="satir" id="adim2" hidden>
-      <input class="kod" id="kod" type="text" inputmode="numeric" maxlength="10" autocomplete="one-time-code" placeholder="000000">
+      <input class="kod" id="kod" type="text" inputmode="numeric" maxlength="10" autocomplete="one-time-code" placeholder="00000000">
       <button class="dugme ana" id="kodGir" type="button" data-en="Sign in">Gir</button>
       <button class="ince" id="geriAdim" type="button" data-en="Change">Değiştir</button>
     </div>
