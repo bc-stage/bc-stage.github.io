@@ -56,6 +56,9 @@ textarea{width:100%;min-height:120px;resize:vertical}
 label.alan{display:grid;gap:6px;margin-top:12px;font-size:14px;color:var(--solgun)}
 .mesaj{font-size:14px;margin-top:10px;min-height:1.4em}
 .mesaj.hata{color:var(--kirmizi)}.mesaj.iyi{color:var(--sari)}
+.dugme.apple{background:#fff;color:#000;border-color:#fff;font-size:16px;padding:11px 20px}
+.dugme.apple span:first-child{font-size:18px;line-height:1}
+.veya{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sonuk);margin:14px 0 8px}
 .kod{letter-spacing:.4em;font:600 22px var(--mono);width:9ch;text-align:center}
 nav.sekmeler{display:flex;gap:6px;overflow-x:auto;margin-top:26px;padding-bottom:4px;border-bottom:1px solid var(--cizgi)}
 nav.sekmeler button{flex:none;background:none;border:0;color:var(--solgun);padding:10px 14px;border-radius:12px 12px 0 0;cursor:pointer;font-weight:600}
@@ -117,7 +120,9 @@ footer a{color:var(--solgun);text-decoration:none}
   <!-- GİRİŞ -->
   <section class="kutu" id="giris" hidden>
     <h2 data-en="Sign in with your BC account">BC hesabınla gir</h2>
-    <p data-en="Type your BC ID, your member number or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">BC ID'ni, üye numaranı ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
+    <p data-en="Signed up with Apple in the app? Use Sign in with Apple. Otherwise type your BC ID, your member number or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">Uygulamada Apple ile kaydolduysan Apple ile gir. Değilse BC ID'ni, üye numaranı ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
+    <div class="satir"><button class="dugme apple" id="appleGir" type="button"><span aria-hidden="true"></span> <span data-en="Sign in with Apple">Apple ile gir</span></button></div>
+    <p class="veya" data-en="or with a code">ya da kodla</p>
     <div class="satir" id="adim1">
       <input class="genis" id="kimlik" type="text" autocomplete="username" placeholder="@bcid, ID no ya da e-posta">
       <button class="dugme ana" id="kodGonder" type="button" data-en="Send code">Kod gönder</button>
@@ -202,6 +207,9 @@ footer a{color:var(--solgun);text-decoration:none}
     try{const {durum,j}=await kodIstek({eylem:'dogrula',kimlik:k,kod});
       if(durum===429)girisMesaj(t().cokIstek,'hata');else if(j.access_token){await sb.auth.setSession({access_token:j.access_token,refresh_token:j.refresh_token});girisMesaj('')}else girisMesaj(t().kodYanlis,'hata')}
     catch(e){girisMesaj(t().hataGenel,'hata')}finally{$('kodGir').disabled=false}};
+  // Apple ile giriş: Apple kullanıcılarının e-postası çoğu zaman gizli (privaterelay);
+  // kod oraya ulaşmıyor. Apple ile gelen aynı BC hesabına girer.
+  $('appleGir').onclick=async()=>{girisMesaj('');const {error}=await sb.auth.signInWithOAuth({provider:'apple',options:{redirectTo:location.origin+location.pathname}});if(error)girisMesaj(t().hataGenel,'hata')};
   $('geriAdim').onclick=()=>{$('adim1').hidden=false;$('adim2').hidden=true;$('kod').value='';girisMesaj('')};
   $('kimlik').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGonder').click()});
   $('kod').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGir').click()});
