@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="BC Stage yardım: her bölüm adım adım, ekranlarla. BC Stage: sahnedeki müzisyen için şarkılar, akorlar, listeler, metronom, davul ve looper tek uygulamada. iPad, iPhone, Android ve Mac.">
+<meta property="og:title" content="BC Stage">
+<meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
+<meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
+<meta name="theme-color" content="#0A0A0D">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="apple-touch-icon" href="simgeler/logo.png">
+<title>BC Stage Yardım</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Düzen: solda yapışkan konu menüsü, sağda kılavuzlar; her kılavuzda numaralı işaretli iPad görseli + eşleşen adımlar. */
+:root{
+  color-scheme:dark;
+  --zemin:#0A0A0D;--yuzey:#16161A;--yuzey2:#1E1E24;--cizgi:#2A2A31;
+  --murekkep:#F4F2EC;--solgun:#8B8B95;--sonuk:#57575F;
+  --sari:#FFC93C;--turuncu:#FF9A2E;--sariUstu:#241A00;--sariSis:rgba(255,201,60,.10);
+  --baslik:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;--baslik2:"Barlow",system-ui,sans-serif;
+  --govde:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"Geist Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font:16px/1.65 var(--govde)}
+a{color:var(--sari)}
+:focus-visible{outline:2px solid var(--sari);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.kap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,40px)}
+header.ust{display:flex;align-items:center;gap:16px;padding-block:18px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:28px;line-height:1}
+.logo img{width:44px;height:44px;border-radius:11px}
+.logo span{color:var(--sari)}
+.bos{flex:1}
+.geri{color:var(--solgun);text-decoration:none;font-size:15px}
+.geri:hover{color:var(--murekkep)}
+.dil{font:12px var(--mono);color:var(--solgun);background:none;border:1px solid var(--cizgi);border-radius:999px;padding:6px 12px;cursor:pointer}
+.giris{padding-block:30px 26px;border-bottom:1px solid var(--cizgi)}
+.giris .ustE{font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sari);margin:0 0 10px}
+.giris h1{font-family:var(--baslik);font-weight:800;text-transform:uppercase;font-size:clamp(52px,9vw,110px);line-height:.95;margin:0}
+.giris p{color:var(--solgun);font-size:18px;max-width:60ch;margin:14px 0 0}
+.ara{margin-top:22px;display:flex;align-items:center;gap:10px;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:16px;padding:4px 6px 4px 16px;max-width:560px}
+.ara input{flex:1;min-width:0;background:none;border:0;color:var(--murekkep);font:16px var(--govde);padding:10px 0;outline:none}
+.ara span{color:var(--sonuk)}
+.duzen{display:grid;grid-template-columns:240px minmax(0,1fr);gap:40px;padding-block:30px 80px}
+nav.menu{position:sticky;top:16px;align-self:start;max-height:calc(100dvh - 32px);overflow:auto;padding-right:6px}
+nav.menu h4{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sonuk);margin:18px 0 6px}
+nav.menu h4:first-child{margin-top:0}
+nav.menu a{display:block;text-decoration:none;color:var(--solgun);padding:6px 10px;border-radius:10px;font-size:15px}
+nav.menu a:hover{color:var(--murekkep);background:var(--yuzey)}
+nav.menu a.aktif{color:var(--sariUstu);background:var(--sari);font-weight:600}
+.kilavuz{padding-block:10px 56px;border-bottom:1px solid var(--cizgi);margin-bottom:46px;scroll-margin-top:16px}
+.kilavuz:last-child{border-bottom:0}
+.kilavuz h2{font-family:var(--baslik);font-weight:800;text-transform:uppercase;font-size:clamp(38px,5vw,60px);line-height:1;margin:0}
+.kilavuz .ozet{color:var(--solgun);font-size:17px;max-width:62ch;margin:10px 0 0}
+.etiketler{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.etiket{font:10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--cizgi);color:var(--solgun)}
+.etiket.vip{background:var(--sariSis);color:var(--sari);border-color:transparent}
+.govde{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;margin-top:24px;align-items:start}
+.govde.tek{grid-template-columns:minmax(0,1fr)}
+figure{margin:0;position:sticky;top:16px}
+.ipad{position:relative;background:#050506;border:1px solid #33333b;border-radius:22px;padding:10px;box-shadow:0 30px 70px -25px rgba(0,0,0,.85),0 0 0 5px #111115}
+.ekran{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#0b0b0e}
+.ekran img{width:100%;height:100%;object-fit:cover;display:block}
+.isaret{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:2px solid var(--sariUstu);background:var(--sari);color:var(--sariUstu);font:600 13px var(--mono);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:0 0 0 4px rgba(255,201,60,.25),0 4px 14px rgba(0,0,0,.6);transition:transform .15s,box-shadow .15s}
+.isaret:hover,.isaret.yan{transform:translate(-50%,-50%) scale(1.25);box-shadow:0 0 0 8px rgba(255,201,60,.3),0 4px 14px rgba(0,0,0,.6)}
+figcaption{color:var(--sonuk);font:12px var(--mono);margin-top:10px}
+ol.adimlar{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:a}
+ol.adimlar li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;padding:10px 12px;border-radius:14px;border:1px solid transparent;cursor:default;transition:background .15s,border-color .15s}
+ol.adimlar li b{width:28px;height:28px;border-radius:50%;background:var(--sari);color:var(--sariUstu);font:600 13px var(--mono);display:grid;place-items:center}
+ol.adimlar li.yan{background:var(--yuzey);border-color:#4a3d1c}
+ul.ek{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+ul.ek li{position:relative;padding:10px 12px 10px 34px;background:var(--yuzey);border-radius:14px;color:#d6d3cb}
+ul.ek li::before{content:"";position:absolute;left:14px;top:1.15em;width:7px;height:7px;border-radius:50%;background:var(--sari)}
+.ipucu{margin-top:16px;padding:14px 16px;border-radius:14px;border:1px solid #4a3d1c;background:var(--sariSis);color:var(--murekkep);font-size:15px}
+.ipucu::before{content:attr(data-b);display:block;font:11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sari);margin-bottom:4px}
+.yok{color:var(--solgun);padding:30px 0}
+.oy{margin-top:18px;border:1px dashed #4a3d1c;border-radius:14px;padding:10px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;background:rgba(255,201,60,.035)}
+.oy button{font:inherit;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--murekkep);border-radius:999px;padding:6px 12px}
+.oy button.secili[data-oy="begen"]{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.oy button.secili[data-oy="begenme"]{background:#3a2a2a;border-color:#7a4a4a;color:#ffd2c8}
+.oy textarea{flex:1 1 240px;min-width:0;min-height:36px;background:var(--zemin);color:var(--murekkep);border:1px solid var(--cizgi);border-radius:10px;padding:7px 10px;font:inherit}
+.oy .durum{color:var(--sonuk);font:11px var(--mono)}
+footer{border-top:1px solid var(--cizgi);padding-block:26px 40px;color:var(--sonuk);font-size:14px;display:flex;flex-wrap:wrap;gap:16px}
+footer a{color:var(--solgun);text-decoration:none}
+@media (max-width:900px){
+  .duzen{grid-template-columns:minmax(0,1fr)}
+  nav.menu{position:sticky;top:0;z-index:5;max-height:none;display:flex;gap:6px;overflow-x:auto;background:var(--zemin);padding:10px 0;margin-inline:calc(-1*clamp(16px,3vw,40px));padding-inline:clamp(16px,3vw,40px);border-bottom:1px solid var(--cizgi)}
+  nav.menu h4{display:none}
+  nav.menu a{white-space:nowrap;background:var(--yuzey);flex:none}
+  .govde{grid-template-columns:minmax(0,1fr)}
+  figure{position:static}
+  .isaret{width:22px;height:22px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+
+<div class="kap">
+  <header class="ust">
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44">BC <span>STAGE</span></a>
+    <span class="bos"></span>
+    <a class="geri" href="index.html" data-en="← Back to site">← Siteye dön</a>
+    <button class="dil" id="dil" type="button">TR · EN</button>
+  </header>
+  <section class="giris">
+    <p class="ustE" data-en="Help">Yardım</p>
+    <h1 data-en="How it works">Nasıl çalışır</h1>
+    <p data-en="Every part of BC Stage, step by step. Tap a number on the screen to find its step, or tap a step to see where it is.">BC Stage'in her bölümü, adım adım. Ekrandaki bir numaraya dokun adımını bul, ya da bir adıma dokun ekranda nerede olduğunu gör.</p>
+    <label class="ara"><input id="ara" type="search" placeholder="Ara: pedal, karaoke, kapo…" autocomplete="off"><span>⌕</span></label>
+  </section>
+  <div class="duzen">
+    <nav class="menu" id="menu" aria-label="Konular"></nav>
+    <main id="kilavuzlar"></main>
+  </div>
+  <footer><a href="index.html">BC Stage</a><a href="index.html#forum" data-en="Forum">Forum</a><a href="index.html#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a><span>© 2026 BC Labs</span></footer>
+</div>
+
+<script src="yardim_veri.js"></script>
+<script>
+(function(){
+  const TASLAK=false; // yayın sürümünde false
+  let dil='tr';
+  const K=window.KILAVUZ,G=window.KILAVUZ_GRUP;
+  const menu=document.getElementById('menu'),kap=document.getElementById('kilavuzlar'),ara=document.getElementById('ara');
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const VIP={grup:1,pedal:1,oneman:1},IPM={akorbulma:1,metronombul:1,aidavul:1},NET={pano:1};
+  function ciz(){
+    const L=dil==='en'?'en':'tr',q=(ara.value||'').trim().toLocaleLowerCase(L==='en'?'en':'tr');
+    const gorunen=K.filter(g=>{if(!q)return true;const v=g[L];return [v.a,v.o,...(v.s||[]),...(v.e||[]),v.t||''].join(' ').toLocaleLowerCase(L==='en'?'en':'tr').includes(q)});
+    let m='',son='';
+    gorunen.forEach(g=>{if(g.g!==son){son=g.g;m+='<h4>'+esc(G[g.g][L==='en'?1:0])+'</h4>'}m+='<a href="#'+g.k+'" data-k="'+g.k+'">'+esc(g[L].a)+'</a>'});
+    menu.innerHTML=m;
+    if(!gorunen.length){kap.innerHTML='<p class="yok">'+(L==='en'?'Nothing found. Try another word, or ask in the forum.':'Bir şey bulunamadı. Başka bir kelime dene ya da foruma sor.')+'</p>';return}
+    kap.innerHTML=gorunen.map(g=>{const v=g[L];
+      const et=(VIP[g.k]?'<span class="etiket vip">VIP</span>':'')+(IPM[g.k]?'<span class="etiket">iPad · Mac</span>':'')+(NET[g.k]?'<span class="etiket">internet</span>':'');
+      let fig='',adim='';
+      if(g.i){const yol='ekranlar/3/'+(L==='en'?'en/':'')+g.i+'_yatay.jpg';
+        fig='<figure><div class="ipad"><div class="ekran"><img src="'+yol+'" alt="'+esc(v.a)+'" loading="lazy" onerror="this.onerror=null;this.src=\'ekranlar/3/'+g.i+'_yatay.jpg\'">'+
+          g.n.map((p,i)=>'<button type="button" class="isaret" data-i="'+i+'" style="left:'+p[0]+'%;top:'+p[1]+'%" aria-label="'+(i+1)+'. '+esc(v.s[i])+'">'+(i+1)+'</button>').join('')+
+          '</div></div><figcaption>'+(L==='en'?'BC Stage 3.0 · iPad':'BC Stage 3.0 · iPad')+'</figcaption></figure>';
+        adim='<ol class="adimlar">'+v.s.map((t,i)=>'<li data-i="'+i+'" tabindex="0"><b>'+(i+1)+'</b><span>'+esc(t)+'</span></li>').join('')+'</ol>'}
+      const ek=(v.e&&v.e.length)?'<ul class="ek">'+v.e.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>':'';
+      const ip=v.t?'<p class="ipucu" data-b="'+(L==='en'?'Tip':'İpucu')+'">'+esc(v.t)+'</p>':'';
+      const oy=TASLAK?'<div class="oy" data-k="'+g.k+'"></div>':'';
+      return '<section class="kilavuz" id="'+g.k+'"><h2>'+esc(v.a)+'</h2><p class="ozet">'+esc(v.o)+'</p>'+(et?'<div class="etiketler">'+et+'</div>':'')+
+        '<div class="govde'+(g.i?'':' tek')+'">'+fig+'<div>'+adim+ek+ip+'</div></div>'+oy+'</section>'}).join('');
+    baglaEtkilesim();oyKur();izle();
+  }
+  function baglaEtkilesim(){
+    kap.querySelectorAll('.kilavuz').forEach(sec=>{
+      const yak=(i,on)=>{sec.querySelectorAll('[data-i="'+i+'"]').forEach(e=>e.classList.toggle('yan',on))};
+      sec.querySelectorAll('.isaret,ol.adimlar li').forEach(e=>{const i=e.dataset.i;
+        e.addEventListener('mouseenter',()=>yak(i,true));e.addEventListener('mouseleave',()=>yak(i,false));
+        e.addEventListener('focus',()=>yak(i,true));e.addEventListener('blur',()=>yak(i,false));
+        e.addEventListener('click',()=>{sec.querySelectorAll('.yan').forEach(x=>x.classList.remove('yan'));yak(i,true);
+          const hedef=e.classList.contains('isaret')?sec.querySelector('ol.adimlar li[data-i="'+i+'"]'):sec.querySelector('.isaret[data-i="'+i+'"]');
+          if(hedef&&innerWidth<=900)hedef.scrollIntoView({behavior:'smooth',block:'center'})})})})}
+  let gozcu=null;
+  function izle(){gozcu&&gozcu.disconnect();gozcu=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){menu.querySelectorAll('a').forEach(a=>a.classList.toggle('aktif',a.dataset.k===e.target.id))}})},{rootMargin:'-30% 0px -60% 0px'});
+    kap.querySelectorAll('.kilavuz').forEach(s=>gozcu.observe(s))}
+  // dil
+  const ogeler=[...document.querySelectorAll('[data-en]')];ogeler.forEach(e=>e.dataset.tr=e.textContent);
+  const db_=document.getElementById('dil');
+  function dilKur(d){dil=d;document.documentElement.lang=d;ogeler.forEach(e=>e.textContent=e.dataset[d]);db_.textContent=d==='tr'?'TR · EN':'EN · TR';
+    ara.placeholder=d==='en'?'Search: pedal, karaoke, capo…':'Ara: pedal, karaoke, kapo…';document.title=d==='en'?'BC Stage Help':'BC Stage Yardım';
+    try{localStorage.setItem('bcsite_dil',d)}catch(e){}ciz()}
+  db_.onclick=()=>dilKur(dil==='tr'?'en':'tr');
+  ara.addEventListener('input',ciz);
+  let ilk=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilk=k}catch(e){}
+  if(location.hash==='#en')ilk='en';if(location.hash==='#tr')ilk='tr';
+  dilKur(ilk);
+  if(location.hash&&location.hash.length>3){const h=document.getElementById(location.hash.slice(1));h&&h.scrollIntoView()}
+  // taslak oyları
+  let db=null;const oyVeri={};
+  function oyKur(){if(!TASLAK)return;kap.querySelectorAll('.oy').forEach(s=>{const k=s.dataset.k,v=oyVeri[k]||{};
+    s.innerHTML='<button type="button" data-oy="begen">👍 Beğen</button><button type="button" data-oy="begenme">👎 Beğenme</button><textarea id="not_'+k+'" rows="1" placeholder="Not: ne değişsin?"></textarea><button type="button" class="kaydet">Notu kaydet</button><span class="durum">'+(db?'':'kayıt kapalı')+'</span>';
+    s.querySelector('textarea').value=v.not||'';s.querySelectorAll('[data-oy]').forEach(b=>b.classList.toggle('secili',b.dataset.oy===v.oy))})}
+  async function yaz(k,s,metin){const d=s.querySelector('.durum');if(!db){d.textContent='kayıt kapalı';return}d.textContent='kaydediliyor…';
+    try{await db.collection('yardim_oylari').doc(k).set({kilavuz:k,oy:oyVeri[k].oy||null,not:oyVeri[k].not||'',zaman:Date.now()});d.textContent=metin}catch(e){d.textContent='kaydedilemedi'}}
+  if(TASLAK){document.addEventListener('click',e=>{const b=e.target.closest('.oy button');if(!b)return;const s=b.closest('.oy'),k=s.dataset.k;const v=oyVeri[k]=Object.assign({},oyVeri[k]||{});
+      v.not=s.querySelector('textarea').value;if(b.dataset.oy){v.oy=v.oy===b.dataset.oy?null:b.dataset.oy;s.querySelectorAll('[data-oy]').forEach(x=>x.classList.toggle('secili',x.dataset.oy===v.oy));yaz(k,s,'oy kaydedildi')}else yaz(k,s,'not kaydedildi')});
+    (async()=>{try{db=await window.claude?.use?.('db')}catch(e){db=null}if(!db)return;
+      db.collection('yardim_oylari').onSnapshot(sn=>{sn.docs.forEach(d=>{oyVeri[d.id]={...(d.data()||{})}});
+        kap.querySelectorAll('.oy').forEach(s=>{const v=oyVeri[s.dataset.k]||{};const ta=s.querySelector('textarea');if(ta&&document.activeElement!==ta)ta.value=v.not||'';s.querySelectorAll('[data-oy]').forEach(b=>b.classList.toggle('secili',b.dataset.oy===v.oy));const du=s.querySelector('.durum');if(du&&du.textContent==='kayıt kapalı')du.textContent=''})},()=>{})})()}
+})();
+</script>
+
+</body>
+</html>
