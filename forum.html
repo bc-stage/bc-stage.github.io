@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="BC Stage forum: hatalar, istekler, fikirler ve oylama. BC Stage: sahnedeki müzisyen için şarkılar, akorlar, listeler, metronom, davul ve looper tek uygulamada. iPad, iPhone, Android ve Mac.">
+<meta property="og:title" content="BC Stage">
+<meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
+<meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
+<meta name="theme-color" content="#0A0A0D">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="apple-touch-icon" href="simgeler/logo.png">
+<title>BC Stage Forum</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Düzen: üstte giriş çubuğu, altında sekmeler (Hatalar · Olması gerekenler · Fikirler · Pano · Destek), liste ya da ayrıntı tek sütunda. */
+:root{
+  color-scheme:dark;
+  --zemin:#0A0A0D;--yuzey:#16161A;--yuzey2:#1E1E24;--cizgi:#2A2A31;
+  --murekkep:#F4F2EC;--solgun:#8B8B95;--sonuk:#57575F;
+  --sari:#FFC93C;--turuncu:#FF9A2E;--sariUstu:#241A00;--sariSis:rgba(255,201,60,.10);--kirmizi:#ff7a6b;
+  --baslik:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;--baslik2:"Barlow",system-ui,sans-serif;
+  --govde:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"Geist Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font:16px/1.6 var(--govde)}
+a{color:var(--sari)}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:2px solid var(--sari);outline-offset:3px;border-radius:6px}
+.kap{max-width:1000px;margin:0 auto;padding-inline:clamp(16px,3vw,32px)}
+header.ust{display:flex;align-items:center;gap:14px;padding-block:18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:28px;line-height:1}
+.logo img{width:44px;height:44px;border-radius:11px}
+.logo span{color:var(--sari)}
+.bos{flex:1}
+.ince{color:var(--solgun);text-decoration:none;font-size:15px;background:none;border:0;cursor:pointer;padding:6px 4px}
+.ince:hover{color:var(--murekkep)}
+.dil{font:12px var(--mono);color:var(--solgun);background:none;border:1px solid var(--cizgi);border-radius:999px;padding:6px 12px;cursor:pointer}
+.kim{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--solgun)}
+.kim b{color:var(--murekkep)}
+.no{font:12px var(--mono);background:var(--sari);color:var(--sariUstu);padding:2px 8px;border-radius:8px}
+h1{font-family:var(--baslik);font-weight:800;text-transform:uppercase;font-size:clamp(48px,8vw,96px);line-height:.95;margin:22px 0 0}
+.alt{color:var(--solgun);font-size:17px;max-width:60ch;margin:10px 0 0}
+.dugme{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:10px 16px;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--murekkep);cursor:pointer;font-weight:600;text-decoration:none}
+.dugme.ana{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.dugme:disabled{opacity:.5;cursor:default}
+.kutu{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:20px;margin-top:22px}
+.kutu h2{font-family:var(--baslik2);font-size:20px;margin:0 0 6px}
+.kutu p{color:var(--solgun);margin:0 0 12px;font-size:15px}
+.satir{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input[type=text],input[type=email],select,textarea{background:var(--zemin);color:var(--murekkep);border:1px solid var(--cizgi);border-radius:12px;padding:11px 12px;min-width:0}
+input.genis{flex:1 1 260px}
+textarea{width:100%;min-height:120px;resize:vertical}
+label.alan{display:grid;gap:6px;margin-top:12px;font-size:14px;color:var(--solgun)}
+.mesaj{font-size:14px;margin-top:10px;min-height:1.4em}
+.mesaj.hata{color:var(--kirmizi)}.mesaj.iyi{color:var(--sari)}
+.kod{letter-spacing:.4em;font:600 22px var(--mono);width:9ch;text-align:center}
+nav.sekmeler{display:flex;gap:6px;overflow-x:auto;margin-top:26px;padding-bottom:4px;border-bottom:1px solid var(--cizgi)}
+nav.sekmeler button{flex:none;background:none;border:0;color:var(--solgun);padding:10px 14px;border-radius:12px 12px 0 0;cursor:pointer;font-weight:600}
+nav.sekmeler button[aria-selected="true"]{color:var(--sariUstu);background:var(--sari)}
+.arac{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.liste{display:grid;gap:10px;margin-top:16px}
+.konu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:16px;padding:14px 16px;cursor:pointer;text-align:left;color:inherit;width:100%}
+.konu:hover{border-color:#4a3d1c}
+.oyla{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:52px;border:1px solid var(--cizgi);background:var(--zemin);color:var(--solgun);border-radius:12px;padding:6px 4px;cursor:pointer}
+.oyla span{font-size:12px;line-height:1}.oyla em{font-style:normal;font:600 15px var(--mono);color:var(--murekkep)}
+.oyla.verildi{border-color:var(--sari);color:var(--sari)}
+.konu h3{margin:0;font-size:17px;font-weight:600;line-height:1.35}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:6px;font-size:13px;color:var(--sonuk)}
+.cip{font:10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--cizgi);color:var(--solgun)}
+.cip.hata{color:var(--kirmizi);border-color:#5a2f2a}
+.cip.fikir{color:var(--sari);border-color:#4a3d1c}
+.cip.d-sirada{color:var(--murekkep)}.cip.d-yapiliyor{color:var(--turuncu);border-color:#5a3a1a}.cip.d-yapildi{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}.cip.d-reddedildi{color:var(--sonuk)}
+.yonRozet{font:10px var(--mono);background:var(--sari);color:var(--sariUstu);padding:1px 6px;border-radius:6px;text-transform:uppercase}
+.bosDurum{color:var(--solgun);padding:30px 0;text-align:center}
+.pano{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.sutun{background:var(--zemin);border:1px solid var(--cizgi);border-radius:18px;padding:14px;display:grid;gap:8px;align-content:start}
+.sutun h3{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:8px}
+.sutun .k2{background:var(--yuzey);border-radius:12px;padding:10px 12px;cursor:pointer;border:0;color:inherit;text-align:left;width:100%}
+.sutun .k2 b{display:block;font-weight:600;font-size:14px}
+.sutun .k2 small{color:var(--sonuk);font:11px var(--mono)}
+.ayrinti .geri{margin-top:18px}
+.ayrinti h2{font-family:var(--baslik);text-transform:uppercase;font-size:clamp(30px,4.5vw,46px);line-height:1;margin:14px 0 0}
+.govdeMetin{white-space:pre-wrap;color:#e2dfd6;margin-top:14px}
+.ynot{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--sariSis);border:1px solid #4a3d1c}
+.ynot::before{content:attr(data-b);display:block;font:11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sari);margin-bottom:4px}
+.yanitlar{display:grid;gap:10px;margin-top:22px}
+.yanit{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:14px;padding:12px 14px}
+.yanit.yon{border-color:#4a3d1c}
+.yanit p{margin:6px 0 0;white-space:pre-wrap}
+.yonetim{margin-top:20px;border:1px dashed #4a3d1c;border-radius:14px;padding:14px}
+.talep{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:14px;padding:14px}
+.talep .yanitMetin{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sariSis);white-space:pre-wrap}
+footer{border-top:1px solid var(--cizgi);margin-top:50px;padding-block:24px 40px;color:var(--sonuk);font-size:14px;display:flex;flex-wrap:wrap;gap:16px}
+footer a{color:var(--solgun);text-decoration:none}
+@media (max-width:720px){.pano{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+
+<div class="kap">
+  <header class="ust">
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44">BC <span>STAGE</span></a>
+    <span class="bos"></span>
+    <span class="kim" id="kim" hidden></span>
+    <button class="ince" id="cikis" type="button" hidden data-en="Sign out">Çıkış</button>
+    <a class="ince" href="index.html" data-en="← Site">← Site</a>
+    <button class="dil" id="dil" type="button">TR · EN</button>
+  </header>
+
+  <h1>Forum</h1>
+  <p class="alt" data-en="Report bugs, ask for what's missing, share ideas and vote. The most-voted ideas move into the queue first.">Hata bildir, eksik olanı iste, fikir paylaş ve oyla. En çok oy alan fikirler sıraya önce girer.</p>
+
+  <!-- GİRİŞ -->
+  <section class="kutu" id="giris" hidden>
+    <h2 data-en="Sign in with your BC account">BC hesabınla gir</h2>
+    <p data-en="Type your BC ID or your email. We'll send a 6-digit code to the email on your account. New here? Type your email and an account is created.">BC ID'ni ya da e-postanı yaz. Hesabındaki e-postaya 6 haneli bir kod göndereceğiz. Yeni misin? E-postanı yaz, hesabın açılır.</p>
+    <div class="satir" id="adim1">
+      <input class="genis" id="kimlik" type="text" autocomplete="username" placeholder="@bcid ya da e-posta">
+      <button class="dugme ana" id="kodGonder" type="button" data-en="Send code">Kod gönder</button>
+    </div>
+    <div class="satir" id="adim2" hidden>
+      <input class="kod" id="kod" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
+      <button class="dugme ana" id="kodGir" type="button" data-en="Sign in">Gir</button>
+      <button class="ince" id="geriAdim" type="button" data-en="Change">Değiştir</button>
+    </div>
+    <p class="mesaj" id="girisMesaj" role="status"></p>
+  </section>
+
+  <!-- BC ID SEÇ -->
+  <section class="kutu" id="bcidSec" hidden>
+    <h2 data-en="Choose your BC ID">BC kimliğini seç</h2>
+    <p data-en="Musicians find you with it. You can change it later; nothing breaks. 3–20 characters: lowercase letters, numbers, dots or underscores.">Müzisyenler seni bununla bulur. Sonra değiştirebilirsin, hiçbir bağ kopmaz. 3–20 karakter: küçük harf, rakam, nokta ya da alt çizgi.</p>
+    <div class="satir"><input class="genis" id="bcidGir" type="text" autocomplete="off" placeholder="kullaniciadi"><button class="dugme ana" id="bcidKaydet" type="button" data-en="Take this ID">Bu kimliği al</button></div>
+    <p class="mesaj" id="bcidMesaj" role="status"></p>
+  </section>
+
+  <nav class="sekmeler" id="sekmeler" role="tablist"></nav>
+  <main id="ana"></main>
+
+  <footer><a href="index.html">BC Stage</a><a href="yardim.html" data-en="Help">Yardım</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a><span data-en="No song lyrics, please (copyright). Be kind.">Lütfen şarkı sözü paylaşma (telif). Nazik ol.</span></footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  'use strict';
+  const AYAR={url:'https://xzvlayehgmkzddfncwyb.supabase.co',anahtar:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF'};
+  let dil='tr';
+  const T={
+    tr:{kat:{hata:'Hata',olmasi_gereken:'Olması gereken',fikir:'Fikir'},kats:{hata:'Hatalar',olmasi_gereken:'Olması gerekenler',fikir:'Fikirler'},
+      dur:{yeni:'Yeni',sirada:'Sırada',yapiliyor:'Yapılıyor',yapildi:'Yapıldı',reddedildi:'Yapılmayacak'},
+      tum:'Tümü',pano:'Pano',destek:'Destek',enCok:'En çok oy',enYeni:'En yeni',yeni:'+ Yeni konu',girOnce:'Yazmak ve oylamak için giriş yap.',
+      bos:'Henüz konu yok. İlk sen yaz.',yanit:'yanıt',oy:'oy',geri:'← Listeye dön',yanitlar:'Yanıtlar',yanitYaz:'Yanıtın',gonder:'Gönder',
+      bildir:'Bildir',bildirildi:'Bildirildi, teşekkürler.',sil:'Sil',silOnay:'Silmek için tekrar bas',baslik:'Başlık',aciklama:'Açıklama',kategori:'Kategori',cihaz:'Cihaz (ör. iPad Pro 11, iPadOS 26)',surum:'BC Stage sürümü (Ayarlar → Hakkında)',
+      hataIpucu:'Neye, hangi sırayla dokunduğunu yaz. Ne bekliyordun, ne oldu?',yayinla:'Yayınla',iptal:'Vazgeç',yonetici:'Yönetici',ynot:'Ekipten not',durum:'Durum',notYaz:'Ekip notu (herkese görünür)',kaydet:'Kaydet',
+      kaydedildi:'Kaydedildi.',hiz:'Çok hızlı gidiyorsun; biraz sonra tekrar dene.',hataGenel:'Bir şey ters gitti. Bağlantını kontrol edip tekrar dene.',
+      kodGitti:'Hesap varsa kod e-postana gitti. Gelen kutunu (ve gereksiz klasörünü) kontrol et.',kodYanlis:'Kod geçersiz ya da süresi dolmuş.',bicim:'BC ID ya da e-posta biçimi geçersiz.',cokIstek:'Çok fazla deneme. 15 dakika sonra tekrar dene.',
+      alinmis:'Bu kimlik alınmış.',gecersiz:'Geçerli bir BC ID değil.',
+      destekBas:'Destek talebi',destekAc:'Bize özel olarak yaz. Talebini yalnız sen ve ekip görür.',konu:'Konu',taleplerim:'Taleplerim',talepYok:'Henüz talebin yok.',
+      tdur:{acik:'Açık',yanitlandi:'Yanıtlandı',kapandi:'Kapandı'},kapat:'Talebi kapat',ekipYaniti:'Ekibin yanıtı',destekGiris:'Destek talebi açmak için giriş yap.',
+      simdi:'Şu an yapılıyor',uye:'Üye'},
+    en:{kat:{hata:'Bug',olmasi_gereken:'Should be there',fikir:'Idea'},kats:{hata:'Bugs',olmasi_gereken:'Should be there',fikir:'Ideas'},
+      dur:{yeni:'New',sirada:'In the queue',yapiliyor:'In progress',yapildi:'Done',reddedildi:'Won\'t do'},
+      tum:'All',pano:'Board',destek:'Support',enCok:'Most voted',enYeni:'Newest',yeni:'+ New topic',girOnce:'Sign in to post and vote.',
+      bos:'No topics yet. Be the first.',yanit:'replies',oy:'votes',geri:'← Back to list',yanitlar:'Replies',yanitYaz:'Your reply',gonder:'Send',
+      bildir:'Report',bildirildi:'Reported, thank you.',sil:'Delete',silOnay:'Press again to delete',baslik:'Title',aciklama:'Description',kategori:'Category',cihaz:'Device (e.g. iPad Pro 11, iPadOS 26)',surum:'BC Stage version (Settings → About)',
+      hataIpucu:'Write what you tapped, in order. What did you expect, and what happened?',yayinla:'Post',iptal:'Cancel',yonetici:'Team',ynot:'Note from the team',durum:'Status',notYaz:'Team note (public)',kaydet:'Save',
+      kaydedildi:'Saved.',hiz:'You\'re going too fast; try again in a bit.',hataGenel:'Something went wrong. Check your connection and try again.',
+      kodGitti:'If the account exists, a code is on its way to its email. Check your inbox (and spam).',kodYanlis:'The code is invalid or expired.',bicim:'That BC ID or email doesn\'t look right.',cokIstek:'Too many tries. Try again in 15 minutes.',
+      alinmis:'That ID is taken.',gecersiz:'Not a valid BC ID.',
+      destekBas:'Support request',destekAc:'Write to us privately. Only you and the team can see it.',konu:'Subject',taleplerim:'My requests',talepYok:'No requests yet.',
+      tdur:{acik:'Open',yanitlandi:'Answered',kapandi:'Closed'},kapat:'Close request',ekipYaniti:'Team reply',destekGiris:'Sign in to open a support request.',
+      simdi:'In progress now',uye:'Member'}
+  };
+  const t=()=>T[dil];
+  const $=id=>document.getElementById(id);
+  const el=(tag,attrs,...kids)=>{const e=document.createElement(tag);if(attrs)for(const k in attrs){if(k==='class')e.className=attrs[k];else if(k.startsWith('on'))e.addEventListener(k.slice(2),attrs[k]);else if(attrs[k]!==false&&attrs[k]!=null)e.setAttribute(k,attrs[k])}kids.flat().forEach(c=>{if(c==null||c===false)return;e.append(c.nodeType?c:document.createTextNode(String(c)))});return e};
+  const tarih=s=>new Date(s).toLocaleDateString(dil==='en'?'en-GB':'tr-TR',{day:'numeric',month:'short',year:'numeric'});
+
+  if(!window.supabase){document.getElementById('ana').append(el('p',{class:'bosDurum'},'Supabase yüklenemedi.'));return}
+  const sb=window.supabase.createClient(AYAR.url,AYAR.anahtar,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+
+  let oturum=null,profil=null,yonetici=false,oylarim=new Set();
+  let sekme='tum',sirala='oy',acikKonu=null,yeniForm=null;
+
+  // ---------- giriş
+  async function kodIstek(govde){
+    const r=await fetch(AYAR.url+'/functions/v1/kod-gonder',{method:'POST',headers:{'Content-Type':'application/json','apikey':AYAR.anahtar},body:JSON.stringify(govde)});
+    let j={};try{j=await r.json()}catch(e){}
+    return {durum:r.status,j};
+  }
+  function girisMesaj(m,tur){const e=$('girisMesaj');e.textContent=m||'';e.className='mesaj'+(tur?' '+tur:'')}
+  $('kodGonder').onclick=async()=>{const k=$('kimlik').value.trim();if(!k)return;$('kodGonder').disabled=true;girisMesaj('');
+    try{const {durum,j}=await kodIstek({eylem:'gonder',kimlik:k});
+      if(durum===429)girisMesaj(t().cokIstek,'hata');else if(j.error==='bad_format')girisMesaj(t().bicim,'hata');else if(durum===200){girisMesaj(t().kodGitti,'iyi');$('adim1').hidden=true;$('adim2').hidden=false;$('kod').focus()}else girisMesaj(t().hataGenel,'hata')}
+    catch(e){girisMesaj(t().hataGenel,'hata')}finally{$('kodGonder').disabled=false}};
+  $('kodGir').onclick=async()=>{const k=$('kimlik').value.trim(),kod=$('kod').value.trim();if(kod.length!==6)return;$('kodGir').disabled=true;
+    try{const {durum,j}=await kodIstek({eylem:'dogrula',kimlik:k,kod});
+      if(durum===429)girisMesaj(t().cokIstek,'hata');else if(j.access_token){await sb.auth.setSession({access_token:j.access_token,refresh_token:j.refresh_token});girisMesaj('')}else girisMesaj(t().kodYanlis,'hata')}
+    catch(e){girisMesaj(t().hataGenel,'hata')}finally{$('kodGir').disabled=false}};
+  $('geriAdim').onclick=()=>{$('adim1').hidden=false;$('adim2').hidden=true;$('kod').value='';girisMesaj('')};
+  $('kimlik').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGonder').click()});
+  $('kod').addEventListener('keydown',e=>{if(e.key==='Enter')$('kodGir').click()});
+  $('cikis').onclick=async()=>{await sb.auth.signOut()};
+
+  // ---------- BC ID
+  $('bcidKaydet').onclick=async()=>{let v=$('bcidGir').value.trim().toLowerCase().replace(/^@/,'');const m=$('bcidMesaj');
+    if(!/^[a-z0-9._]{3,20}$/.test(v)||/(^[._])|([._]$)|([._]{2})/.test(v)){m.textContent=t().gecersiz;m.className='mesaj hata';return}
+    const {error}=await sb.from('profiles').update({username:v}).eq('id',oturum.user.id);
+    if(error){m.textContent=error.code==='23505'?t().alinmis:t().gecersiz;m.className='mesaj hata';return}
+    await profilYukle();ciz()};
+
+  async function profilYukle(){
+    profil=null;yonetici=false;oylarim=new Set();
+    if(!oturum)return;
+    const {data}=await sb.from('profiles').select('username,display_name,member_no').eq('id',oturum.user.id).maybeSingle();
+    profil=data||{};
+    const y=await sb.rpc('is_forum_yonetici');yonetici=!!y.data;
+    const o=await sb.from('forum_oylar').select('konu_id').eq('kullanici_id',oturum.user.id);
+    (o.data||[]).forEach(r=>oylarim.add(r.konu_id));
+  }
+  function ustCiz(){
+    const k=$('kim');k.innerHTML='';
+    $('giris').hidden=!!oturum;$('cikis').hidden=!oturum;k.hidden=!oturum;
+    $('bcidSec').hidden=!(oturum&&profil&&!profil.username);
+    if(oturum&&profil){k.append(el('b',null,profil.username?'@'+profil.username:(oturum.user.email||'')));if(profil.member_no)k.append(el('span',{class:'no'},'ID '+profil.member_no));if(yonetici)k.append(el('span',{class:'yonRozet'},t().yonetici))}
+  }
+
+  // ---------- veri
+  const YAZAR='yazar:profiles!forum_konular_yazar_id_fkey(username,display_name,member_no)';
+  async function konulariGetir(){
+    let q=sb.from('forum_konular').select('id,kategori,durum,baslik,oy_sayisi,yanit_sayisi,created_at,'+YAZAR);
+    if(['hata','olmasi_gereken','fikir'].includes(sekme))q=q.eq('kategori',sekme);
+    q=sirala==='oy'?q.order('oy_sayisi',{ascending:false}).order('created_at',{ascending:false}):q.order('created_at',{ascending:false});
+    const {data,error}=await q.limit(200);if(error)throw error;return data||[];
+  }
+  const yazarAdi=y=>y&&y.username?'@'+y.username:t().uye;
+  function hataMetni(e){return (e&&String(e.message||'').includes('forum_hiz_siniri'))?t().hiz:t().hataGenel}
+
+  async function oyla(id,dugme){
+    if(!oturum){$('giris').scrollIntoView({behavior:'smooth'});return}
+    const vardi=oylarim.has(id);dugme.disabled=true;
+    const r=vardi?await sb.from('forum_oylar').delete().eq('konu_id',id).eq('kullanici_id',oturum.user.id):await sb.from('forum_oylar').insert({konu_id:id,kullanici_id:oturum.user.id});
+    dugme.disabled=false;if(r.error)return;
+    if(vardi)oylarim.delete(id);else oylarim.add(id);
+    const em=dugme.querySelector('em');em.textContent=String(Math.max(0,Number(em.textContent)+(vardi?-1:1)));dugme.classList.toggle('verildi',!vardi)}
+  const oyDugmesi=(k)=>el('button',{type:'button',class:'oyla'+(oylarim.has(k.id)?' verildi':''),'aria-label':t().oy,onclick:e=>{e.stopPropagation();oyla(k.id,e.currentTarget)}},el('span',null,'▲'),el('em',null,k.oy_sayisi));
+
+  // ---------- çizim
+  function sekmeCiz(){
+    const n=$('sekmeler');n.innerHTML='';
+    [['tum',t().tum],['hata',t().kats.hata],['olmasi_gereken',t().kats.olmasi_gereken],['fikir',t().kats.fikir],['pano',t().pano],['destek',t().destek]].forEach(([k,ad])=>
+      n.append(el('button',{type:'button',role:'tab','aria-selected':String(sekme===k),onclick:()=>{sekme=k;acikKonu=null;yeniForm=null;history.replaceState(null,'',location.pathname);ciz()}},ad)))}
+  async function ciz(){
+    ustCiz();sekmeCiz();
+    const a=$('ana');a.innerHTML='';
+    try{
+      if(acikKonu)return await ayrintiCiz(a);
+      if(sekme==='destek')return await destekCiz(a);
+      if(sekme==='pano')return await panoCiz(a);
+      await listeCiz(a);
+    }catch(e){a.append(el('p',{class:'bosDurum'},t().hataGenel))}
+  }
+  async function listeCiz(a){
+    const arac=el('div',{class:'arac'},
+      el('select',{'aria-label':'sırala',onchange:e=>{sirala=e.target.value;ciz()}},el('option',{value:'oy',selected:sirala==='oy'},t().enCok),el('option',{value:'yeni',selected:sirala==='yeni'},t().enYeni)),
+      el('span',{class:'bos'}),
+      oturum?el('button',{type:'button',class:'dugme ana',onclick:()=>{yeniForm=['hata','olmasi_gereken','fikir'].includes(sekme)?sekme:'fikir';ciz()}},t().yeni):el('span',{class:'meta'},t().girOnce));
+    a.append(arac);
+    if(yeniForm&&oturum)a.append(yeniKonuFormu(yeniForm));
+    const konular=await konulariGetir();
+    const l=el('div',{class:'liste'});
+    if(!konular.length)l.append(el('p',{class:'bosDurum'},t().bos));
+    konular.forEach(k=>l.append(el('div',{class:'konu',role:'button',tabindex:'0',onclick:()=>konuAc(k.id),onkeydown:e=>{if(e.key==='Enter')konuAc(k.id)}},
+      oyDugmesi(k),
+      el('div',null,el('h3',null,k.baslik),el('div',{class:'meta'},el('span',{class:'cip '+(k.kategori==='hata'?'hata':k.kategori==='fikir'?'fikir':'')},t().kat[k.kategori]),k.durum!=='yeni'?el('span',{class:'cip d-'+k.durum},t().dur[k.durum]):null,el('span',null,yazarAdi(k.yazar)),el('span',null,tarih(k.created_at)),el('span',null,k.yanit_sayisi+' '+t().yanit))))));
+    a.append(l);
+  }
+  function yeniKonuFormu(kat){
+    const f=el('form',{class:'kutu',onsubmit:async e=>{e.preventDefault();const fd=new FormData(f),b=f.querySelector('[type=submit]'),m=f.querySelector('.mesaj');b.disabled=true;
+      const satir={kategori:fd.get('kategori'),baslik:fd.get('baslik'),govde:fd.get('govde'),yazar_id:oturum.user.id,cihaz:fd.get('cihaz')||null,surum:fd.get('surum')||null};
+      const {data,error}=await sb.from('forum_konular').insert(satir).select('id').single();b.disabled=false;
+      if(error){m.textContent=hataMetni(error);m.className='mesaj hata';return}
+      yeniForm=null;konuAc(data.id)}});
+    const kategori=el('select',{name:'kategori',id:'yeniKategori',onchange:e=>{f.querySelector('.hataAlan').hidden=e.target.value!=='hata'}},...['hata','olmasi_gereken','fikir'].map(k=>el('option',{value:k,selected:k===kat},t().kat[k])));
+    f.append(el('h2',null,t().yeni.replace('+ ','')),
+      el('label',{class:'alan'},t().kategori,kategori),
+      el('label',{class:'alan'},t().baslik,el('input',{type:'text',name:'baslik',id:'yeniBaslik',required:true,minlength:'3',maxlength:'120'})),
+      el('label',{class:'alan'},t().aciklama,el('textarea',{name:'govde',id:'yeniGovde',required:true,maxlength:'5000',placeholder:kat==='hata'?t().hataIpucu:''})),
+      el('div',{class:'hataAlan',hidden:kat!=='hata'},el('label',{class:'alan'},t().cihaz,el('input',{type:'text',name:'cihaz',id:'yeniCihaz',maxlength:'120'})),el('label',{class:'alan'},t().surum,el('input',{type:'text',name:'surum',id:'yeniSurum',maxlength:'40'}))),
+      el('div',{class:'satir',style:'margin-top:14px'},el('button',{type:'submit',class:'dugme ana'},t().yayinla),el('button',{type:'button',class:'ince',onclick:()=>{yeniForm=null;ciz()}},t().iptal)),
+      el('p',{class:'mesaj',role:'status'}));
+    return f;
+  }
+  async function panoCiz(a){
+    const {data,error}=await sb.from('forum_konular').select('id,kategori,durum,baslik,oy_sayisi').in('durum',['sirada','yapiliyor','yapildi']).order('oy_sayisi',{ascending:false}).limit(150);
+    if(error)throw error;
+    const p=el('div',{class:'pano'});
+    [['sirada','○'],['yapiliyor','●'],['yapildi','✓']].forEach(([d,i])=>{const s=el('div',{class:'sutun'},el('h3',null,i+' '+t().dur[d]));
+      (data||[]).filter(k=>k.durum===d).forEach(k=>s.append(el('button',{type:'button',class:'k2',onclick:()=>konuAc(k.id)},el('b',null,k.baslik),el('small',null,t().kat[k.kategori]+' · '+k.oy_sayisi+' '+t().oy))));
+      p.append(s)});
+    a.append(p);
+  }
+  function konuAc(id){acikKonu=id;history.replaceState(null,'','#konu-'+id);ciz();scrollTo({top:0})}
+  async function ayrintiCiz(a){
+    const {data:k,error}=await sb.from('forum_konular').select('*,'+YAZAR).eq('id',acikKonu).maybeSingle();
+    if(error)throw error;
+    a.append(el('button',{type:'button',class:'ince geri',onclick:()=>{acikKonu=null;history.replaceState(null,'',location.pathname);ciz()}},t().geri));
+    if(!k){a.append(el('p',{class:'bosDurum'},t().bos));return}
+    const d=el('article',{class:'ayrinti'});
+    d.append(el('div',{class:'meta',style:'margin-top:14px'},el('span',{class:'cip '+(k.kategori==='hata'?'hata':k.kategori==='fikir'?'fikir':'')},t().kat[k.kategori]),el('span',{class:'cip d-'+k.durum},t().dur[k.durum]),el('span',null,yazarAdi(k.yazar)),k.yazar&&k.yazar.member_no?el('span',{class:'no'},'ID '+k.yazar.member_no):null,el('span',null,tarih(k.created_at))));
+    d.append(el('div',{class:'satir',style:'margin-top:8px;align-items:flex-start'},oyDugmesi(k),el('h2',{style:'margin:0;flex:1'},k.baslik)));
+    d.append(el('div',{class:'govdeMetin'},k.govde));
+    if(k.cihaz||k.surum)d.append(el('p',{class:'meta'},[k.cihaz,k.surum].filter(Boolean).join(' · ')));
+    if(k.yonetici_notu)d.append(el('div',{class:'ynot','data-b':t().ynot},k.yonetici_notu));
+    // araçlar
+    const arac=el('div',{class:'satir',style:'margin-top:12px'});
+    if(oturum&&oturum.user.id!==k.yazar_id)arac.append(el('button',{type:'button',class:'ince',onclick:async e=>{const r=await sb.from('reports').insert({reporter_id:oturum.user.id,target_type:'forum_konu',target_id:k.id,reason:'forum'});e.currentTarget.textContent=r.error&&r.error.code!=='23505'?t().hataGenel:t().bildirildi;e.currentTarget.disabled=true}},t().bildir));
+    if(oturum&&(oturum.user.id===k.yazar_id||yonetici)){let onay=false;arac.append(el('button',{type:'button',class:'ince',onclick:async e=>{if(!onay){onay=true;e.currentTarget.textContent=t().silOnay;return}await sb.from('forum_konular').delete().eq('id',k.id);acikKonu=null;ciz()}},t().sil))}
+    d.append(arac);
+    if(yonetici){const sec=el('select',{id:'yDurum'},...Object.keys(t().dur).map(x=>el('option',{value:x,selected:x===k.durum},t().dur[x])));const not=el('textarea',{id:'yNot',style:'min-height:70px',placeholder:t().notYaz},k.yonetici_notu||'');const m=el('p',{class:'mesaj',role:'status'});
+      d.append(el('div',{class:'yonetim'},el('label',{class:'alan'},t().durum,sec),el('label',{class:'alan'},t().notYaz,not),el('div',{class:'satir',style:'margin-top:10px'},el('button',{type:'button',class:'dugme ana',onclick:async()=>{const r=await sb.from('forum_konular').update({durum:sec.value,yonetici_notu:not.value.trim()||null}).eq('id',k.id);m.textContent=r.error?t().hataGenel:t().kaydedildi;m.className='mesaj '+(r.error?'hata':'iyi')}},t().kaydet)),m))}
+    // yanıtlar
+    const {data:yan}=await sb.from('forum_yanitlar').select('id,govde,yonetici_mi,created_at,yazar_id,yazar:profiles!forum_yanitlar_yazar_id_fkey(username,member_no)').eq('konu_id',k.id).order('created_at');
+    const yl=el('div',{class:'yanitlar'},el('h3',{style:'margin:0'},t().yanitlar+' · '+((yan||[]).length)));
+    (yan||[]).forEach(y=>yl.append(el('div',{class:'yanit'+(y.yonetici_mi?' yon':'')},el('div',{class:'meta',style:'margin:0'},el('span',null,yazarAdi(y.yazar)),y.yonetici_mi?el('span',{class:'yonRozet'},t().yonetici):null,el('span',null,tarih(y.created_at))),el('p',null,y.govde))));
+    if(oturum){const ta=el('textarea',{id:'yanitGovde',maxlength:'3000',placeholder:t().yanitYaz,style:'min-height:90px'});const m=el('p',{class:'mesaj',role:'status'});
+      yl.append(el('div',null,ta,el('div',{class:'satir',style:'margin-top:8px'},el('button',{type:'button',class:'dugme ana',onclick:async e=>{const v=ta.value.trim();if(!v)return;e.currentTarget.disabled=true;const r=await sb.from('forum_yanitlar').insert({konu_id:k.id,yazar_id:oturum.user.id,govde:v});if(r.error){m.textContent=hataMetni(r.error);m.className='mesaj hata';e.currentTarget.disabled=false;return}ciz()}},t().gonder)),m))}
+    else yl.append(el('p',{class:'meta'},t().girOnce));
+    d.append(yl);a.append(d);
+  }
+  async function destekCiz(a){
+    if(!oturum){a.append(el('p',{class:'bosDurum'},t().destekGiris));return}
+    const f=el('form',{class:'kutu',onsubmit:async e=>{e.preventDefault();const fd=new FormData(f),m=f.querySelector('.mesaj');
+      const r=await sb.from('destek_talepleri').insert({yazar_id:oturum.user.id,konu:fd.get('konu'),govde:fd.get('govde'),cihaz:fd.get('cihaz')||null,surum:fd.get('surum')||null});
+      if(r.error){m.textContent=hataMetni(r.error);m.className='mesaj hata';return}ciz()}},
+      el('h2',null,t().destekBas),el('p',null,t().destekAc),
+      el('label',{class:'alan'},t().konu,el('input',{type:'text',name:'konu',id:'dKonu',required:true,minlength:'3',maxlength:'120'})),
+      el('label',{class:'alan'},t().aciklama,el('textarea',{name:'govde',id:'dGovde',required:true,maxlength:'5000'})),
+      el('label',{class:'alan'},t().cihaz,el('input',{type:'text',name:'cihaz',id:'dCihaz',maxlength:'120'})),
+      el('label',{class:'alan'},t().surum,el('input',{type:'text',name:'surum',id:'dSurum',maxlength:'40'})),
+      el('div',{class:'satir',style:'margin-top:14px'},el('button',{type:'submit',class:'dugme ana'},t().gonder)),el('p',{class:'mesaj',role:'status'}));
+    a.append(f);
+    let q=sb.from('destek_talepleri').select('*').order('created_at',{ascending:false});
+    if(!yonetici)q=q.eq('yazar_id',oturum.user.id);
+    const {data}=await q.limit(100);
+    const l=el('div',{class:'liste'},el('h3',{style:'margin:20px 0 0'},t().taleplerim));
+    if(!(data||[]).length)l.append(el('p',{class:'bosDurum'},t().talepYok));
+    (data||[]).forEach(d=>{const kart=el('div',{class:'talep'},el('div',{class:'meta',style:'margin:0'},el('span',{class:'cip'},t().tdur[d.durum]),el('span',null,tarih(d.created_at))),el('h3',{style:'margin:6px 0 0;font-size:16px'},d.konu),el('div',{class:'govdeMetin',style:'margin-top:6px'},d.govde));
+      if(d.yonetici_yaniti)kart.append(el('div',{class:'yanitMetin'},el('b',null,t().ekipYaniti+': '),d.yonetici_yaniti));
+      if(yonetici){const ta=el('textarea',{style:'min-height:70px;margin-top:10px'},d.yonetici_yaniti||'');const sec=el('select',null,...Object.keys(t().tdur).map(x=>el('option',{value:x,selected:x===d.durum},t().tdur[x])));
+        kart.append(ta,el('div',{class:'satir',style:'margin-top:8px'},sec,el('button',{type:'button',class:'dugme ana',onclick:async()=>{await sb.from('destek_talepleri').update({yonetici_yaniti:ta.value.trim()||null,durum:sec.value}).eq('id',d.id);ciz()}},t().kaydet)))}
+      else if(d.durum!=='kapandi')kart.append(el('div',{class:'satir',style:'margin-top:8px'},el('button',{type:'button',class:'ince',onclick:async()=>{await sb.from('destek_talepleri').update({durum:'kapandi'}).eq('id',d.id);ciz()}},t().kapat)));
+      l.append(kart)});
+    a.append(l);
+  }
+
+  // ---------- dil
+  const ogeler=[...document.querySelectorAll('[data-en]')];ogeler.forEach(e=>e.dataset.tr=e.textContent);
+  function dilKur(d){dil=d;document.documentElement.lang=d;ogeler.forEach(e=>e.textContent=e.dataset[d]);$('dil').textContent=d==='tr'?'TR · EN':'EN · TR';
+    $('kimlik').placeholder=d==='en'?'@bcid or email':'@bcid ya da e-posta';$('bcidGir').placeholder=d==='en'?'username':'kullaniciadi';
+    try{localStorage.setItem('bcsite_dil',d)}catch(e){}ciz()}
+  $('dil').onclick=()=>dilKur(dil==='tr'?'en':'tr');
+  let ilk=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilk=k}catch(e){}
+  const h=location.hash, sp=new URLSearchParams(location.search);
+  const hedef=sp.get('hedef');if(sp.get('dil')==='en'||sp.get('dil')==='tr')ilk=sp.get('dil');
+  if(hedef==='fikir'){sekme='fikir';yeniForm='fikir'}else if(hedef==='hata'){sekme='hata';yeniForm='hata'}else if(hedef==='destek')sekme='destek';
+  if(h==='#en')ilk='en';else if(h==='#tr')ilk='tr';
+  if(hedef)history.replaceState(null,'',location.pathname+location.hash);
+  if(h.startsWith('#konu-'))acikKonu=h.slice(6);
+  else if(h==='#yeni-fikir'){sekme='fikir';yeniForm='fikir'}
+  else if(h==='#yeni-hata'){sekme='hata';yeniForm='hata'}
+  else if(h==='#destek')sekme='destek';
+
+  // ---------- oturum
+  sb.auth.onAuthStateChange(async(olay,s)=>{const once=oturum&&oturum.user.id;oturum=s;if((s&&s.user.id)!==once){await profilYukle();ciz()}});
+  (async()=>{const {data}=await sb.auth.getSession();oturum=data.session;await profilYukle();dilKur(ilk)})();
+})();
+</script>
+
+</body>
+</html>
