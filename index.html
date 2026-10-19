@@ -398,6 +398,40 @@ p{max-width:65ch}
 .kahraman .giris{color:#d6d3cb}
 @media (prefers-reduced-motion:reduce){.duzlem{animation:none}}
 
+
+/* ---------- BC Pano ---------- */
+.panoGorsel{margin-top:34px;display:flex;justify-content:center}
+.panoGorsel .ipad{width:min(100%,1060px)}
+.kimlik{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4cqw,56px);align-items:center;margin-top:56px}
+.kimlikKart{position:relative;overflow:hidden;border-radius:26px;padding:26px;background:radial-gradient(120% 140% at 0% 0%,rgba(255,201,60,.22),transparent 55%),linear-gradient(160deg,#1c1a14,#0f0f12);border:1px solid #3a321c;box-shadow:0 30px 80px -30px rgba(0,0,0,.9);transform:rotate(-2deg);animation:kartSal 7s ease-in-out infinite alternate}
+@keyframes kartSal{to{transform:rotate(1deg) translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.kimlikKart{animation:none}}
+.kimlikKart::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,230,160,.18) 50%,transparent 60%);background-size:250% 100%;animation:parla2 5s ease-in-out infinite}
+@keyframes parla2{0%{background-position:130% 0}60%,100%{background-position:-30% 0}}
+.kkUst{display:flex;align-items:center;gap:14px}
+.kkAvatar{width:64px;height:64px;border-radius:50%;flex:none;background:url(ekranlar/baris.jpg) 30% 25%/180% no-repeat;border:3px solid var(--sari)}
+.kkUst b{display:block;font-family:var(--baslik);font-size:28px;line-height:1}
+.kkUst div span{color:var(--solgun);font-family:var(--mono);font-size:13px}
+.kkNo{margin-left:auto;background:var(--sari);color:var(--sariUstu);font-family:var(--mono);font-weight:500;font-size:14px;padding:4px 10px;border-radius:10px}
+.kkAlt{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.kkAlt > span{font-size:13px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--murekkep)}
+.kkCanli{display:inline-flex;align-items:center;gap:8px}
+.kkCanli i{width:8px;height:8px;border-radius:50%;background:var(--sari);animation:nabiz 1.6s infinite}
+.kimlikMetin h3{font-family:var(--baslik);font-size:clamp(28px,3.2cqw,40px);text-transform:uppercase;line-height:1}
+.kimlikIki{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.kimlikIki > div{border-top:2px solid var(--sari);padding-top:12px;min-width:0}
+.kimlikIki b{font-family:var(--baslik2);font-size:19px}
+.kod{display:inline-block;margin-left:8px;font-family:var(--mono);font-size:13px;color:var(--sari);background:var(--sariSis);padding:2px 8px;border-radius:8px}
+.kimlikIki p{color:var(--solgun);font-size:15px;margin:8px 0 0}
+.panoIzgara{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:48px}
+.pz{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:18px;min-width:0;transition:border-color .2s,transform .2s}
+.pz:hover{border-color:#4a3d1c;transform:translateY(-2px)}
+.pzIk{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--sariSis);color:var(--sari);font-size:16px;margin-bottom:10px}
+.pz h3{font-size:16px;margin-bottom:6px}
+.pz p{color:var(--solgun);font-size:14px;margin:0;line-height:1.5}
+.panoNot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--solgun);font-size:14px;margin-top:20px}
+.panoNot .etiket{margin-left:0}
+
 /* ---------- ışıklı arka planlar ---------- */
 .isikli{position:relative;isolation:isolate}
 .isikli > canvas.isik{position:absolute;top:0;bottom:0;left:calc(-1*clamp(18px,4cqw,48px));width:calc(100% + 2*clamp(18px,4cqw,48px));height:100%;z-index:-1;display:block;pointer-events:none}
@@ -418,6 +452,8 @@ p{max-width:65ch}
   .kahraman{grid-template-columns:minmax(0,1fr)}
   .kartlar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sekmeler{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .panoIzgara{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kimlik{grid-template-columns:minmax(0,1fr)}
   .adimlar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tesekkur{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fiyat{grid-template-columns:minmax(0,1fr)}
@@ -434,6 +470,8 @@ p{max-width:65ch}
   .fasil.ters > :first-child{order:0}
   .kartlar,.adimlar,.tesekkur{grid-template-columns:minmax(0,1fr)}
   .sekmeler{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .panoIzgara{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kimlikIki{grid-template-columns:minmax(0,1fr)}
   .sekmeler img{width:52px;height:52px}
   .kart{flex-direction:row;flex-wrap:wrap;align-items:center}
   .kart img{width:56px;height:56px}
@@ -640,6 +678,43 @@ p{max-width:65ch}
     </div>
     <div class="gorsel"><div class="ipad yatay" style="width:100%" aria-label="iPad yatay: BC Fare (tasarım, yakında)"><div class="ekran"><img src="ekranlar/bc_fare_ipad_yatay.jpg" alt="BC Fare: imleç bir akor yuvasının üstünde, sağ altta dokunmatik yüzey" style="width:100%;height:100%;object-fit:cover;display:block"></div></div></div>
   </div>
+</section>
+
+<!-- BC PANO -->
+<section class="bolum" id="pano">
+  <p class="ust" data-en="BC Board · community">BC Pano · topluluk</p>
+  <h2 data-en="BC Board">BC Pano</h2>
+  <p class="altBaslik" data-en="Home base for the musician on stage.">Sahnedeki müzisyenin ana sayfası.</p>
+  <p class="giris" data-en="Your next gig, your gear, your bands and the musicians around you, on one page. BC Board is free and optional: open a BC account when you want it, and the app keeps working fully without one.">Sıradaki konserin, ekipmanın, grupların ve çevrendeki müzisyenler tek sayfada. BC Pano ücretsiz ve isteğe bağlı: istediğin zaman bir BC hesabı açarsın, açmasan da uygulamanın tamamı çalışır.</p>
+  <div class="panoGorsel"><div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/pano_yatay.jpg" alt="BC Stage 3.0 BC Pano: profil, ID 1 rozeti, sıradaki konser, Konserlere açığım, ekipmanım" loading="lazy"></div></div></div>
+
+  <div class="kimlik">
+    <div class="kimlikKart" aria-hidden="true">
+      <div class="kkUst"><span class="kkAvatar"></span><div><b>BARIŞ ÇEKERGİL</b><span>@bariscekergil</span></div><span class="kkNo">ID 1</span></div>
+      <div class="kkAlt"><span class="kkCanli"><i></i><span data-en="Open to gigs">Konserlere açığım</span></span><span>Fethiye</span><span data-en="Guitar · vocals">Gitar · vokal</span></div>
+    </div>
+    <div class="kimlikMetin">
+      <h3 data-en="Two ways to find you">Seni bulmanın iki yolu</h3>
+      <div class="kimlikIki">
+        <div><b>BC ID</b><span class="kod" data-en="@username">@kullaniciadi</span><p data-en="The name you choose: 3 to 20 characters, lowercase letters, numbers, dots or underscores. Musicians find you with it. You can change it later and nothing breaks.">Senin seçtiğin ad: 3–20 karakter, küçük harf, rakam, nokta ya da alt çizgi. Müzisyenler seni bununla bulur. Sonra değiştirebilirsin, hiçbir bağ kopmaz.</p></div>
+        <div><b data-en="Member number">Üye numarası</b><span class="kod">ID 12</span><p data-en="Given in the order people join: the first member is 1, the next is 2. A small number says you were here early. Send a tab to someone with their @name or their ID number.">Kayıt sırasıyla verilir: ilk kaydolan 1, sonraki 2. Küçük bir numara, en baştan beri burada olduğunun izi. Birine tab gönderirken @adını ya da ID numarasını yazman yeter.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panoIzgara">
+    <div class="pz"><span class="pzIk">◷</span><h3 data-en="Next gig">Sıradaki konser</h3><p data-en="Venue, date and time, ticket link, directions and a reminder on your device. Show it on your profile.">Mekân, tarih ve saat, bilet bağlantısı, yol tarifi ve cihazında hatırlatma. İstersen profilinde göster.</p></div>
+    <div class="pz"><span class="pzIk">●</span><h3 data-en="Open to gigs">Konserlere açığım</h3><p data-en="Turn it on and you show up in searches with your city, genres and instruments. Offers come straight to you.">Açınca şehrin, türlerin ve çalgılarınla aramalarda görünürsün. Teklifler doğrudan sana gelir.</p></div>
+    <div class="pz"><span class="pzIk">♫</span><h3 data-en="My gear">Ekipmanım</h3><p data-en="Your instruments and gear with photos and years. Mark one for sale, set a price, take or turn down offers.">Çalgıların ve ekipmanın, fotoğrafı ve yılıyla. Birini satılık işaretle, fiyat koy, teklifleri kabul et ya da reddet.</p></div>
+    <div class="pz"><span class="pzIk">◎</span><h3 data-en="My bands">Gruplarım</h3><p data-en="A page for each band, member invites and social links.">Her grubun bir sayfası, üye daveti ve sosyal bağlantılar.</p></div>
+    <div class="pz"><span class="pzIk">⌕</span><h3 data-en="Find musicians">Müzisyen bul</h3><p data-en="Filter by instrument, genre, stage role, country, province, district and who is free. Follow them and get reminded of their gigs.">Çalgı, tür, sahne rolü, ülke, il, ilçe ve "müsait" süzgeçleri. Takip et, konserlerini hatırlat.</p></div>
+    <div class="pz"><span class="pzIk">≡</span><h3 data-en="Repertoire">Repertuvar</h3><p data-en="Publish your song list on your profile, in full or as a summary. Lyrics are never published.">Şarkı listeni profilinde yayınla, tamamını ya da özetini. Sözler asla yayınlanmaz.</p></div>
+    <div class="pz"><span class="pzIk">▶</span><h3 data-en="Stage videos">Sahne videoları</h3><p data-en="Your live videos on your profile; YouTube plays inside the app.">Canlı videoların profilinde; YouTube uygulamanın içinde oynar.</p></div>
+    <div class="pz"><span class="pzIk">✦</span><h3 data-en="Artists and news">Sanatçılar ve haberler</h3><p data-en="Artist pages with Wikipedia biographies and discographies, plus music news.">Wikipedia biyografisi ve diskografiyle sanatçı sayfaları, müzik haberleri.</p></div>
+    <div class="pz"><span class="pzIk">↻</span><h3 data-en="Activity">Hareket akışı</h3><p data-en="Who followed you, who visited, which offers came in.">Kim takip etti, kim ziyaret etti, hangi teklifler geldi.</p></div>
+    <div class="pz"><span class="pzIk">⚿</span><h3 data-en="Your privacy">Gizliliğin</h3><p data-en="Switches for what is public. Location is only the city you pick. Report and block in one tap.">Neyin herkese açık olacağını anahtarlarla seçersin. Konum yalnız seçtiğin şehir. Bildir ve engelle tek dokunuşta.</p></div>
+  </div>
+  <p class="panoNot"><span class="etiket net" data-en="internet">internet</span> <span data-en="BC Board needs a BC account and an internet connection. Everything else in BC Stage works without both.">BC Pano için BC hesabı ve internet gerekir. BC Stage'in geri kalanı ikisi olmadan da çalışır.</span></p>
 </section>
 
 <!-- GERÇEK EKRANLAR -->
@@ -890,7 +965,7 @@ p{max-width:65ch}
 
 <footer class="alt">
   <div><a class="logo" href="#ana" style="padding:0" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44"><b>BC <span>STAGE</span></b></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
-  <div><h4 data-en="Explore">Keşfet</h4><a href="#ozellikler" data-en="Features">Özellikler</a><a href="#fiyat" data-en="Pricing">Fiyat</a><a href="#kimin" data-en="Who it's for">Kimin için</a></div>
+  <div><h4 data-en="Explore">Keşfet</h4><a href="#ozellikler" data-en="Features">Özellikler</a><a href="#fiyat" data-en="Pricing">Fiyat</a><a href="#kimin" data-en="Who it's for">Kimin için</a><a href="#pano" data-en="BC Board">BC Pano</a></div>
   <div><h4 data-en="Learn">Öğren</h4><a href="#yardim" data-en="Guide">Kılavuz</a><a href="#yardim" data-en="FAQ">Sık sorulanlar</a><a href="#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
   <div><h4 data-en="BC Labs">BC Labs</h4><a href="#hakkinda" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="#forum" data-en="Forum">Forum</a><a href="#destek" data-en="Support">Destek ol</a><a href="#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
 </footer>
