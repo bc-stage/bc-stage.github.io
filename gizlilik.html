@@ -15,7 +15,9 @@ body{margin:0;background:var(--zemin);color:var(--murekkep);font:16px/1.7 "Geist
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px}
 .logo{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;text-decoration:none;color:var(--murekkep)}
 .logo span{color:var(--sari)}
-.logo .surum{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:500;color:#FFC93C;border:1px solid rgba(255,201,60,.55);background:rgba(255,201,60,.08);border-radius:999px;padding:3px 9px;vertical-align:middle;margin-left:4px}
+.logo .surum .sy-tr,.logo .surum .sy-en{color:#F4F2EC;opacity:.85}
+html[lang="tr"] .sy-en,html[lang="en"] .sy-tr{display:none}
+.logo .surum{white-space:nowrap;font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:500;color:#FFC93C;border:1px solid rgba(255,201,60,.55);background:rgba(255,201,60,.08);border-radius:999px;padding:3px 9px;vertical-align:middle;margin-left:4px}
 .dil{font:12px "Geist Mono",monospace;color:var(--solgun);background:none;border:1px solid var(--cizgi);border-radius:999px;padding:6px 12px;cursor:pointer}
 h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(40px,8vw,64px);line-height:1;margin:0 0 10px}
 h2{font-family:"Barlow",sans-serif;font-size:21px;margin:38px 0 8px}
@@ -35,7 +37,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 </head>
 <body>
 <div class="ic">
-<header><a class="logo" href="index.html">BC <span>STAGE</span> <span class="surum" aria-label="Sürüm 3.0">3.0</span></a><button class="dil" id="dil" type="button">TR · EN</button></header>
+<header><a class="logo" href="index.html">BC <span>STAGE</span> <span class="surum" aria-label="Sürüm 3.0">3.0 · <span class="sy-tr">çok yakında</span><span class="sy-en">coming soon</span></span></a><button class="dil" id="dil" type="button">TR · EN</button></header>
 
 <article lang-blok="tr">
 <h1>Gizlilik</h1>
