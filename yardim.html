@@ -99,18 +99,144 @@ footer a{color:var(--solgun);text-decoration:none}
   figure{position:static}
   .isaret{width:22px;height:22px;font-size:11px}
 }
+/* ===== çok sayfalı site: uygulama kabuğu + sekme sayfaları + animasyon (2026-10-31) ===== */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vtCik .22s ease both}
+::view-transition-new(root){animation:vtGir .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes vtCik{to{opacity:0;transform:translateY(-6px)}}
+@keyframes vtGir{from{opacity:0;transform:translateY(14px)}}
+.site .ic{--pad:clamp(18px,4cqw,48px)}
+.kap{--pad:clamp(16px,3vw,40px)}
+.kabuk{view-transition-name:kabuk;position:sticky;top:env(safe-area-inset-top,0px);z-index:60;margin-inline:calc(-1*var(--pad,24px));padding-inline:var(--pad,24px);background:rgba(10,10,13,.84);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--cizgi)}
+.kabukUst{display:flex;align-items:center;gap:12px;padding-block:12px 4px}
+.kabuk .bos{flex:1}
+.kabuk .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:30px;line-height:1;letter-spacing:.01em}
+.kabuk .logo img{width:46px;height:46px;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.kabuk .logo b{font-weight:800}
+.kabuk .logo b span{color:var(--sari)}
+.kabuk .surumKap .sy{color:var(--solgun)}
+.kabuk .surum{color:var(--sari)}
+.sagMenu{display:flex;gap:4px;align-items:center}
+.skMetin{color:var(--solgun);text-decoration:none;font-weight:600;font-size:15px;padding:8px 13px;border-radius:999px;transition:background .2s,color .2s}
+.skMetin:hover,.skMetin.aktif{color:var(--murekkep);background:var(--yuzey)}
+.skMetin.forumSk{color:var(--sariUstu);background:var(--sari);animation:forumNabiz 2.6s ease-out infinite}
+.skMetin.forumSk:hover,.skMetin.forumSk.aktif{color:var(--sariUstu);background:#ffd666}
+@keyframes forumNabiz{0%{box-shadow:0 0 0 0 rgba(255,201,60,.5)}70%{box-shadow:0 0 0 11px rgba(255,201,60,0)}100%{box-shadow:0 0 0 0 rgba(255,201,60,0)}}
+.kabuk .dugme.ana{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--sari);color:var(--sariUstu);border:0;border-radius:12px;padding:10px 16px;font-weight:700;text-decoration:none;font-family:var(--govde);font-size:15px}
+.sekmeSerit{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 10px;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent)}
+.sekmeSerit::-webkit-scrollbar{display:none}
+.sk{flex:none;scroll-snap-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:80px;padding:8px 8px 10px;border-radius:14px;text-decoration:none;color:var(--solgun);font-size:12px;font-weight:600;line-height:1.15;text-align:center;transition:background .2s,color .2s}
+.sk img{width:36px;height:36px;object-fit:contain;transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .3s;filter:saturate(.85)}
+.sk:hover{color:var(--murekkep);background:var(--yuzey)}
+.sk:hover img{transform:translateY(-4px) scale(1.1) rotate(-4deg);filter:saturate(1.1) drop-shadow(0 6px 10px rgba(255,201,60,.25))}
+.sk.aktif{color:var(--murekkep);background:linear-gradient(180deg,rgba(255,201,60,.16),rgba(255,201,60,.04));box-shadow:inset 0 0 0 1px rgba(255,201,60,.35)}
+.sk.aktif img{filter:saturate(1.15) drop-shadow(0 0 12px rgba(255,201,60,.45))}
+.sk.aktif::after{content:"";position:absolute;bottom:3px;left:50%;width:18px;height:3px;margin-left:-9px;border-radius:2px;background:var(--sari);box-shadow:0 0 10px var(--sari)}
+.sk.skTel{display:none;min-width:auto;padding:8px 14px;font-size:13px;align-self:center;border:1px solid var(--cizgi);border-radius:999px}
+.sk.skTel.forumSk{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+@media (max-width:820px){
+  .sagMenu{display:none}
+  .sk.skTel{display:flex}
+  .kabuk .logo{font-size:24px;gap:9px}
+  .kabuk .logo img{width:38px;height:38px;border-radius:10px}
+  .kabuk .indir{padding:8px 12px;font-size:14px}
+  .kabuk .surumKap .sy{display:none}
+}
+/* kaydırınca belirme (JS yoksa her şey görünür) */
+html.jsHazir .gorun{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .85s cubic-bezier(.2,.8,.2,1);transition-delay:var(--g,0ms)}
+html.jsHazir .gorun.gor{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.jsHazir .gorun{opacity:1;transform:none}.yuzen,.parilti2,.skMetin.forumSk,.fvKart{animation:none!important}}
+/* sekme sayfası */
+.sekmeSayfa{border-top:0!important;padding-top:clamp(28px,4vw,56px)!important}
+.sHero{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,64px);align-items:center}
+.sMetin h1{font-size:clamp(54px,7.4vw,108px);margin-top:6px}
+.sMetin .ust img{width:28px;height:28px;vertical-align:-9px;margin-right:2px}
+.sMetin .altBaslik{font-size:clamp(20px,2vw,26px)}
+.etiketSatir{display:flex;gap:6px;margin-top:14px}.etiketSatir .etiket{margin-left:0}
+.sekmeSayfa .satir,.forumVitrin .satir{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px}
+.sGorsel{position:relative;perspective:1500px;min-width:0}
+.sGorsel::before{content:"";position:absolute;inset:-12% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.20),rgba(255,154,46,.07) 55%,transparent);filter:blur(14px)}
+.yuzen{animation:yuzen 7s ease-in-out infinite}
+@keyframes yuzen{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.egik{transform:rotateY(var(--ry,-9deg)) rotateX(var(--rx,4deg));transition:transform .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 50px 100px -30px rgba(0,0,0,.9),0 0 0 6px #111115,0 0 60px rgba(255,201,60,.08)}
+.egik .ekran{position:relative}
+.parilti2{position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 35%,rgba(255,230,160,.22) 50%,transparent 65%);background-size:250% 100%;mix-blend-mode:screen;animation:parla3 6.5s ease-in-out infinite}
+@keyframes parla3{0%{background-position:140% 0}45%,100%{background-position:-40% 0}}
+.alanIzgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;margin-top:clamp(40px,6vw,72px)}
+.alanKart{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:22px 22px 18px;min-width:0;transition:border-color .25s,transform .25s}
+.alanKart:hover{border-color:#4a3d1c;transform:translateY(-3px)}
+.alanKart header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.alanKart header img{width:46px;height:46px;object-fit:contain}
+.alanKart h3{font-family:var(--baslik);font-size:26px;text-transform:uppercase;line-height:1}
+.alanKart ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.alanKart li{position:relative;padding-left:16px;color:#cfccc4;font-size:15px;line-height:1.5}
+.alanKart li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--sari);box-shadow:0 0 8px rgba(255,201,60,.6)}
+.alanKart li .etiket{margin-left:6px;font-size:9.5px}
+.ikinciGorsel{margin-top:44px;display:flex;justify-content:center}.ikinciGorsel .ipad{width:min(100%,980px)}
+.oncSnr{display:flex;justify-content:space-between;gap:12px;margin:56px 0 8px;flex-wrap:wrap}
+.oncSnr a{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--cizgi);border-radius:18px;text-decoration:none;color:var(--murekkep);background:var(--yuzey);font-weight:600;transition:border-color .2s,transform .2s}
+.oncSnr a:hover{border-color:var(--sari);transform:translateY(-2px)}
+.oncSnr a img{width:40px;height:40px;object-fit:contain}
+.oncSnr small{display:block;font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sonuk);font-weight:400}
+.oncSnr a.snr{margin-left:auto;text-align:right}
+@media (max-width:860px){.sHero{grid-template-columns:minmax(0,1fr)}.sGorsel{order:-1}}
+/* ana sayfa: forum vitrini */
+@property --aci{syntax:'<angle>';inherits:false;initial-value:0deg}
+.forumVitrin{border-top:0!important;padding-top:clamp(24px,4vw,48px)!important}
+.fvKart{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);padding:clamp(22px,3.4vw,44px);border-radius:28px;border:1.5px solid transparent;background:radial-gradient(120% 140% at 0% 0%,rgba(255,201,60,.14),transparent 55%) padding-box,linear-gradient(160deg,#16140f,#0f0f12) padding-box,conic-gradient(from var(--aci),#3a321c 0 58%,#FFC93C 72%,#FF9A2E 78%,#3a321c 90%) border-box;animation:donus 7s linear infinite;overflow:hidden}
+@keyframes donus{to{--aci:360deg}}
+.fvMetin h2{font-size:clamp(46px,6.4vw,88px)}
+.fvListe{display:grid;gap:10px;align-content:center;min-width:0}
+.fvKonu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);transition:transform .25s,border-color .25s,background .25s;animation:fvGir .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--g,0ms)}
+@keyframes fvGir{from{opacity:0;transform:translateX(18px)}}
+.fvKonu:hover{transform:translateX(5px);border-color:#4a3d1c;background:rgba(255,201,60,.05)}
+.fvOy{display:flex;flex-direction:column;align-items:center;min-width:46px;padding:6px 4px;border-radius:12px;border:1px solid var(--cizgi);font:600 14px var(--mono);color:var(--sari);line-height:1.1}
+.fvOy span{font-size:11px;color:var(--solgun)}
+.fvKonu b{display:block;font-weight:600;font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}
+.fvKonu small{display:block;margin-top:3px;color:var(--sonuk);font:11px var(--mono);letter-spacing:.04em}
+.fvBos{color:var(--solgun);margin:0}
+.fvTum{justify-self:start;color:var(--sari);text-decoration:none;font-weight:600;font-size:14px;margin-top:4px}
+@media (max-width:860px){.fvKart{grid-template-columns:minmax(0,1fr)}}
+/* ana sayfa: sekme kutuları */
+.kutuIzgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:12px;margin-top:28px}
+.sekmeKutu{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px 18px 20px;border-radius:20px;background:radial-gradient(240px circle at var(--mx,-200px) var(--my,-200px),rgba(255,201,60,.12),transparent 60%),var(--yuzey);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .3s}
+.sekmeKutu img{width:58px;height:58px;object-fit:contain;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.sekmeKutu b{font-family:var(--baslik);font-size:25px;font-weight:800;text-transform:uppercase;line-height:1}
+.sekmeKutu span{color:var(--solgun);font-size:13.5px;line-height:1.45}
+.sekmeKutu em{position:absolute;right:16px;top:16px;font-style:normal;color:var(--sonuk);transition:transform .25s,color .25s}
+.sekmeKutu:hover{transform:translateY(-5px);border-color:#4a3d1c;box-shadow:0 20px 44px -22px rgba(255,201,60,.4)}
+.sekmeKutu:hover img{transform:scale(1.14) rotate(-6deg)}
+.sekmeKutu:hover em{color:var(--sari);transform:translateX(4px)}
+/* indir çağrısı */
+.ctaBolum{text-align:center;position:relative;isolation:isolate}
+.ctaBolum::before{content:"";position:absolute;left:50%;top:40%;width:min(900px,100%);height:340px;transform:translate(-50%,-50%);z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.16),transparent);filter:blur(20px)}
+.ctaBolum h2{font-size:clamp(46px,7vw,96px)}
+.ctaBolum .giris{margin-inline:auto}
+.ctaBolum .magaza{justify-content:center}
+/* Türkçe büyük harf dönüşümü "iOS"u "İOS" yapıyordu */
+.etiket.iosmac,.etiket.ipadmac{text-transform:none}
+/* telefonda üst çubuk sığsın, sayfa yana kaymasın */
+body{overflow-x:clip}
+.kabukUst{min-width:0}
+.kabuk .logo{min-width:0;flex-shrink:1}
+@media (max-width:520px){.kabuk .indir{display:none}.kabuk .dil{padding:5px 9px;font-size:11px;white-space:nowrap}.kabuk .logo{font-size:22px}}
+
 </style>
 </head>
 <body>
 
 
 <div class="kap">
-  <header class="ust">
-    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44">BC <span>STAGE</span><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
+  <header class="kabuk">
+  <div class="kabukUst">
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
     <span class="bos"></span>
-    <a class="geri" href="index.html" data-en="← Back to site">← Siteye dön</a>
+    <nav class="sagMenu" aria-label="Site"><a class="skMetin forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="skMetin aktif" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="skMetin" href="hakkinda.html"><span data-en="About">Hakkında</span></a></nav>
     <button class="dil" id="dil" type="button">TR · EN</button>
-  </header>
+    <a class="dugme ana indir" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a>
+  </div>
+  <nav class="sekmeSerit" aria-label="Sekmeler"><a class="sk skTel forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="sk skTel aktif" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="sk skTel" href="hakkinda.html"><span data-en="About">Hakkında</span></a><a class="sk" href="sarkilar.html"><img src="simgeler/repertoire.png" alt="" width="34" height="34"><span data-en="Songs">Şarkılar</span></a><a class="sk" href="playlistler.html"><img src="simgeler/playlist.png" alt="" width="34" height="34"><span data-en="Playlists">Playlistler</span></a><a class="sk" href="akorlar.html"><img src="simgeler/acoustic-guitar.png" alt="" width="34" height="34"><span data-en="Chords">Akorlar</span></a><a class="sk" href="tablar.html"><img src="simgeler/pick.png" alt="" width="34" height="34"><span data-en="Tabs">Tablar</span></a><a class="sk" href="duzenlemeler.html"><img src="simgeler/arrangements.png" alt="" width="34" height="34"><span data-en="Arrangements">Düzenlemeler</span></a><a class="sk" href="karaoke.html"><img src="simgeler/karaoke.png" alt="" width="34" height="34"><span data-en="Karaoke">Karaoke</span></a><a class="sk" href="backing.html"><img src="simgeler/backing_track.png" alt="" width="34" height="34"><span data-en="Backing Track">Backing Track</span></a><a class="sk" href="bass.html"><img src="simgeler/bass.png" alt="" width="34" height="34"><span data-en="Bass">Bass</span></a><a class="sk" href="video.html"><img src="simgeler/video.png" alt="" width="34" height="34"><span data-en="Video">Video</span></a><a class="sk" href="ai-davul.html"><img src="simgeler/ai_drums.png" alt="" width="34" height="34"><span data-en="AI Drums">AI Davul</span></a><a class="sk" href="akor-bulma.html"><img src="simgeler/chord_finder.png" alt="" width="34" height="34"><span data-en="Chord Finder">Akor Bulma</span></a><a class="sk" href="metronom-bul.html"><img src="simgeler/metronome.png" alt="" width="34" height="34"><span data-en="Beat Finder">Metronom Bul</span></a><a class="sk" href="one-man.html"><img src="simgeler/one_man_band.png" alt="" width="34" height="34"><span data-en="One Man">One Man</span></a><a class="sk" href="pano.html"><img src="simgeler/group_connection.png" alt="" width="34" height="34"><span data-en="BC Board">BC Pano</span></a></nav>
+</header>
   <section class="giris">
     <p class="ustE" data-en="Help">Yardım</p>
     <h1 data-en="How it works">Nasıl çalışır</h1>

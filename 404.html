@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="BC Stage: sahnedeki müzisyen için şarkılar, akorlar, listeler, metronom, davul ve looper tek uygulamada. iPad, iPhone, Android ve Mac.">
+<meta name="description" content="BC Stage">
 <meta property="og:title" content="BC Stage">
 <meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
 <meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
@@ -505,36 +505,145 @@ p{max-width:65ch}
   .magaza .dugme{flex:1 1 100%}
   .foto{aspect-ratio:1/1}
 }
+/* ===== çok sayfalı site: uygulama kabuğu + sekme sayfaları + animasyon (2026-10-31) ===== */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vtCik .22s ease both}
+::view-transition-new(root){animation:vtGir .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes vtCik{to{opacity:0;transform:translateY(-6px)}}
+@keyframes vtGir{from{opacity:0;transform:translateY(14px)}}
+.site .ic{--pad:clamp(18px,4cqw,48px)}
+.kap{--pad:clamp(16px,3vw,40px)}
+.kabuk{view-transition-name:kabuk;position:sticky;top:env(safe-area-inset-top,0px);z-index:60;margin-inline:calc(-1*var(--pad,24px));padding-inline:var(--pad,24px);background:rgba(10,10,13,.84);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--cizgi)}
+.kabukUst{display:flex;align-items:center;gap:12px;padding-block:12px 4px}
+.kabuk .bos{flex:1}
+.kabuk .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:30px;line-height:1;letter-spacing:.01em}
+.kabuk .logo img{width:46px;height:46px;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.kabuk .logo b{font-weight:800}
+.kabuk .logo b span{color:var(--sari)}
+.kabuk .surumKap .sy{color:var(--solgun)}
+.kabuk .surum{color:var(--sari)}
+.sagMenu{display:flex;gap:4px;align-items:center}
+.skMetin{color:var(--solgun);text-decoration:none;font-weight:600;font-size:15px;padding:8px 13px;border-radius:999px;transition:background .2s,color .2s}
+.skMetin:hover,.skMetin.aktif{color:var(--murekkep);background:var(--yuzey)}
+.skMetin.forumSk{color:var(--sariUstu);background:var(--sari);animation:forumNabiz 2.6s ease-out infinite}
+.skMetin.forumSk:hover,.skMetin.forumSk.aktif{color:var(--sariUstu);background:#ffd666}
+@keyframes forumNabiz{0%{box-shadow:0 0 0 0 rgba(255,201,60,.5)}70%{box-shadow:0 0 0 11px rgba(255,201,60,0)}100%{box-shadow:0 0 0 0 rgba(255,201,60,0)}}
+.kabuk .dugme.ana{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--sari);color:var(--sariUstu);border:0;border-radius:12px;padding:10px 16px;font-weight:700;text-decoration:none;font-family:var(--govde);font-size:15px}
+.sekmeSerit{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 10px;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent)}
+.sekmeSerit::-webkit-scrollbar{display:none}
+.sk{flex:none;scroll-snap-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:80px;padding:8px 8px 10px;border-radius:14px;text-decoration:none;color:var(--solgun);font-size:12px;font-weight:600;line-height:1.15;text-align:center;transition:background .2s,color .2s}
+.sk img{width:36px;height:36px;object-fit:contain;transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .3s;filter:saturate(.85)}
+.sk:hover{color:var(--murekkep);background:var(--yuzey)}
+.sk:hover img{transform:translateY(-4px) scale(1.1) rotate(-4deg);filter:saturate(1.1) drop-shadow(0 6px 10px rgba(255,201,60,.25))}
+.sk.aktif{color:var(--murekkep);background:linear-gradient(180deg,rgba(255,201,60,.16),rgba(255,201,60,.04));box-shadow:inset 0 0 0 1px rgba(255,201,60,.35)}
+.sk.aktif img{filter:saturate(1.15) drop-shadow(0 0 12px rgba(255,201,60,.45))}
+.sk.aktif::after{content:"";position:absolute;bottom:3px;left:50%;width:18px;height:3px;margin-left:-9px;border-radius:2px;background:var(--sari);box-shadow:0 0 10px var(--sari)}
+.sk.skTel{display:none;min-width:auto;padding:8px 14px;font-size:13px;align-self:center;border:1px solid var(--cizgi);border-radius:999px}
+.sk.skTel.forumSk{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+@media (max-width:820px){
+  .sagMenu{display:none}
+  .sk.skTel{display:flex}
+  .kabuk .logo{font-size:24px;gap:9px}
+  .kabuk .logo img{width:38px;height:38px;border-radius:10px}
+  .kabuk .indir{padding:8px 12px;font-size:14px}
+  .kabuk .surumKap .sy{display:none}
+}
+/* kaydırınca belirme (JS yoksa her şey görünür) */
+html.jsHazir .gorun{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .85s cubic-bezier(.2,.8,.2,1);transition-delay:var(--g,0ms)}
+html.jsHazir .gorun.gor{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.jsHazir .gorun{opacity:1;transform:none}.yuzen,.parilti2,.skMetin.forumSk,.fvKart{animation:none!important}}
+/* sekme sayfası */
+.sekmeSayfa{border-top:0!important;padding-top:clamp(28px,4vw,56px)!important}
+.sHero{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,64px);align-items:center}
+.sMetin h1{font-size:clamp(54px,7.4vw,108px);margin-top:6px}
+.sMetin .ust img{width:28px;height:28px;vertical-align:-9px;margin-right:2px}
+.sMetin .altBaslik{font-size:clamp(20px,2vw,26px)}
+.etiketSatir{display:flex;gap:6px;margin-top:14px}.etiketSatir .etiket{margin-left:0}
+.sekmeSayfa .satir,.forumVitrin .satir{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px}
+.sGorsel{position:relative;perspective:1500px;min-width:0}
+.sGorsel::before{content:"";position:absolute;inset:-12% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.20),rgba(255,154,46,.07) 55%,transparent);filter:blur(14px)}
+.yuzen{animation:yuzen 7s ease-in-out infinite}
+@keyframes yuzen{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.egik{transform:rotateY(var(--ry,-9deg)) rotateX(var(--rx,4deg));transition:transform .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 50px 100px -30px rgba(0,0,0,.9),0 0 0 6px #111115,0 0 60px rgba(255,201,60,.08)}
+.egik .ekran{position:relative}
+.parilti2{position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 35%,rgba(255,230,160,.22) 50%,transparent 65%);background-size:250% 100%;mix-blend-mode:screen;animation:parla3 6.5s ease-in-out infinite}
+@keyframes parla3{0%{background-position:140% 0}45%,100%{background-position:-40% 0}}
+.alanIzgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;margin-top:clamp(40px,6vw,72px)}
+.alanKart{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:22px 22px 18px;min-width:0;transition:border-color .25s,transform .25s}
+.alanKart:hover{border-color:#4a3d1c;transform:translateY(-3px)}
+.alanKart header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.alanKart header img{width:46px;height:46px;object-fit:contain}
+.alanKart h3{font-family:var(--baslik);font-size:26px;text-transform:uppercase;line-height:1}
+.alanKart ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.alanKart li{position:relative;padding-left:16px;color:#cfccc4;font-size:15px;line-height:1.5}
+.alanKart li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--sari);box-shadow:0 0 8px rgba(255,201,60,.6)}
+.alanKart li .etiket{margin-left:6px;font-size:9.5px}
+.ikinciGorsel{margin-top:44px;display:flex;justify-content:center}.ikinciGorsel .ipad{width:min(100%,980px)}
+.oncSnr{display:flex;justify-content:space-between;gap:12px;margin:56px 0 8px;flex-wrap:wrap}
+.oncSnr a{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--cizgi);border-radius:18px;text-decoration:none;color:var(--murekkep);background:var(--yuzey);font-weight:600;transition:border-color .2s,transform .2s}
+.oncSnr a:hover{border-color:var(--sari);transform:translateY(-2px)}
+.oncSnr a img{width:40px;height:40px;object-fit:contain}
+.oncSnr small{display:block;font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sonuk);font-weight:400}
+.oncSnr a.snr{margin-left:auto;text-align:right}
+@media (max-width:860px){.sHero{grid-template-columns:minmax(0,1fr)}.sGorsel{order:-1}}
+/* ana sayfa: forum vitrini */
+@property --aci{syntax:'<angle>';inherits:false;initial-value:0deg}
+.forumVitrin{border-top:0!important;padding-top:clamp(24px,4vw,48px)!important}
+.fvKart{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);padding:clamp(22px,3.4vw,44px);border-radius:28px;border:1.5px solid transparent;background:radial-gradient(120% 140% at 0% 0%,rgba(255,201,60,.14),transparent 55%) padding-box,linear-gradient(160deg,#16140f,#0f0f12) padding-box,conic-gradient(from var(--aci),#3a321c 0 58%,#FFC93C 72%,#FF9A2E 78%,#3a321c 90%) border-box;animation:donus 7s linear infinite;overflow:hidden}
+@keyframes donus{to{--aci:360deg}}
+.fvMetin h2{font-size:clamp(46px,6.4vw,88px)}
+.fvListe{display:grid;gap:10px;align-content:center;min-width:0}
+.fvKonu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);transition:transform .25s,border-color .25s,background .25s;animation:fvGir .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--g,0ms)}
+@keyframes fvGir{from{opacity:0;transform:translateX(18px)}}
+.fvKonu:hover{transform:translateX(5px);border-color:#4a3d1c;background:rgba(255,201,60,.05)}
+.fvOy{display:flex;flex-direction:column;align-items:center;min-width:46px;padding:6px 4px;border-radius:12px;border:1px solid var(--cizgi);font:600 14px var(--mono);color:var(--sari);line-height:1.1}
+.fvOy span{font-size:11px;color:var(--solgun)}
+.fvKonu b{display:block;font-weight:600;font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}
+.fvKonu small{display:block;margin-top:3px;color:var(--sonuk);font:11px var(--mono);letter-spacing:.04em}
+.fvBos{color:var(--solgun);margin:0}
+.fvTum{justify-self:start;color:var(--sari);text-decoration:none;font-weight:600;font-size:14px;margin-top:4px}
+@media (max-width:860px){.fvKart{grid-template-columns:minmax(0,1fr)}}
+/* ana sayfa: sekme kutuları */
+.kutuIzgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:12px;margin-top:28px}
+.sekmeKutu{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px 18px 20px;border-radius:20px;background:radial-gradient(240px circle at var(--mx,-200px) var(--my,-200px),rgba(255,201,60,.12),transparent 60%),var(--yuzey);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .3s}
+.sekmeKutu img{width:58px;height:58px;object-fit:contain;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.sekmeKutu b{font-family:var(--baslik);font-size:25px;font-weight:800;text-transform:uppercase;line-height:1}
+.sekmeKutu span{color:var(--solgun);font-size:13.5px;line-height:1.45}
+.sekmeKutu em{position:absolute;right:16px;top:16px;font-style:normal;color:var(--sonuk);transition:transform .25s,color .25s}
+.sekmeKutu:hover{transform:translateY(-5px);border-color:#4a3d1c;box-shadow:0 20px 44px -22px rgba(255,201,60,.4)}
+.sekmeKutu:hover img{transform:scale(1.14) rotate(-6deg)}
+.sekmeKutu:hover em{color:var(--sari);transform:translateX(4px)}
+/* indir çağrısı */
+.ctaBolum{text-align:center;position:relative;isolation:isolate}
+.ctaBolum::before{content:"";position:absolute;left:50%;top:40%;width:min(900px,100%);height:340px;transform:translate(-50%,-50%);z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.16),transparent);filter:blur(20px)}
+.ctaBolum h2{font-size:clamp(46px,7vw,96px)}
+.ctaBolum .giris{margin-inline:auto}
+.ctaBolum .magaza{justify-content:center}
+/* Türkçe büyük harf dönüşümü "iOS"u "İOS" yapıyordu */
+.etiket.iosmac,.etiket.ipadmac{text-transform:none}
+/* telefonda üst çubuk sığsın, sayfa yana kaymasın */
+body{overflow-x:clip}
+.kabukUst{min-width:0}
+.kabuk .logo{min-width:0;flex-shrink:1}
+@media (max-width:520px){.kabuk .indir{display:none}.kabuk .dil{padding:5px 9px;font-size:11px;white-space:nowrap}.kabuk .logo{font-size:22px}}
+
 </style>
 </head>
-<body>
-
-
-
+<body class="anaSayfa">
 <div class="sahne" id="sahne">
 <div class="site" id="site">
 <div class="ic">
-
-<!-- ÜST MENÜ -->
-<header class="menu">
-  <a class="logo" href="#ana" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
-  <nav id="nav" aria-label="Site menüsü">
-    <a href="#ozellikler" data-en="Features">Özellikler</a>
-        <a href="#yardim" data-en="Help">Yardım</a>
-    <a href="#hakkinda" data-en="About">Hakkında</a>
-    <a href="#tesekkurler" data-en="Thanks">Teşekkürler</a>
-    <a href="#forum" data-en="Forum">Forum</a>
-    <a href="#destek" data-en="Support">Destek ol</a>
-    <a href="#iletisim" data-en="Contact">İletişim</a>
-  </nav>
-  <button class="dil" id="dilDugme" type="button">TR · EN</button>
-  <a class="dugme ana indir" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a>
-  <button class="hamburger" id="hamburger" type="button" aria-label="Menü" aria-expanded="false">☰</button>
+<header class="kabuk">
+  <div class="kabukUst">
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
+    <span class="bos"></span>
+    <nav class="sagMenu" aria-label="Site"><a class="skMetin forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="skMetin" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="skMetin" href="hakkinda.html"><span data-en="About">Hakkında</span></a></nav>
+    <button class="dil" id="dilDugme" type="button">TR · EN</button>
+    <a class="dugme ana indir" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a>
+  </div>
+  <nav class="sekmeSerit" aria-label="Sekmeler"><a class="sk skTel forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="sk skTel" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="sk skTel" href="hakkinda.html"><span data-en="About">Hakkında</span></a><a class="sk" href="sarkilar.html"><img src="simgeler/repertoire.png" alt="" width="34" height="34"><span data-en="Songs">Şarkılar</span></a><a class="sk" href="playlistler.html"><img src="simgeler/playlist.png" alt="" width="34" height="34"><span data-en="Playlists">Playlistler</span></a><a class="sk" href="akorlar.html"><img src="simgeler/acoustic-guitar.png" alt="" width="34" height="34"><span data-en="Chords">Akorlar</span></a><a class="sk" href="tablar.html"><img src="simgeler/pick.png" alt="" width="34" height="34"><span data-en="Tabs">Tablar</span></a><a class="sk" href="duzenlemeler.html"><img src="simgeler/arrangements.png" alt="" width="34" height="34"><span data-en="Arrangements">Düzenlemeler</span></a><a class="sk" href="karaoke.html"><img src="simgeler/karaoke.png" alt="" width="34" height="34"><span data-en="Karaoke">Karaoke</span></a><a class="sk" href="backing.html"><img src="simgeler/backing_track.png" alt="" width="34" height="34"><span data-en="Backing Track">Backing Track</span></a><a class="sk" href="bass.html"><img src="simgeler/bass.png" alt="" width="34" height="34"><span data-en="Bass">Bass</span></a><a class="sk" href="video.html"><img src="simgeler/video.png" alt="" width="34" height="34"><span data-en="Video">Video</span></a><a class="sk" href="ai-davul.html"><img src="simgeler/ai_drums.png" alt="" width="34" height="34"><span data-en="AI Drums">AI Davul</span></a><a class="sk" href="akor-bulma.html"><img src="simgeler/chord_finder.png" alt="" width="34" height="34"><span data-en="Chord Finder">Akor Bulma</span></a><a class="sk" href="metronom-bul.html"><img src="simgeler/metronome.png" alt="" width="34" height="34"><span data-en="Beat Finder">Metronom Bul</span></a><a class="sk" href="one-man.html"><img src="simgeler/one_man_band.png" alt="" width="34" height="34"><span data-en="One Man">One Man</span></a><a class="sk" href="pano.html"><img src="simgeler/group_connection.png" alt="" width="34" height="34"><span data-en="BC Board">BC Pano</span></a></nav>
 </header>
-
 <main class="sayfa">
-
-<!-- ANA SAYFA -->
 <section class="bolum isikli" id="ana" style="border-top:0;padding-top:20px">
   <div class="arka" aria-hidden="true"><div class="duzlem" id="duzlem"><img class="kat on" src="ekranlar/3/metronom_bul_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/video_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/one_man_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/akor_bulma_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/sarkilar_yatay.jpg" alt=""><img class="kat" src="ekranlar/3/sahne_yatay.jpg" alt=""><span class="parilti" id="parilti"></span></div></div>
   <canvas class="isik" id="isikKahraman" aria-hidden="true"></canvas>
@@ -551,192 +660,41 @@ p{max-width:65ch}
     </div>
   </div>
 </section>
-
-<!-- KİMİN İÇİN -->
+<section class="bolum forumVitrin gorun" id="forumVitrin">
+  <div class="fvKart">
+    <div class="fvMetin">
+      <p class="ust"><span class="canli"><i></i><span data-en="Live">Canlı</span></span> <span data-en="Forum">Forum</span></p>
+      <h2 data-en="Make yourself heard.">Sesini duyur.</h2>
+      <p class="giris" data-en="Report a bug, ask for what’s missing, vote on ideas. The most-voted ones are built first. Sign in with your BC account or with Apple.">Hata bildir, eksik olanı iste, fikirleri oyla. En çok oylanan önce yapılır. BC hesabınla ya da Apple ile gir.</p>
+      <div class="satir">
+        <a class="dugme ana" href="forum.html?hedef=fikir" data-en="Share an idea">Fikir yaz</a>
+        <a class="dugme ikinci" href="forum.html?hedef=hata" data-en="Report a bug">Hata bildir</a>
+        <a class="ince fvGit" href="forum.html" data-en="Open the forum →">Foruma git →</a>
+      </div>
+    </div>
+    <div class="fvListe" id="fvListe" aria-live="polite">
+      <p class="fvBos" data-en="Latest topics are loading…">Son konular yükleniyor…</p>
+    </div>
+  </div>
+</section>
 <section class="bolum" id="kimin">
   <p class="ust" data-en="Start here">Buradan başla</p>
   <h2 data-en="Who plays with BC Stage?">BC Stage kiminle çalar?</h2>
   <p class="giris" data-en="Eight kinds of musicians, one app. Pick yours.">Sekiz çeşit müzisyen, tek uygulama. Kendini seç.</p>
   <div class="kartlar">
-    <div class="kart"><img src="simgeler/singer_vocal.png" alt=""><h3 data-en="Singers">Şarkıcı</h3><p data-en="Lyrics and chords together, big enough to read from a meter away. Change key with one tap; stage notes show as a card.">Söz ve akor bir arada, bir metreden okunacak büyüklükte. Ton tek dokunuşla değişir, sahne notu kart olarak görünür.</p><a href="#ozellikler" data-en="Stage page →">Sahne sayfası →</a></div>
-    <div class="kart"><img src="simgeler/acoustic-guitar.png" alt=""><h3 data-en="Guitarists">Gitarist</h3><p data-en="Chord dictionary and voicings, Guitar Pro tabs, scales, arpeggios, exercises. Capo plans for fewer barre chords.">Akor sözlüğü ve çevrimler, Guitar Pro tabları, gamlar, arpejler, egzersizler. Kapo planıyla daha az barre.</p><a href="#katalog" data-en="Chords & tabs →">Akor ve tab →</a></div>
-    <div class="kart"><img src="simgeler/ai_drums.png" alt=""><h3 data-en="Drummers">Davulcu ve perküsyoncu</h3><p data-en="Read a song's drums and find its style. Build your own kit with AI, practise with 6,401 patterns, add conga and bongo.">Bir şarkının davulunu okut, tarzını bul. AI ile kendi kitini üret, 6.401 kalıpla çalış, konga ve bongo ekle.</p><a href="#ritimF" data-en="Rhythm →">Ritim →</a></div>
-    <div class="kart"><img src="simgeler/one_man_band.png" alt=""><h3 data-en="One-person band">Tek kişilik grup</h3><p data-en="Drum grid, looper and metronome share one clock. Fills, finale and looper record from the pedal, hands on the instrument.">Davul ızgarası, looper ve metronom aynı saati tutar. Pedalla fill, final ve looper kaydı, eller çalgıda.</p><a href="#ritimF" data-en="One Man Band →">One Man Band →</a></div>
-    <div class="kart"><img src="simgeler/playlist.png" alt=""><h3 data-en="Bands">Grup</h3><p data-en="The leader opens a song and everyone on the same Wi-Fi follows. Talkback, polls, stage notes, no internet needed.">Lider şarkıyı açar, aynı Wi-Fi'daki herkes izler. Bas-konuş, anketler, sahne notları, internet gerekmez.</p><a href="#katalog" data-en="Group sync →">Grup senkronu →</a></div>
-    <div class="kart"><img src="simgeler/video.png" alt=""><h3 data-en="Students">Öğrenci</h3><p data-en="Loop and slow down the hard part of a lesson video. Speed trainer, practice plans, saved sessions.">Ders videosunda zor yeri döngüye al ve yavaşlat. Hız antrenörü, çalışma programı, kayıtlı çalışmalar.</p><a href="#video" data-en="Video practice →">Video çalışma →</a></div>
-    <div class="kart"><img src="simgeler/karaoke.png" alt=""><h3 data-en="Karaoke and vocal practice">Karaoke ve vokal çalışan</h3><p data-en="Turn the vocal off and sing with words that fill as you go. Speed and key control, tap a line to jump.">Vokali kapat, kelime kelime dolan sözle söyle. Hız ve ton ayarı, satıra dokunup atlama.</p><a href="#karaoke" data-en="Karaoke →">Karaoke →</a></div>
-    <div class="kart"><img src="simgeler/arrangements.png" alt=""><h3 data-en="Arrangers and tab writers">Aranjör ve tab yazan</h3><p data-en="iReal-style chord charts, odd meters, repeats. Write tabs, save losslessly, send to a person by BC ID.">iReal tarzı akor şemaları, aksak usuller, röprizler. Tab yaz, kayıpsız kaydet, BC ID ile kişiye gönder.</p><a href="#katalog" data-en="Charts & tabs →">Aranje ve tab →</a></div>
+    <div class="kart"><img src="simgeler/singer_vocal.png" alt=""><h3 data-en="Singers">Şarkıcı</h3><p data-en="Lyrics and chords together, big enough to read from a meter away. Change key with one tap; stage notes show as a card.">Söz ve akor bir arada, bir metreden okunacak büyüklükte. Ton tek dokunuşla değişir, sahne notu kart olarak görünür.</p><a href="ozellikler.html" data-en="Stage page →">Sahne sayfası →</a></div>
+    <div class="kart"><img src="simgeler/acoustic-guitar.png" alt=""><h3 data-en="Guitarists">Gitarist</h3><p data-en="Chord dictionary and voicings, Guitar Pro tabs, scales, arpeggios, exercises. Capo plans for fewer barre chords.">Akor sözlüğü ve çevrimler, Guitar Pro tabları, gamlar, arpejler, egzersizler. Kapo planıyla daha az barre.</p><a href="ozellikler.html#katalog" data-en="Chords & tabs →">Akor ve tab →</a></div>
+    <div class="kart"><img src="simgeler/one_man_band.png" alt=""><h3 data-en="One-person band">Tek kişilik grup</h3><p data-en="Drum grid, looper and metronome share one clock. Fills, finale and looper record from the pedal, hands on the instrument.">Davul ızgarası, looper ve metronom aynı saati tutar. Pedalla fill, final ve looper kaydı, eller çalgıda.</p><a href="one-man.html" data-en="One Man Band →">One Man Band →</a></div>
+    <div class="kart"><img src="simgeler/playlist.png" alt=""><h3 data-en="Bands">Grup</h3><p data-en="The leader opens a song and everyone on the same Wi-Fi follows. Talkback, polls, stage notes, no internet needed.">Lider şarkıyı açar, aynı Wi-Fi'daki herkes izler. Bas-konuş, anketler, sahne notları, internet gerekmez.</p><a href="ozellikler.html#katalog" data-en="Group sync →">Grup senkronu →</a></div>
   </div>
 </section>
-
-<!-- ÖZELLİKLER -->
-<section class="bolum" id="ozellikler">
-  <p class="ust" data-en="Features">Özellikler</p>
-  <h2 data-en="Everything a gig needs">Bir konserin ihtiyacı olan her şey</h2>
-  <p class="giris" data-en="Eleven tabs, one clock. Everything that plays together keeps the same time.">On bir sekme, tek saat. Birlikte çalan her şey aynı zamanı tutar.</p>
-  <div class="sekmeler" role="list">
-    <a role="listitem" href="#ozellikler"><img src="simgeler/repertoire.png" alt=""><span data-en="Songs">Şarkılar</span></a>
-    <a role="listitem" href="#ozellikler"><img src="simgeler/playlist.png" alt=""><span data-en="Setlists">Listeler</span></a>
-    <a role="listitem" href="#ozellikler"><img src="simgeler/acoustic-guitar.png" alt=""><span data-en="Chords">Akorlar</span></a>
-    <a role="listitem" href="#ozellikler"><img src="simgeler/pick.png" alt=""><span data-en="Tabs">Tablar</span></a>
-    <a role="listitem" href="#ozellikler"><img src="simgeler/arrangements.png" alt=""><span data-en="Arrangements">Aranjeler</span></a>
-    <a role="listitem" href="#karaoke"><img src="simgeler/karaoke.png" alt=""><span>Karaoke</span></a>
-    <a role="listitem" href="#ritimF"><img src="simgeler/looper.png" alt=""><span>Looper</span></a>
-    <a role="listitem" href="#video"><img src="simgeler/video.png" alt=""><span>Video</span></a>
-    <a role="listitem" href="#ritimF"><img src="simgeler/ai_drums.png" alt=""><span data-en="AI Drums">AI Davul</span></a>
-    <a role="listitem" href="#akorbul"><img src="simgeler/chord_finder.png" alt=""><span data-en="Chord Finder">Akor Bulma</span></a>
-    <a role="listitem" href="#metronombul"><img src="simgeler/metronome.png" alt=""><span data-en="Beat Finder">Metronom Bul</span></a>
-    <a role="listitem" href="#ritimF"><img src="simgeler/one_man_band.png" alt=""><span>One Man Band</span></a>
-  </div>
-
-  <div class="fasil">
-    <div>
-      <p class="ust">01 · <span data-en="Stage">Sahne</span></p>
-      <h2 data-en="Read it from a meter away">Bir metreden oku</h2>
-      <div class="ozellikler">
-        <div class="oz"><img src="simgeler/repertoire.png" alt=""><div><h3 data-en="Songs and the stage page">Şarkılar ve sahne sayfası</h3><p data-en="Sections in a band at the top, chords above the lines, the whole song fitted to the screen.">Bölümler üstte bir bantta, akorlar satırların üstünde, şarkının tamamı ekrana sığdırılmış.</p></div></div>
-        <div class="oz"><img src="simgeler/playlist.png" alt=""><div><h3 data-en="Setlists">Çalma listeleri</h3><p data-en="Order the night's songs, swap one in a second, keep notes per song.">Gecenin şarkılarını sırala, birini saniyede değiştir, her şarkıya not düş.</p></div></div>
-        <div class="oz"><img src="simgeler/arrangements.png" alt=""><div><h3><span data-en="Group sync">Grup senkronu</span><span class="etiket vip">VIP</span></h3><p data-en="The leader opens a song; every device on the same Wi-Fi follows. No internet, no server.">Lider şarkıyı açar, aynı Wi-Fi'daki bütün cihazlar izler. İnternet de sunucu da gerekmez.</p></div></div>
-        <div class="oz"><img src="simgeler/pick.png" alt=""><div><h3><span data-en="Foot pedal">Pedal</span><span class="etiket vip">VIP</span></h3><p data-en="Bluetooth page turners and MIDI pedals: next song, next section, drums start and stop, looper record. Hands stay on the instrument.">Bluetooth sayfa çevirici ve MIDI pedal: sonraki şarkı, sonraki bölüm, ritmi başlat/durdur, looper kaydı. Ellerin çalgıda kalır.</p></div></div>
-      </div>
-    </div>
-    <div class="gorsel">
-      <div class="ipad dikey gercek"><div class="ekran"><img src="ekranlar/3/sahne_dikey.jpg" alt="BC Stage iPad dikey: Amazing Grace, akorlar sözün üstünde" loading="lazy"></div></div>
-    </div>
-  </div>
-
-  <!-- KARAOKE -->
-  <div class="fasil ters vitrin" id="karaoke">
-    <div>
-      <p class="ust">02 · Karaoke <span class="etiket ipadmac" data-en="vocal work: iOS · Mac">ses işleme: iOS · Mac</span></p>
-      <h2>Karaoke</h2>
-      <p class="altBaslik" data-en="Sing over the real band.">Gerçek grubun üstüne söyle.</p>
-      <p class="giris" data-en="Link an audio file to a song. BC Stage takes the vocal out, lines the words up with the music and fills them in as they are sung.">Bir ses dosyasını şarkıya bağla. BC Stage vokali çıkarır, sözleri müziğe oturtur ve söylendikçe doldurur.</p>
-      <div class="cipler"><span data-en="Vocal removal on the device">Cihazda vokal ayırma</span><span data-en="Word-by-word timing">Kelime kelime zamanlama</span><span data-en="Track mixer">İz mikseri</span><span data-en="Fix any word by hand">Her kelimeyi elle düzelt</span></div>
-      <p class="cizimNot" style="text-align:left" data-en="Illustration · real screen comes from a live capture">Çizim · gerçek ekran canlı çekimle gelecek</p>
-    </div>
-    <div class="gorsel">
-      <div class="ipad yatay" aria-label="iPad yatay: Karaoke">
-        <div class="ekran">
-          <div class="ada"><span class="ad">Gece Treni</span><span class="grup">Karaoke</span><span class="bos"></span><span class="hap">−2</span><span class="hap s">1:12</span></div>
-          <div class="kara">
-            <div class="sozler" id="sozler"></div>
-            <div class="mikser" id="mikser"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- AKOR BULMA -->
-  <div class="fasil vitrin" id="akorbul">
-    <div>
-      <p class="ust">03 · <span data-en="Chord Finder">Akor Bulma</span> <span class="etiket ipadmac">iPad · Mac</span></p>
-      <h2 data-en="Chord Finder">Akor Bulma</h2>
-      <p class="altBaslik" data-en="Drop in a song, get the chart.">Şarkıyı ver, şemasını al.</p>
-      <p class="giris" data-en="BC Stage listens to an audio file and writes out its chords and lyrics, section by section. Nothing leaves your device.">BC Stage bir ses dosyasını dinler, akorlarını ve sözlerini bölüm bölüm yazar. Hiçbir şey cihazından çıkmaz.</p>
-      <div class="cipler"><span data-en="Capo plans">Kapo planları</span><span data-en="Sections found for you">Bölümler kendiliğinden</span><span data-en="Lyrics under the chords">Akorların altında söz</span><span data-en="Save as a song">Şarkı olarak kaydet</span></div>
-    </div>
-    <div class="gorsel">
-      <div class="ipad dikey gercek"><div class="ekran"><img src="ekranlar/3/akor_bulma_dikey.jpg" alt="BC Stage 3.0 Akor Bulma: Scarborough Fair, ton Dm, akorlar ve sözler" loading="lazy"></div></div>
-    </div>
-  </div>
-
-  <!-- VİDEO -->
-  <div class="fasil ters vitrin" id="video">
-    <div>
-      <p class="ust">04 · Video</p>
-      <h2>Video</h2>
-      <p class="altBaslik" data-en="Loop the hard part.">Zor yeri döngüye al.</p>
-      <p class="giris" data-en="Open a lesson video from your gallery. Mark the passage on the waveform, slow it down, and play it again until your hands know it.">Galerinden bir ders videosu aç. Zor yeri dalga şeridinde işaretle, yavaşlat, ellerin öğrenene kadar tekrar çal.</p>
-      <div class="cipler"><span data-en="A–B loop">A–B döngüsü</span><span data-en="Slow down without changing pitch">Tonu bozmadan yavaşlat</span><span data-en="Saved practice spots">Kayıtlı çalışma yerleri</span><span data-en="Speed ladder">Hız merdiveni</span></div>
-    </div>
-    <div class="gorsel">
-      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/video_yatay.jpg" alt="BC Stage 3.0 Video: Greensleeves solo dersi, A–B döngüsü, %75 hız, çalışmalar" loading="lazy"></div></div>
-    </div>
-  </div>
-
-  <!-- METRONOM BUL -->
-  <div class="fasil vitrin" id="metronombul">
-    <div>
-      <p class="ust">05 · <span data-en="Beat Finder">Metronom Bul</span> <span class="etiket ipadmac">iPad · Mac</span></p>
-      <h2 data-en="Beat Finder">Metronom Bul</h2>
-      <p class="altBaslik" data-en="The metronome learns the song.">Metronom şarkıyı öğrenir.</p>
-      <p class="giris" data-en="Give BC Stage a recording. It finds the tempo, the meter and the first beat, then clicks right along with the song.">BC Stage'e bir kayıt ver. Tempoyu, ölçüyü ve ilk vuruşu bulur, sonra şarkıyla birlikte tık atar.</p>
-      <div class="cipler"><span data-en="Tempo and meter">Tempo ve ölçü</span><span data-en="Where beat one falls">Birinci vuruşun yeri</span><span data-en="Click track over the song">Şarkının üstüne tık</span><span data-en="Write out its drums">Davulunu yaz</span></div>
-    </div>
-    <div class="gorsel">
-      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/metronom_bul_yatay.jpg" alt="BC Stage 3.0 Metronom Bul: Amazing Grace 88 BPM, vuruş ızgarası, Davulunu yaz" loading="lazy"></div></div>
-    </div>
-  </div>
-
-  <div class="fasil ters" id="ritimF">
-    <div>
-      <p class="ust">06 · <span data-en="Rhythm">Ritim</span></p>
-      <h2 data-en="A drummer that waits for you">Seni bekleyen bir davulcu</h2>
-      <div class="ozellikler">
-        <div class="oz"><img src="simgeler/ai_drums.png" alt=""><div><h3><span data-en="AI Drums">AI Davul</span><span class="etiket ipadmac">iPad · Mac</span></h3><p data-en="Generate kicks, snares, hi-hats and whole kits on the device, then play them through 6,401 patterns in 17 styles.">Kick, snare, hi-hat ve bütün kitleri cihazda üret, 17 tarzda 6.401 kalıpla çal.</p></div></div>
-        <div class="oz"><img src="simgeler/one_man_band.png" alt=""><div><h3><span data-en="One Man Band">One Man Band</span><span class="etiket vip">VIP</span></h3><p data-en="A five-lane step sequencer you play live: A/B/C variations, fills, finale, odd meters, MIDI grooves.">Canlı çalınan beş kanallı ızgara: A/B/C varyasyonları, fill, final, aksak ölçüler, MIDI groove.</p></div></div>
-        <div class="oz"><img src="simgeler/looper.png" alt=""><div><h3 data-en="Looper">Looper</h3><p data-en="Loops locked to the metronome. Come in late and BC Stage still puts you on the one.">Metronoma kilitli döngüler. Geç girsen bile BC Stage seni birinci vuruşa oturtur.</p></div></div>
-        <div class="oz"><img src="simgeler/ai_drums.png" alt=""><div><h3><span data-en="Drums from a song">Şarkıdan davul</span><span class="etiket ipadmac">iPad · Mac</span></h3><p data-en="BC Stage reads a recording's drums, offers 4–6 matching styles and plays the one you pick with your own kit.">BC Stage kaydın davulunu okur, 4–6 tarz adayı çıkarır, seçtiğini kendi kitinle çalar.</p></div></div>
-      </div>
-    </div>
-    <div class="gorsel">
-      <div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/one_man_yatay.jpg" alt="BC Stage iPad yatay: One Man Mode davul ızgarası" loading="lazy"></div></div>
-    </div>
-  </div>
-  <div class="fasil">
-    <div>
-      <p class="ust" data-en="Coming soon">Yakında</p>
-      <h2 data-en="Precise touch">Milimetrik dokunuş</h2>
-      <div class="ozellikler">
-        <div class="oz"><img src="simgeler/pick.png" alt=""><div><h3><span data-en="BC Mouse">BC Fare</span><span class="etiket yakinda" data-en="soon">yakında</span></h3><p data-en="A cursor on screen and a small touch pad: tap, drag and scroll precisely without your finger covering anything. For editing lyrics, writing chords and fine adjustment.">Ekranda bir imleç ve küçük bir dokunmatik yüzey: parmağın hiçbir şeyi kapatmadan milimetrik dokun, sürükle ve kaydır. Söz düzenlerken, akor yazarken, ince ayarda.</p></div></div>
-        <div class="oz"><img src="simgeler/karaoke.png" alt=""><div><h3><span data-en="Fine adjust">Hassas ayar</span><span class="etiket yakinda" data-en="soon">yakında</span></h3><p data-en="Long-press a marker in an editor and move it to the millisecond.">Düzenleyicide bir işarete uzun bas, milisaniyesine kadar kaydır.</p></div></div>
-      </div>
-    </div>
-    <div class="gorsel"><div class="ipad yatay" style="width:100%" aria-label="iPad yatay: BC Fare (tasarım, yakında)"><div class="ekran"><img src="ekranlar/3/bc_fare_yatay.jpg" alt="BC Fare: imleç bir akor yuvasının üstünde, sağ altta dokunmatik yüzey" style="width:100%;height:100%;object-fit:cover;display:block"></div></div></div>
-  </div>
+<section class="bolum" id="sekmeIzgara">
+  <p class="ust" data-en="Every tab">Bütün sekmeler</p>
+  <h2 data-en="Every corner of the app">Uygulamanın her köşesi</h2>
+  <p class="giris" data-en="Tap a tab to see what it does.">Bir sekmeye dokun, neler yaptığını gör.</p>
+  <div class="kutuIzgara"><a class="sekmeKutu gorun" href="sarkilar.html" style="--g:0ms"><img src="simgeler/repertoire.png" alt="" width="64" height="64"><b data-en="Songs">Şarkılar</b><span data-en="Your whole repertoire, readable from a meter away.">Bütün repertuvarın, bir metreden okunur.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="playlistler.html" style="--g:40ms"><img src="simgeler/playlist.png" alt="" width="64" height="64"><b data-en="Playlists">Playlistler</b><span data-en="Tonight&#x27;s set, ready.">Gecenin sırası hazır.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="akorlar.html" style="--g:80ms"><img src="simgeler/acoustic-guitar.png" alt="" width="64" height="64"><b data-en="Chords">Akorlar</b><span data-en="A chord dictionary and much more.">Akor sözlüğü ve çok daha fazlası.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="tablar.html" style="--g:120ms"><img src="simgeler/pick.png" alt="" width="64" height="64"><b data-en="Tabs">Tablar</b><span data-en="Your Guitar Pro tabs, channel by channel.">Guitar Pro tabların, kanal kanal.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="duzenlemeler.html" style="--g:160ms"><img src="simgeler/arrangements.png" alt="" width="64" height="64"><b data-en="Arrangements">Düzenlemeler</b><span data-en="iReal-style chord charts.">iReal tarzı akor şeması.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="karaoke.html" style="--g:200ms"><img src="simgeler/karaoke.png" alt="" width="64" height="64"><b data-en="Karaoke">Karaoke</b><span data-en="Sing over the real band.">Gerçek grubun üstüne söyle.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="backing.html" style="--g:240ms"><img src="simgeler/backing_track.png" alt="" width="64" height="64"><b data-en="Backing Track">Backing Track</b><span data-en="Your backing tracks, stage-ready.">Sahnede altyapın hazır.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="bass.html" style="--g:280ms"><img src="simgeler/bass.png" alt="" width="64" height="64"><b data-en="Bass">Bass</b><span data-en="Bass Practice · BC Groove Lock">Bass Çalışma · BC Groove Lock</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="video.html" style="--g:320ms"><img src="simgeler/video.png" alt="" width="64" height="64"><b data-en="Video">Video</b><span data-en="Loop the hard part.">Zor yeri döngüye al.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="ai-davul.html" style="--g:360ms"><img src="simgeler/ai_drums.png" alt="" width="64" height="64"><b data-en="AI Drums">AI Davul</b><span data-en="Your own drum sound, on your device.">Kendi davul sesin, cihazında.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="akor-bulma.html" style="--g:400ms"><img src="simgeler/chord_finder.png" alt="" width="64" height="64"><b data-en="Chord Finder">Akor Bulma</b><span data-en="Drop in a song, get the chart.">Şarkıyı ver, şemasını al.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="metronom-bul.html" style="--g:440ms"><img src="simgeler/metronome.png" alt="" width="64" height="64"><b data-en="Beat Finder">Metronom Bul</b><span data-en="The metronome learns the song.">Metronom şarkıyı öğrenir.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="one-man.html" style="--g:480ms"><img src="simgeler/one_man_band.png" alt="" width="64" height="64"><b data-en="One Man">One Man</b><span data-en="A drummer that waits for you.">Seni bekleyen bir davulcu.</span><em aria-hidden="true">→</em></a><a class="sekmeKutu gorun" href="pano.html" style="--g:520ms"><img src="simgeler/group_connection.png" alt="" width="64" height="64"><b data-en="BC Board">BC Pano</b><span data-en="Gigs, gear and musicians">Konser, ekipman ve müzisyenler</span><em aria-hidden="true">→</em></a></div>
+  <p style="margin-top:22px"><a class="dugme ikinci" href="ozellikler.html" data-en="Every feature, in detail →">Bütün özellikler, ayrıntısıyla →</a></p>
 </section>
-
-<!-- BC PANO -->
-<section class="bolum" id="pano">
-  <p class="ust" data-en="BC Board · community">BC Pano · topluluk</p>
-  <h2 data-en="BC Board">BC Pano</h2>
-  <p class="altBaslik" data-en="Home base for the musician on stage.">Sahnedeki müzisyenin ana sayfası.</p>
-  <p class="giris" data-en="Your next gig, your gear, your bands and the musicians around you, on one page. BC Board is free and optional: open a BC account when you want it, and the app keeps working fully without one.">Sıradaki konserin, ekipmanın, grupların ve çevrendeki müzisyenler tek sayfada. BC Pano ücretsiz ve isteğe bağlı: istediğin zaman bir BC hesabı açarsın, açmasan da uygulamanın tamamı çalışır.</p>
-  <div class="panoGorsel"><div class="ipad yatay gercek"><div class="ekran"><img src="ekranlar/3/pano_yatay.jpg" alt="BC Stage 3.0 BC Pano: profil, ID 1 rozeti, sıradaki konser, Konserlere açığım, ekipmanım" loading="lazy"></div></div></div>
-
-  <div class="kimlik">
-    <div class="kimlikKart" aria-hidden="true">
-      <div class="kkUst"><span class="kkAvatar"></span><div><b>BARIŞ ÇEKERGİL</b><span>@bariscekergil</span></div><span class="kkNo">ID 1</span></div>
-      <div class="kkAlt"><span class="kkCanli"><i></i><span data-en="Open to gigs">Konserlere açığım</span></span><span>Fethiye</span><span data-en="Guitar · vocals">Gitar · vokal</span></div>
-    </div>
-    <div class="kimlikMetin">
-      <h3 data-en="Two ways to find you">Seni bulmanın iki yolu</h3>
-      <div class="kimlikIki">
-        <div><b>BC ID</b><span class="kod" data-en="@username">@kullaniciadi</span><p data-en="The name you choose: 3 to 20 characters, lowercase letters, numbers, dots or underscores. Musicians find you with it. You can change it later and nothing breaks.">Senin seçtiğin ad: 3–20 karakter, küçük harf, rakam, nokta ya da alt çizgi. Müzisyenler seni bununla bulur. Sonra değiştirebilirsin, hiçbir bağ kopmaz.</p></div>
-        <div><b data-en="Member number">Üye numarası</b><span class="kod">ID 12</span><p data-en="Given in the order people join: the first member is 1, the next is 2. A small number says you were here early. Send a tab to someone with their @name or their ID number.">Kayıt sırasıyla verilir: ilk kaydolan 1, sonraki 2. Küçük bir numara, en baştan beri burada olduğunun izi. Birine tab gönderirken @adını ya da ID numarasını yazman yeter.</p></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panoIzgara">
-    <button type="button" class="pz" data-pz="konser"><span class="pzIk">◷</span><h3 data-en="Next gig">Sıradaki konser</h3><p data-en="Venue, date and time, ticket link, directions and a reminder on your device. Show it on your profile.">Mekân, tarih ve saat, bilet bağlantısı, yol tarifi ve cihazında hatırlatma. İstersen profilinde göster.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="musait"><span class="pzIk">●</span><h3 data-en="Open to gigs">Konserlere açığım</h3><p data-en="Turn it on and you show up in searches with your city, genres and instruments. Offers come straight to you.">Açınca şehrin, türlerin ve çalgılarınla aramalarda görünürsün. Teklifler doğrudan sana gelir.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="ekipman"><span class="pzIk">♫</span><h3 data-en="My gear">Ekipmanım</h3><p data-en="Your instruments and gear with photos and years. Mark one for sale, set a price, take or turn down offers.">Çalgıların ve ekipmanın, fotoğrafı ve yılıyla. Birini satılık işaretle, fiyat koy, teklifleri kabul et ya da reddet.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="gruplar"><span class="pzIk">◎</span><h3 data-en="My bands">Gruplarım</h3><p data-en="A page for each band, member invites and social links.">Her grubun bir sayfası, üye daveti ve sosyal bağlantılar.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="muzisyen_bul"><span class="pzIk">⌕</span><h3 data-en="Find musicians">Müzisyen bul</h3><p data-en="Filter by instrument, genre, stage role, country, province, district and who is free. Follow them and get reminded of their gigs.">Çalgı, tür, sahne rolü, ülke, il, ilçe ve "müsait" süzgeçleri. Takip et, konserlerini hatırlat.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="repertuvar"><span class="pzIk">≡</span><h3 data-en="Repertoire">Repertuvar</h3><p data-en="Publish your song list on your profile, in full or as a summary. Lyrics are never published.">Şarkı listeni profilinde yayınla, tamamını ya da özetini. Sözler asla yayınlanmaz.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="videolar"><span class="pzIk">▶</span><h3 data-en="Stage videos">Sahne videoları</h3><p data-en="Your live videos on your profile; YouTube plays inside the app.">Canlı videoların profilinde; YouTube uygulamanın içinde oynar.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="sanatcilar"><span class="pzIk">✦</span><h3 data-en="Artists and news">Sanatçılar ve haberler</h3><p data-en="Artist pages with Wikipedia biographies and discographies, plus music news.">Wikipedia biyografisi ve diskografiyle sanatçı sayfaları, müzik haberleri.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="akis"><span class="pzIk">↻</span><h3 data-en="Activity">Hareket akışı</h3><p data-en="Who followed you, who visited, which offers came in.">Kim takip etti, kim ziyaret etti, hangi teklifler geldi.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-    <button type="button" class="pz" data-pz="gizlilik"><span class="pzIk">⚿</span><h3 data-en="Your privacy">Gizliliğin</h3><p data-en="Switches for what is public. Location is only the city you pick. Report and block in one tap.">Neyin herkese açık olacağını anahtarlarla seçersin. Konum yalnız seçtiğin şehir. Bildir ve engelle tek dokunuşta.</p><span class="pzDaha" data-en="See how →">Nasıl çalışır →</span></button>
-  </div>
-  <p class="panoNot"><span class="etiket net" data-en="internet">internet</span> <span data-en="BC Board needs a BC account and an internet connection. Everything else in BC Stage works without both.">BC Pano için BC hesabı ve internet gerekir. BC Stage'in geri kalanı ikisi olmadan da çalışır.</span></p>
-  <div class="pzPerde" id="pzPerde" hidden role="dialog" aria-modal="true" aria-labelledby="pzBaslik"><div class="pzPencere"><div class="pzResim"><img id="pzImg" alt=""></div><div class="pzYazi"><h3 id="pzBaslik"></h3><p id="pzGiris"></p><ul id="pzMaddeler"></ul><div class="pzAlt"><button type="button" id="pzOnce" aria-label="Önceki">←</button><button type="button" id="pzSonra" aria-label="Sonraki">→</button><button type="button" class="kapat" id="pzKapat">Kapat</button></div></div></div></div>
-</section>
-
-<!-- GERÇEK EKRANLAR -->
 <section class="bolum" id="ekranlar">
   <p class="ust" data-en="Screens">Ekranlar</p>
   <h2 data-en="The real app">Uygulamanın kendisi</h2>
@@ -748,251 +706,24 @@ p{max-width:65ch}
   <div class="galeriSahne"><div class="ipad yatay gercek" id="galeriIpad"><div class="ekran"><img id="galeriImg" src="ekranlar/3/sarkilar_yatay.jpg" alt=""></div></div></div>
   <p class="galeriAlt" id="galeriAlt"></p>
 </section>
-
-<!-- BÜTÜN ÖZELLİKLER -->
-<section class="bolum" id="katalog">
-  <p class="ust" data-en="Every feature">Bütün özellikler</p>
-  <h2 data-en="Down to the last detail">En ince ayrıntısına kadar</h2>
-  <p class="giris" data-en="Everything BC Stage does today, area by area. Marks show what is VIP, what needs an iPad or Mac and what needs the internet.">BC Stage'in bugün yaptığı her şey, alan alan. İşaretler neyin VIP olduğunu, neyin iPad ya da Mac istediğini ve neyin internet gerektirdiğini gösteriyor.</p>
-  <div class="isaretler"><span class="etiket vip">VIP</span><span data-en="locked or limited in the free version">ücretsizde kilitli ya da sınırlı</span><span class="etiket ipadmac">iPad · Mac</span><span data-en="tablet and computer only">yalnız tablet ve bilgisayar</span><span class="etiket iosmac">iOS · Mac</span><span data-en="not on Android yet">Android'de henüz yok</span><span class="etiket net" data-en="internet">internet</span><span data-en="needs a connection">bağlantı ister</span></div>
-  <div class="suzgec" role="group" aria-label="Alan süzgeci" id="suzgec"></div>
-  <div class="katalog" id="katalogIzgara"></div>
-  </section>
-
-<!-- FOTOĞRAF BANDI -->
-<div class="fotoBant" id="bant">
-  <canvas id="isikKalabalik" aria-hidden="true"></canvas>
-  <div class="yazi">
-    <h2><span data-en="Every night,">Her gece</span> <em data-en="a different stage.">başka bir sahne.</em></h2>
-  </div>
+<section class="bolum ctaBolum gorun" id="indir">
+  <h2 data-en="Ready for the stage?">Sahneye hazır mısın?</h2>
+  <p class="giris" data-en="BC Stage is free to start. iPad, iPhone, Android and Mac.">BC Stage’e ücretsiz başla. iPad, iPhone, Android ve Mac.</p>
+  <div class="magaza">
+  <a class="dugme ana" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener"><span class="ikon"></span><span><small data-en="Download on the">İndir</small><strong>App Store</strong></span></a>
+  <a class="dugme ikinci" href="https://play.google.com/store/apps/details?id=com.bariscekergil.bcstage" target="_blank" rel="noopener"><span class="ikon">▶</span><span><small data-en="Get it on">Edin</small><strong>Google Play</strong></span></a>
 </div>
-
-<!-- FİYAT -->
-<section class="bolum" id="fiyat" hidden>
-  <p class="ust" data-en="Pricing">Fiyat</p>
-  <h2 data-en="Free to start.">Ücretsiz başla.</h2>
-  <p class="giris"></p>
-  <div class="fiyat">
-    <div class="paket"><h3 data-en="Free">Ücretsiz</h3><div class="tutar">0</div>
-      <ul><li data-en="30 songs, 2 setlists, 10 arrangements">30 şarkı, 2 liste, 10 aranje</li><li data-en="Chords, metronome, lyric search">Akorlar, metronom, söz arama</li><li data-en="Backup and export">Yedekleme ve dışa aktarma</li></ul></div>
-    <div class="paket vipP"><h3>VIP</h3><div class="tutar"></div>
-      <ul><li data-en="One payment, no subscription">Tek ödeme, abonelik yok</li><li data-en="Unlimited songs and setlists">Sınırsız şarkı ve liste</li><li data-en="One Man Band, group sync, pedal">One Man Band, grup senkronu, pedal</li><li data-en="Scales, arpeggios, exercises">Gamlar, arpejler, egzersizler</li></ul>
-      <a class="dugme ana" href="#ana" style="margin-top:auto;justify-content:center" data-en="Get BC Stage">BC Stage'i indir</a></div>
-    <div class="paket"><h3 data-en="Try first">Önce dene</h3><div class="tutar" data-en="3 days">3 gün</div>
-      <ul><li data-en="Every VIP feature, free for three days">Bütün VIP özellikleri üç gün ücretsiz</li><li data-en="Starts the first time you open One Man Band">One Man Band'i ilk açtığında başlar</li></ul></div>
-  </div>
-</section>
-
-<!-- YARDIM -->
-<section class="bolum" id="yardim">
-  <p class="ust" data-en="Help">Yardım</p>
-  <h2 data-en="From first song to stage">İlk şarkıdan sahneye</h2>
-  <p style="margin:18px 0 0"><a class="dugme ana" href="yardim.html" data-en="Full guide with screens →">Ekranlı kılavuzun tamamı →</a></p>
-  <div class="adimlar">
-    <div class="adim"><div class="no">1</div><h3 data-en="Add a song">Şarkı ekle</h3><p data-en="Type the title, paste the chords, or import a file.">Adını yaz, akorları yapıştır ya da bir dosya al.</p></div>
-    <div class="adim"><div class="no">2</div><h3 data-en="Set it up">Ayarla</h3><p data-en="Key, capo, tempo and sections. BC Stage remembers them.">Ton, kapo, tempo ve bölümler. BC Stage hepsini hatırlar.</p></div>
-    <div class="adim"><div class="no">3</div><h3 data-en="Build the setlist">Listeyi kur</h3><p data-en="Drag the night's songs into order.">Gecenin şarkılarını sürükleyip sırala.</p></div>
-    <div class="adim"><div class="no">4</div><h3 data-en="Go on stage">Sahneye çık</h3><p data-en="Open the stage page. The pedal or a swipe takes you to the next song.">Sahne sayfasını aç. Pedal ya da bir kaydırma seni sonraki şarkıya götürür.</p></div>
-  </div>
-  <div class="yardimIzgara">
-    <div class="konular">
-      <h3 style="margin-bottom:8px" data-en="Guide">Kılavuz</h3>
-      <a href="#yardim"><b data-en="Songs and stage page">Şarkılar ve sahne sayfası</b><span>→</span></a>
-      <a href="#yardim"><b data-en="Setlists and group sync">Listeler ve grup senkronu</b><span>→</span></a>
-      <a href="#yardim"><b data-en="Chord Finder and karaoke">Akor Bulma ve karaoke</b><span>→</span></a>
-      <a href="#yardim"><b data-en="Metronome and looper">Metronom ve looper</b><span>→</span></a>
-      <a href="#yardim"><b data-en="One Man Band and AI Drums">One Man Band ve AI Davul</b><span>→</span></a>
-      <a href="#yardim"><b data-en="Pedals and MIDI">Pedal ve MIDI</b><span>→</span></a>
-      <a href="#yardim"><b data-en="Backup and your account">Yedek ve hesap</b><span>→</span></a>
-    </div>
-    <div class="sss">
-      <h3 style="margin-bottom:8px" data-en="Frequently asked">Sık sorulanlar</h3>
-      <details open><summary data-en="Does BC Stage need the internet on stage?">Sahnede internet gerekiyor mu?</summary><p data-en="No. Songs, the stage page, the metronome, drums, looper and group sync all work offline. Group sync only needs every device on the same Wi-Fi network.">Hayır. Şarkılar, sahne sayfası, metronom, davul, looper ve grup senkronu internetsiz çalışır. Grup senkronu için cihazların aynı Wi-Fi ağında olması yeter.</p></details>
-      <details><summary data-en="Does group sync work without internet?">Grup senkronu internetsiz çalışır mı?</summary><p data-en="Yes. The leader announces itself on the local network and the others connect to it directly. Nothing goes to a server. All devices must be on the same Wi-Fi.">Evet. Lider kendini yerel ağda duyurur, öteki cihazlar ona doğrudan bağlanır. Hiçbir şey sunucuya gitmez. Bütün cihazlar aynı Wi-Fi ağında olmalı.</p></details>
-      <details><summary data-en="Is my audio uploaded anywhere?">Ses dosyalarım bir yere yükleniyor mu?</summary><p data-en="No. Chord finding, vocal separation and tempo finding run on your device.">Hayır. Akor bulma, vokal ayırma ve tempo bulma cihazında çalışır.</p></details>
-      <details><summary data-en="Which pedals work?">Hangi pedallar çalışıyor?</summary><p data-en="Bluetooth page turners that act like a keyboard (AirTurn, PageFlip style) and Bluetooth MIDI pedals. Press Learn and step on the button you want.">Klavye gibi davranan Bluetooth sayfa çeviriciler (AirTurn, PageFlip tarzı) ve Bluetooth MIDI pedallar. "Öğret"e bas, istediğin düğmeye dokun.</p></details>
-      <details><summary data-en="Why are some features iPad and Mac only?">Bazı özellikler neden yalnız iPad ve Mac'te?</summary><p data-en="Chord Finder, AI Drums and Beat Finder run large models on the device; phones don't have the memory for them yet. Vocal separation and lyric alignment work on iPhone, iPad and Mac, not yet on Android.">Akor Bulma, AI Davul ve Metronom Bul cihazda büyük modeller çalıştırıyor, telefonların belleği bunlara henüz yetmiyor. Vokal ayırma ve söz hizalama iPhone, iPad ve Mac'te var, Android'de henüz yok.</p></details>
-      <details><summary data-en="I bought VIP. How do I get it on a new device?">VIP aldım, yeni cihaza nasıl taşırım?</summary><p data-en="Sign in with the same store account and tap Restore purchases in settings.">Aynı mağaza hesabıyla gir ve ayarlarda Satın alımları geri yükle'ye dokun.</p></details>
-    </div>
-  </div>
-  <div class="cevrim">
-    <div><h3 data-en="Works with no internet">İnternetsiz çalışır</h3><ul>
-      <li data-en="Library, stage page, setlists">Kütüphane, sahne sayfası, listeler</li>
-      <li data-en="Metronome, One Man Band, looper">Metronom, One Man Band, looper</li>
-      <li data-en="Group sync, talkback, polls (same Wi-Fi)">Grup senkronu, bas-konuş, anketler (aynı Wi-Fi)</li>
-      <li data-en="Vocal separation, Chord Finder, Beat Finder">Vokal ayırma, Akor Bulma, Metronom Bul</li>
-      <li data-en="Chord dictionary, exercises, video practice">Akor sözlüğü, egzersizler, video çalışma</li>
-      <li data-en="Local backup and restore">Yerel yedek ve geri yükleme</li></ul></div>
-    <div><h3 data-en="Needs internet">İnternet ister</h3><ul>
-      <li data-en="Lyric and chord search">Söz ve akor getirme</li>
-      <li data-en="Cloud sync to your own iCloud, Dropbox or Google Drive">Kendi iCloud, Dropbox ya da Google Drive hesabına bulut eşitleme</li>
-      <li data-en="Online tempo search, artist cards">İnternetten tempo bulma, sanatçı kartı</li>
-      <li data-en="BC account, BC Board, sending tabs to a person">BC hesabı, BC Pano, kişiye tab gönderme</li>
-      <li data-en="First-time model downloads: lyric recognition, alignment, AI Drums (then offline)">İlk kullanımda model indirme: söz tanıma, hizalama, AI Davul (sonra internetsiz)</li></ul></div>
-  </div>
-</section>
-
-<!-- HAKKINDA -->
-<section class="bolum" id="hakkinda">
-  <p class="ust" data-en="About">Hakkında</p>
-  <h2 data-en="Made by a musician">Bir müzisyenin elinden</h2>
-  <p class="giris" data-en="Guitarist · vocalist · guitar teacher">Gitarist · vokalist · gitar eğitmeni</p>
-  <div class="hakkinda">
-    <figure class="portre"><img src="ekranlar/baris.jpg" alt="Barış Çekergil sahnede, altı telli bas gitarla, spot ışığı ve sis"></figure>
-    <div>
-      <div class="bio">
-        <p data-en="Born in Istanbul in 1977, Barış Çekergil is a guitarist, vocalist and guitar teacher. Alongside more than twenty-seven years of professional stage experience, he works across music through studio sessions, teaching and digital content.">1977 İstanbul doğumlu Barış Çekergil, gitarist, vokalist ve gitar eğitmenidir. Yirmi yedi yılı aşkın profesyonel sahne deneyiminin yanı sıra stüdyo çalışmaları, müzik eğitimi ve dijital içerik üretimiyle müziğin farklı alanlarında çalışmalarını sürdürmektedir.</p>
-        <p data-en="Living in Fethiye, he shares guitar lessons and his musical experience on his own YouTube channel. His teaching brings technique, harmony and practice on real songs together, so musicians can carry what they learn into their own playing.">Fethiye'de yaşayan Çekergil, kendi adını taşıyan YouTube kanalında gitar dersleri ve müzikal deneyimlerini paylaşır. Eğitimlerinde tekniği, armoniyi ve şarkı üzerinde uygulamayı bir araya getirerek müzisyenlerin öğrendiklerini kendi çalımlarına taşımasına odaklanır.</p>
-        <p data-en="His interest in music technology led him to build tools for the needs he met on stage. BC Stage, which brings repertoire, lyrics, chords and live performance tools together, was born directly from that stage experience.">Müzik teknolojilerine duyduğu ilgi, onu sahnede karşılaştığı ihtiyaçlara yönelik araçlar geliştirmeye yöneltmiştir. Geliştirdiği BC Stage; repertuvarı, sözleri, akorları ve canlı performans araçlarını bir araya getiren, doğrudan sahne deneyiminden doğmuş bir uygulamadır.</p>
-        <p class="vurgu" data-en="At the heart of his work: less time spent on preparation and technical details, more room for the music.">Çekergil'in çalışmalarının merkezinde, müzisyenin hazırlığa ve teknik ayrıntılara harcadığı zamanı azaltıp müziğe daha fazla alan açmak vardır.</p>
-      </div>
-      <div class="imza">Barış Çekergil</div>
-      <a class="dugme ikinci ytDugme" href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener"><span class="ytIkon" aria-hidden="true">▶</span><span data-en="Guitar lessons on YouTube">YouTube'da gitar dersleri</span></a>
-      <div class="zaman">
-        <div><b>1977</b><span data-en="Born in Istanbul">İstanbul'da doğdu</span></div>
-        <div><b>27+</b><span data-en="years on professional stages">yıl profesyonel sahne</span></div>
-        <div><b>Fethiye</b><span><span data-en="Lives and teaches; guitar lessons on">Yaşıyor ve ders veriyor; gitar dersleri</span> <a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener" style="color:var(--sari)">YouTube</a></span></div>
-        <div><b>2026</b><span data-en="BC Stage on the App Store and Google Play">BC Stage App Store ve Google Play'de</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TEŞEKKÜRLER -->
-<section class="bolum" id="tesekkurler">
-  <p class="ust" data-en="Thanks">Teşekkürler</p>
-  <h2 data-en="Built on other people's work">Başkalarının emeğiyle</h2>
-  <p class="giris" data-en="BC Stage stands on open research and free sound libraries. These people made it possible.">BC Stage açık araştırmaların ve özgür ses kütüphanelerinin üstünde duruyor. Bunu mümkün kılan insanlar:</p>
-  <div class="uvr">
-    <div class="buyuk">UVR</div>
-    <p><strong>Ultimate Vocal Remover</strong> · Anjok07, aufr33<br><span style="color:var(--solgun)" data-en="Every vocal BC Stage separates is separated by their models. Thank you.">BC Stage'in ayırdığı her vokal onların modelleriyle ayrılıyor. Teşekkürler.</span></p>
-  </div>
-  <div class="tesekkur">
-    <div><h3 data-en="Voice and lyrics">Ses ve söz</h3><ul>
-      <li><strong>Whisper · whisper.cpp</strong><span data-en="OpenAI, Georgi Gerganov · lyric transcription">OpenAI, Georgi Gerganov · söz tanıma</span></li>
-      <li><strong>wav2vec2</strong><span data-en="mpoyraz, jonatasgrosman, oliverguhr, fairseq · lyric alignment">mpoyraz, jonatasgrosman, oliverguhr, fairseq · söz hizalama</span></li>
-      <li><strong>Spleeter</strong><span data-en="Deezer · drum separation">Deezer · davul ayırma</span></li>
-    </ul></div>
-    <div><h3 data-en="Rhythm and time">Ritim ve zaman</h3><ul>
-      <li><strong>Beat This!</strong><span data-en="CPJKU · tempo and beat finding">CPJKU · tempo ve vuruş bulma</span></li>
-      <li><strong>Onsets and Frames Drums</strong><span data-en="Magenta, E-GMD · drum transcription">Magenta, E-GMD · davul yazma</span></li>
-      <li><strong>Stable Audio Open Small</strong><span data-en="Powered by Stability AI · AI Drums">Powered by Stability AI · AI Davul</span></li>
-      <li><strong>Signalsmith Stretch</strong><span data-en="pitch and speed">ton ve hız</span></li>
-    </ul></div>
-    <div><h3 data-en="Chords and tabs">Akor ve tab</h3><ul>
-      <li><strong>lv-chordia</strong><span data-en="Music X Lab · Jiang, Chen, Li, Xia · chord recognition">Music X Lab · Jiang, Chen, Li, Xia · akor tanıma</span></li>
-      <li><strong>alphaTab</strong><span data-en="CoderLine · guitar tab">CoderLine · gitar tab</span></li>
-      <li><strong>GeneralUser GS</strong><span>S. Christian Collins · <span data-en="tab sound bank">tab ses bankası</span></span></li>
-    </ul></div>
-    <div><h3 data-en="Sounds">Sesler</h3><ul>
-      <li><strong>DRSKit</strong><span>DrumGizmo &amp; DRSDrums · ride</span></li>
-      <li><strong>OLPC · Open Path Music</strong><span data-en="conga, tumba">konga, tumba</span></li>
-      <li><strong>VCSL · Sonivox</strong><span data-en="hand percussion, sound bank">el perküsyonu, ses bankası</span></li>
-    </ul></div>
-    <div><h3>Freesound</h3><ul>
-      <li><strong>kwazi · Geoff-Bremner-Audio</strong><span data-en="shaker loops">shaker loop'ları</span></li>
-      <li><strong>funkologic</strong><span data-en="tambourine loop">tef loop'u</span></li>
-      <li><strong>Nox_Sound · johnnyguitar01</strong><span data-en="room recordings">oda kayıtları</span></li>
-    </ul></div>
-    <div><h3 data-en="And">Ve</h3><ul>
-      <li><strong data-en="The Flutter community">Flutter topluluğu</strong><span data-en="every open package in the app">uygulamadaki bütün açık paketler</span></li>
-      <li><strong data-en="Our testers">Deneyenlerimiz</strong><span data-en="who reported every bug from the stage">her hatayı sahneden bildirenler</span></li>
-    </ul></div>
-  </div>
-</section>
-
-<!-- FORUM -->
-<section class="bolum" id="forum">
-  <p class="ust" data-en="Forum">Forum</p>
-  <h2 data-en="Tell us. We build it.">Sen yaz, biz yapalım.</h2>
-  <p class="giris" data-en="Report a bug, ask for what's missing, share an idea. Sign in with the same BC account you use in the app.">Bir hata bildir, eksik olanı iste, bir fikir paylaş. Uygulamada kullandığın BC hesabınla gir.</p>
-  <div class="forumUst">
-    <button class="dugme ana" type="button" id="forumGir" data-en="Sign in with BC account">BC hesabıyla gir</button>
-    <span class="etiket yakinda" data-en="opening soon">yakında açılıyor</span>
-  </div>
-  <div class="kategoriler">
-    <a class="kat k1" href="#forum"><b data-en="Bugs">Hatalar</b><span data-en="Something broke on stage? Tell us what you tapped, in order.">Sahnede bir şey mi bozuldu? Neye, hangi sırayla dokunduğunu yaz.</span></a>
-    <a class="kat k2" href="#forum"><b data-en="Should be there">Olması gerekenler</b><span data-en="A feature you expected and didn't find.">Beklediğin ama bulamadığın bir özellik.</span></a>
-    <a class="kat k3" href="#forum"><b data-en="Ideas for the future">Gelecek için fikirler</b><span data-en="Bigger dreams. We research them together.">Daha büyük hayaller. Birlikte araştırırız.</span></a>
-  </div>
-  <div class="simdiYapilan"><span class="canli"><i></i><span data-en="Right now">Şu an yapılıyor</span></span><b data-en="BC Mouse">BC Fare</b><span class="ayrac">·</span><b data-en="Fine adjust in editors">Düzenleyicide hassas ayar</b><span class="ayrac">·</span><b data-en="Karaoke tick track">Karaoke tık izi</b></div>
-  <p class="oyNot" data-en="Vote for the ideas you want. The most-voted ones move into the queue first, and every card shows its votes.">İstediğin fikirleri oyla. En çok oy alanlar sıraya önce girer, her kartta oy sayısı görünür.</p>
-  <div class="yolHarita">
-    <div class="sutun"><h3><span class="dz s1"></span><span data-en="In the queue">Sırada</span></h3>
-      <div class="kart2"><button class="oyla" type="button" aria-label="Oyla"><span>▲</span><em>0</em></button><b data-en="Tick track in the karaoke mixer">Karaoke mikserinde tık izi</b><small data-en="Should be there">Olması gerekenler</small></div>
-      <div class="kart2"><button class="oyla" type="button" aria-label="Oyla"><span>▲</span><em>0</em></button><b data-en="Send song drums to One Man">Şarkıdan davulu One Man'e aktar</b><small data-en="Ideas">Fikirler</small></div></div>
-    <div class="sutun"><h3><span class="dz s2"></span><span data-en="In progress">Yapılıyor</span></h3>
-      <div class="kart2"><b data-en="BC Mouse">BC Fare</b><small data-en="Ideas · Designer working on it">Fikirler · Tasarımcı üzerinde</small></div>
-      <div class="kart2"><b data-en="Fine adjust in editors">Düzenleyicide hassas ayar</b><small data-en="Should be there">Olması gerekenler</small></div></div>
-    <div class="sutun"><h3><span class="dz s3"></span><span data-en="Done">Yapıldı</span></h3>
-      <div class="kart2"><b data-en="Charts follow repeats and D.S./Coda">Şema röprizleri ve D.S./Coda'yı takip ediyor</b><small>2.1</small></div>
-      <div class="kart2"><b data-en="Beat Finder tab">Metronom Bul sekmesi</b><small>2.1</small></div></div>
-  </div>
-    <div class="akis">
-    <div><b>1</b><span data-en="You write">Sen yazarsın</span></div>
-    <div><b>2</b><span data-en="Our web assistant reads and sorts it">Web asistanımız okur, sınıflar</span></div>
-    <div><b>3</b><span data-en="Bugs go to the designer; ideas get researched">Hata tasarımcıya gider, fikir araştırılır</span></div>
-    <div><b>4</b><span data-en="The card moves to Done and you get a note">Kart "Yapıldı"ya geçer, sana haber gelir</span></div>
-  </div>
-  <p class="kural" data-en="Forum rules: be kind, one topic per post, and no song lyrics (copyright).">Forum kuralları: nazik ol, her konuya bir başlık, şarkı sözü paylaşma (telif).</p>
-</section>
-
-<!-- DESTEK -->
-<section class="bolum" id="destek">
-  <div class="destek">
-    <div>
-      <p class="ust" data-en="Support BC Stage">BC Stage'e destek ol</p>
-      <h2 data-en="Let's grow it together">Birlikte büyütelim</h2>
-      <div class="destekMetin">
-        <p data-en="BC Stage is made by one musician, between gigs. No ads. We don't sell your data. We don't even have a server for your songs: they live on your device and in your own cloud.">BC Stage'i bir müzisyen, sahne aralarında yapıyor. Reklam yok. Verini satmıyoruz. Şarkıların için bir sunucumuz bile yok: hepsi senin cihazında ve senin bulutunda duruyor.</p>
-        <p data-en="We walked the first stretch on our own means. Keeping it this way has costs: devices to test on, store fees, the hours that go into every feature.">İlk yolu kendi imkânlarımızla yürüdük. Böyle kalmasının bir bedeli var: test edilecek cihazlar, mağaza ücretleri, her özelliğe giden saatler.</p>
-        <p data-en="If BC Stage helps you on stage, you can walk the next stretch with us. Every bit of support brings the next feature closer.">BC Stage sahnede işine yarıyorsa, sonraki yolu bizimle yürüyebilirsin. Her destek bir sonraki özelliği yaklaştırır.</p>
-      </div>
-    </div>
-    <div class="destekKartlar">
-      <div class="dk ana2"><b data-en="Support on Patreon">Patreon'dan destek ol</b><span data-en="Our Patreon page opens soon">Patreon sayfamız çok yakında</span></div>
-      <p class="trNot" data-en="From Türkiye: Patreon takes card payments in dollars; your bank may add a foreign-currency or international transaction fee.">Türkiye'den destek olacaklar için: Patreon kartla dolar üzerinden ödeme alır, bankan döviz ya da yurt dışı işlem ücreti kesebilir.</p>
-      <div class="dk bos2"><b data-en="Other ways to help">Başka yollar</b><span data-en="Rate us in the store · show a friend · report a bug in the forum">Mağazada puan ver · bir arkadaşına göster · forumda hata bildir</span></div>
-      
-    </div>
-  </div>
-</section>
-
-<!-- İLETİŞİM -->
-<section class="bolum" id="iletisim">
-  <p class="ust" data-en="Contact">İletişim</p>
-  <h2 data-en="Write to us">Bize yaz</h2>
-  <div class="iletisim">
-    <div class="posta">
-      <span class="ust" style="margin:0" data-en="Email">E-posta</span>
-      <div class="adres" id="adres">bariscekergil@gmail.com</div>
-      <button class="dugme ikinci" id="kopyala" type="button" style="align-self:flex-start" data-en="Copy address">Adresi kopyala</button>
-    </div>
-    <div class="posta">
-      <h3 data-en="To get an answer faster">Daha hızlı yanıt için</h3>
-      <ul>
-        <li data-en="Your device and BC Stage version (Settings → About)">Cihazın ve BC Stage sürümü (Ayarlar → Hakkında)</li>
-        <li data-en="What you tapped, in order">Neye, hangi sırayla dokunduğun</li>
-        <li data-en="A screenshot or a short screen recording">Bir ekran görüntüsü ya da kısa ekran kaydı</li>
-      </ul>
-      <p style="color:var(--sonuk);margin:0;font-size:14px" data-en="We answer in Turkish and English.">Türkçe ve İngilizce yanıtlıyoruz.</p>
-    </div>
-  </div>
 </section>
 </main>
-
 <footer class="alt">
-  <div><a class="logo" href="#ana" style="padding:0" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44"><b>BC <span>STAGE</span></b></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
-  <div><h4 data-en="Explore">Keşfet</h4><a href="#ozellikler" data-en="Features">Özellikler</a><a href="#kimin" data-en="Who it's for">Kimin için</a><a href="#pano" data-en="BC Board">BC Pano</a></div>
-  <div><h4 data-en="Learn">Öğren</h4><a href="yardim.html" data-en="Guide">Kılavuz</a><a href="#yardim" data-en="FAQ">Sık sorulanlar</a><a href="#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
-  <div><h4 data-en="BC Labs">BC Labs</h4><a href="#hakkinda" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="#forum" data-en="Forum">Forum</a><a href="#destek" data-en="Support">Destek ol</a><a href="#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
+  <div><a class="logo" href="index.html" style="padding:0" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44"><b>BC <span>STAGE</span></b></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
+  <div><h4 data-en="Explore">Keşfet</h4><a href="ozellikler.html" data-en="Features">Özellikler</a><a href="index.html#kimin" data-en="Who it's for">Kimin için</a><a href="index.html#sekmeIzgara" data-en="All tabs">Bütün sekmeler</a><a href="pano.html" data-en="BC Board">BC Pano</a></div>
+  <div><h4 data-en="Learn">Öğren</h4><a href="yardim.html" data-en="Guide">Kılavuz</a><a href="yardim.html" data-en="FAQ">Sık sorulanlar</a><a href="hakkinda.html#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
+  <div><h4 data-en="BC Labs">BC Labs</h4><a href="hakkinda.html" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="forum.html" data-en="Forum">Forum</a><a href="hakkinda.html#destek" data-en="Support">Destek ol</a><a href="hakkinda.html#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
 </footer>
-<div style="height:30px"></div>
-
 </div>
 </div>
 </div>
-
 <script>
 (function(){
   let dil='tr';
@@ -1287,7 +1018,7 @@ p{max-width:65ch}
   const ET={v:'<span class="etiket vip">VIP</span>',i:'<span class="etiket ipadmac">iPad · Mac</span>',o:'<span class="etiket iosmac">iOS · Mac</span>',n:'<span class="etiket net">internet</span>'};
   const kiz=document.getElementById('katalogIzgara'),sz=document.getElementById('suzgec');
   const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function katalogCiz(f){katF=f;const KK=dil==='en'?KAT_EN:KAT;kiz.innerHTML=KK.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
+  function katalogCiz(f){if(!kiz)return;katF=f;const KK=dil==='en'?KAT_EN:KAT;kiz.innerHTML=KK.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
     sz.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.f===f);const al=ALAN.find(x=>x[0]===b.dataset.f);b.textContent=dil==='en'?al[2]:al[1]})}
   window._katalog=()=>katalogCiz(katF);
   if(kiz){ALAN.forEach(([f,ad])=>{const b=document.createElement('button');b.type='button';b.dataset.f=f;b.textContent=ad;b.onclick=()=>katalogCiz(f);sz.appendChild(b)});katalogCiz('hepsi')}
@@ -1327,8 +1058,8 @@ p{max-width:65ch}
   window._galeri=galeri;
   // --- menü (telefon)
   const hb=document.getElementById('hamburger'),nav=document.getElementById('nav');
-  hb.onclick=()=>{const a=nav.classList.toggle('acik');hb.setAttribute('aria-expanded',a)};
-  nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('acik');hb.setAttribute('aria-expanded',false)}});
+  if(hb&&nav)hb.onclick=()=>{const a=nav.classList.toggle('acik');hb.setAttribute('aria-expanded',a)};
+  if(nav)nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('acik');hb.setAttribute('aria-expanded',false)}});
 
   // --- forum oyla (taslak: yalnız görsel geri bildirim, forum açılınca sunucuya yazacak)
   document.querySelectorAll('.oyla').forEach(b=>b.addEventListener('click',()=>{const v=b.classList.toggle('verildi');const e=b.querySelector('em');e.textContent=String(Number(e.textContent)+(v?1:-1))}));
@@ -1373,13 +1104,53 @@ p{max-width:65ch}
     document.addEventListener('keydown',e=>{if(pzP.hidden)return;if(e.key==='Escape')pzKapa();if(e.key==='ArrowRight')pzGoster(pzAcik+1);if(e.key==='ArrowLeft')pzGoster(pzAcik-1)})}
   // --- kopyala
   const kb=document.getElementById('kopyala');
-  kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
+  if(kb)kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
     const bitti=m=>{kb.textContent=m;setTimeout(()=>kb.textContent=eski,1600)};
     if(navigator.clipboard)navigator.clipboard.writeText(a).then(()=>bitti(dil==='tr'?'Kopyalandı':'Copied'),()=>{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')});
     else{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')}};
 
 })();
 </script>
+<script>
+(function(){
+  'use strict';
+  document.documentElement.classList.add('jsHazir');
+  const az=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // kaydırınca belirme
+  const els=[...document.querySelectorAll('.gorun')];
+  if(az||!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('gor'))}
+  else{const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('gor');io.unobserve(en.target)}}),{rootMargin:'0px 0px -6% 0px'});els.forEach(e=>io.observe(e))}
+  // seçili sekme şeritte ortada görünsün
+  const ak=document.querySelector('.sekmeSerit .sk.aktif');
+  if(ak){const s=ak.parentElement;s.scrollLeft=ak.offsetLeft-s.clientWidth/2+ak.clientWidth/2}
+  // görsel eğimi fareyle
+  if(!az)document.querySelectorAll('.sGorsel').forEach(g=>{const ip=g.querySelector('.egik');if(!ip)return;
+    g.addEventListener('pointermove',ev=>{const r=g.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;ip.style.setProperty('--ry',(x*16-5).toFixed(2)+'deg');ip.style.setProperty('--rx',(-y*10+3).toFixed(2)+'deg')});
+    g.addEventListener('pointerleave',()=>{ip.style.removeProperty('--ry');ip.style.removeProperty('--rx')})});
+  // sekme kutularında ışık fareyi izlesin
+  document.querySelectorAll('.sekmeKutu').forEach(k=>k.addEventListener('pointermove',ev=>{const r=k.getBoundingClientRect();k.style.setProperty('--mx',(ev.clientX-r.left)+'px');k.style.setProperty('--my',(ev.clientY-r.top)+'px')}));
+  // ana sayfa: forumdaki son konular (herkese açık okuma)
+  const fl=document.getElementById('fvListe');
+  if(fl){
+    const U='https://xzvlayehgmkzddfncwyb.supabase.co',A='sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF';
+    const KT={hata:['Hata','Bug'],olmasi_gereken:['Olması gereken','Should be there'],fikir:['Fikir','Idea']};
+    const DR={sirada:['Sırada','In the queue'],yapiliyor:['Yapılıyor','In progress'],yapildi:['Yapıldı','Done']};
+    let veri=null;
+    const ciz=()=>{const en=document.documentElement.lang==='en',i=en?1:0;fl.innerHTML='';
+      if(!veri){const p=document.createElement('p');p.className='fvBos';p.textContent=en?'The forum is open: be the first to write.':'Forum açık: ilk yazan sen ol.';fl.append(p);return}
+      if(!veri.length){const p=document.createElement('p');p.className='fvBos';p.textContent=en?'No topics yet. Open the first one.':'Henüz konu yok. İlkini sen aç.';fl.append(p)}
+      veri.forEach((k,n)=>{const a=document.createElement('a');a.className='fvKonu';a.href='forum.html#konu-'+k.id;a.style.setProperty('--g',(n*90)+'ms');
+        const oy=document.createElement('span');oy.className='fvOy';oy.append('▲ '+k.oy_sayisi);const os=document.createElement('span');os.textContent=en?'votes':'oy';oy.append(os);
+        const m=document.createElement('span');const b=document.createElement('b');b.textContent=k.baslik;const s=document.createElement('small');
+        s.textContent=[(KT[k.kategori]||['',''])[i],(DR[k.durum]||null)?DR[k.durum][i]:null,k.yanit_sayisi+(en?' replies':' yanıt')].filter(Boolean).join(' · ');
+        m.append(b,s);a.append(oy,m);fl.append(a)});
+      const t=document.createElement('a');t.className='fvTum';t.href='forum.html';t.textContent=en?'All topics →':'Bütün konular →';fl.append(t)};
+    fetch(U+'/rest/v1/forum_konular?select=id,baslik,kategori,durum,oy_sayisi,yanit_sayisi&order=created_at.desc&limit=4',{headers:{apikey:A}})
+      .then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{veri=d;ciz()}).catch(()=>{veri=null;ciz()});
+    new MutationObserver(()=>{if(veri!==undefined)ciz()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  }
+})();
 
+</script>
 </body>
 </html>

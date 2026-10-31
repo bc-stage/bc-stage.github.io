@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Metronom şarkıyı öğrenir.">
+<meta property="og:title" content="BC Stage">
+<meta property="og:description" content="Bütün repertuvarın tek ekranda. Your whole set on one screen.">
+<meta property="og:image" content="ekranlar/3/sarkilar_yatay.jpg">
+<meta name="theme-color" content="#0A0A0D">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="apple-touch-icon" href="simgeler/logo.png">
+<title>Metronom Bul · BC Stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Düzen: üstte taslak çubuğu (görünüm + dil), altında sitenin kendisi; site bir "kap" — telefon kipinde 390 px'e daralıyor, düzen @container ile değişiyor. Her bölümün altında oy şeridi. */
+:root{
+  color-scheme:dark;
+  --zemin:#0A0A0D; --yuzey:#16161A; --yuzey2:#1E1E24; --cizgi:#2A2A31;
+  --murekkep:#F4F2EC; --solgun:#8B8B95; --sonuk:#57575F;
+  --sari:#FFC93C; --turuncu:#FF9A2E; --sariUstu:#241A00;
+  --sariSis:rgba(255,201,60,.10);
+  --baslik:"Barlow Condensed","Barlow","Arial Narrow",system-ui,sans-serif;
+  --baslik2:"Barlow",system-ui,sans-serif;
+  --govde:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--zemin);color:var(--murekkep);font:16px/1.6 var(--govde);margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sari);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- taslak çubuğu ---------- */
+.taslak{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#000;border-bottom:1px solid var(--cizgi);
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:10px 16px;font-size:13px}
+.taslak b{font-family:var(--mono);font-weight:500;color:var(--sari);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.taslak .bos{flex:1}
+.seg{display:inline-flex;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:999px;padding:3px}
+.seg button{all:unset;cursor:pointer;padding:5px 12px;border-radius:999px;color:var(--solgun);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--sari);color:var(--sariUstu)}
+.seg button:focus-visible{outline:2px solid var(--sari)}
+.taslakNot{color:var(--solgun);max-width:60ch}
+
+/* ---------- site kabı ---------- */
+.sahne{padding:0}
+.site{container:site/inline-size;max-width:1240px;margin-inline:auto;background:var(--zemin);transition:max-width .35s ease}
+.sahne.telefon .site{max-width:390px;border:1px solid var(--cizgi);border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.ic{padding-inline:clamp(18px,4cqw,48px)}
+
+/* ---------- üst menü ---------- */
+.menu{display:flex;align-items:center;gap:22px;padding-block:18px;position:relative}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--baslik);font-weight:800;font-size:32px;letter-spacing:.01em;line-height:1}
+.logo img{width:52px;height:52px;border-radius:13px;box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.logo b{font-weight:800}
+.surumKap{display:inline-flex;flex-direction:column;align-items:center;gap:4px;align-self:center;margin-left:2px;line-height:1}
+.surumKap .sy{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;font-weight:400;letter-spacing:.06em;color:#8B8B95;white-space:nowrap;text-transform:lowercase}
+.surum{display:inline-flex;white-space:nowrap;align-items:center;font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:500;letter-spacing:.04em;color:#FFC93C;border:1px solid rgba(255,201,60,.55);background:rgba(255,201,60,.08);border-radius:999px;padding:3px 9px;line-height:1;}
+.logo span{color:var(--sari)}
+.alt .logo img{width:44px;height:44px;border-radius:11px}
+.alt .logo{font-size:28px;display:flex}
+.menu nav{display:flex;gap:4px;flex:1;justify-content:center}
+.menu nav a{text-decoration:none;color:var(--solgun);font-weight:500;font-size:15px;padding:6px 12px;border-radius:999px}
+.menu nav a:hover,.menu nav a[aria-current="page"]{color:var(--murekkep);background:var(--yuzey)}
+.dil{font-family:var(--mono);font-size:12px;color:var(--solgun);border:1px solid var(--cizgi);border-radius:999px;padding:5px 10px;background:none;cursor:pointer}
+.dugme{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;border-radius:14px;padding:12px 18px;border:1px solid transparent;cursor:pointer;font-size:15px;font-family:var(--govde)}
+.dugme.ana{background:var(--sari);color:var(--sariUstu)}
+.dugme.ana:hover{background:#ffd666}
+.dugme.ikinci{border-color:var(--cizgi);color:var(--murekkep);background:var(--yuzey)}
+.dugme.ikinci:hover{border-color:var(--sonuk)}
+.hamburger{display:none;background:none;border:1px solid var(--cizgi);border-radius:12px;color:var(--murekkep);width:42px;height:42px;font-size:18px;cursor:pointer}
+
+/* ---------- sayfa iskeleti ---------- */
+.sayfa{padding-block:20px 10px}
+.bolum{padding-block:clamp(48px,8cqw,96px) 28px;border-top:1px solid var(--cizgi)}
+.bolum:first-child{border-top:0}
+.ust{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sari);margin:0 0 14px}
+h1,h2,h3{font-family:var(--baslik);text-wrap:balance;margin:0;line-height:.98}
+h1{font-size:clamp(48px,8.4cqw,118px);font-weight:800;letter-spacing:-.01em;text-transform:uppercase}
+h2{font-size:clamp(36px,5.4cqw,68px);font-weight:700;text-transform:uppercase}
+h3{font-family:var(--baslik2);font-size:20px;font-weight:700;line-height:1.2}
+.giris{color:var(--solgun);font-size:clamp(17px,1.7cqw,20px);max-width:56ch;margin:18px 0 0}
+p{max-width:65ch}
+
+/* ---------- kahraman ---------- */
+.kahraman{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;min-height:clamp(520px,56cqw,760px);padding-block:40px 30px}
+.kahraman > div{max-width:780px}
+.kahraman h1 em{font-style:normal;color:var(--sari)}
+.magaza{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.magaza .dugme small{display:block;font-size:11px;font-weight:500;opacity:.75;line-height:1.1}
+.magaza .dugme strong{display:block;font-size:17px;line-height:1.15}
+.magaza .ikon{font-size:22px;line-height:1}
+.platform{margin-top:14px;font-size:13px;color:var(--sonuk);font-family:var(--mono)}
+.yer{display:inline-block;border:1px dashed var(--sonuk);color:var(--solgun);font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:6px;vertical-align:middle}
+
+/* ---------- iPad çizimi (yatay / dikey) ---------- */
+.ipad{position:relative;background:#050506;border:1px solid #33333b;border-radius:clamp(18px,2.4cqw,30px);padding:clamp(8px,1.1cqw,14px);box-shadow:0 40px 90px -20px rgba(0,0,0,.8),0 0 0 6px #111115;max-width:100%}
+.ipad.yatay{aspect-ratio:4/3}
+.ipad.dikey{aspect-ratio:3/4}
+.ekran{position:relative;width:100%;height:100%;border-radius:clamp(10px,1.4cqw,18px);background:var(--zemin);overflow:hidden;display:flex;flex-direction:column;container:ekran/inline-size}
+.ada{display:flex;align-items:center;gap:2cqw;background:var(--yuzey);margin:2cqw 2cqw 0;border-radius:999px;padding:1.4cqw 2.4cqw}
+.ada .ad{font-family:var(--baslik);font-weight:700;font-size:3.4cqw;line-height:1}
+.ada .grup{color:var(--solgun);font-size:2.2cqw}
+.ada .bos{flex:1}
+.ada .hap{font-family:var(--mono);font-size:2cqw;padding:.5cqw 1.4cqw;border-radius:999px;background:var(--yuzey2);color:var(--solgun)}
+.ada .hap.s{background:var(--sari);color:var(--sariUstu)}
+.vurus{display:flex;gap:.8cqw}
+.vurus i{width:1.4cqw;height:1.4cqw;border-radius:50%;background:var(--sonuk)}
+.vurus i.on{background:var(--sari);box-shadow:0 0 1.6cqw var(--sari)}
+.bant{display:flex;gap:1cqw;margin:2cqw 2cqw 0}
+.bant span{flex:1;height:3.6cqw;border-radius:1cqw;background:var(--yuzey2);font-size:1.8cqw;color:var(--solgun);display:flex;align-items:center;padding-left:1.2cqw;white-space:nowrap;overflow:hidden}
+.bant span.simdi{background:var(--sari);color:var(--sariUstu);font-weight:600}
+.sheet{flex:1;padding:3cqw 4cqw;display:grid;grid-template-columns:1fr 1fr;gap:0 5cqw;align-content:start}
+.sheet.tek{grid-template-columns:1fr}
+.blok{margin-bottom:3cqw}
+.blok .bas{font-family:var(--mono);font-size:1.7cqw;color:var(--sari);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1cqw}
+.satir{margin-bottom:1.6cqw}
+.akorlar{display:flex;gap:3.2cqw;font-family:var(--baslik2);font-weight:700;color:var(--sari);font-size:2.5cqw;line-height:1.2}
+.cizgiS{height:1.3cqw;border-radius:1cqw;background:#3a3a42;margin-top:.7cqw}
+.blok.solgun .akorlar{color:#7a6a3a}.blok.solgun .cizgiS{background:#26262c}
+.imlec{position:absolute;left:4cqw;right:4cqw;height:.4cqw;background:var(--turuncu);border-radius:1cqw;box-shadow:0 0 2cqw var(--turuncu);opacity:.9}
+
+/* ---------- kimin için ---------- */
+.kartlar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px}
+.kart{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.kart img{width:76px;height:76px;object-fit:contain}
+.kart p{margin:0;color:var(--solgun);font-size:15px}
+.kart a{margin-top:auto;color:var(--sari);text-decoration:none;font-weight:600;font-size:14px}
+
+/* ---------- özellik bölümleri ---------- */
+.fasil{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(28px,5cqw,72px);align-items:center;margin-top:56px}
+.fasil.ters > :first-child{order:2}
+.fasil h2{font-size:clamp(32px,4.4cqw,54px)}
+.ozellikler{display:grid;gap:4px;margin-top:22px}
+.oz{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;align-items:start;padding:12px 0;border-top:1px solid var(--cizgi)}
+.oz img{width:52px;height:52px;object-fit:contain}
+.oz p{margin:2px 0 0;color:var(--solgun);font-size:15px}
+.etiket{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.etiket.vip{background:var(--sariSis);color:var(--sari)}
+.etiket.yakinda{border:1px solid var(--sonuk);color:var(--solgun)}
+.etiket.ipadmac{border:1px solid #4a3d1c;color:#c9a54a}
+.gorsel{display:flex;justify-content:center;min-width:0}
+.gorsel .ipad.dikey{width:min(100%,420px)}
+.gorsel .ipad.yatay{width:100%}
+
+/* dalga + akor bulma çizimi */
+.dalga{display:flex;align-items:center;gap:.5cqw;height:12cqw;margin:2cqw 4cqw}
+.dalga i{flex:1;background:var(--sonuk);border-radius:1cqw}
+.dalga i.c{background:var(--sari)}
+.akorSerit{display:flex;gap:1.2cqw;margin:0 4cqw 3cqw;flex-wrap:wrap}
+.akorSerit span{font-family:var(--baslik2);font-weight:700;font-size:3cqw;padding:1cqw 2.2cqw;border-radius:1.6cqw;background:var(--yuzey2);color:var(--murekkep)}
+.akorSerit span.on{background:var(--sari);color:var(--sariUstu)}
+.ritim{display:grid;grid-template-columns:7cqw repeat(16,1fr);gap:.6cqw;margin:2cqw 4cqw;align-items:center}
+.ritim b{font-family:var(--mono);font-weight:400;font-size:1.8cqw;color:var(--solgun)}
+.ritim i{aspect-ratio:1;border-radius:.8cqw;background:var(--yuzey2)}
+.ritim i.v{background:var(--sari)}.ritim i.y{background:#8a6d22}
+.loop{margin:2cqw 4cqw;display:grid;gap:1.2cqw}
+.loop div{height:6cqw;border-radius:1.4cqw;background:var(--yuzey2);position:relative;overflow:hidden}
+.loop div::after{content:"";position:absolute;inset:0;width:var(--d);background:linear-gradient(90deg,rgba(255,201,60,.15),rgba(255,201,60,.55));border-right:.4cqw solid var(--turuncu)}
+
+/* ---------- fiyat ---------- */
+.fiyat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px}
+.paket{border:1px solid var(--cizgi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:12px;background:var(--yuzey)}
+.paket.vipP{border-color:var(--sari);background:linear-gradient(180deg,rgba(255,201,60,.08),var(--yuzey) 60%)}
+.paket .tutar{font-family:var(--baslik);font-size:44px;font-weight:700;line-height:1}
+.paket ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+/* ---------- yardım ---------- */
+.adimlar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px;counter-reset:adim}
+.adim{border-top:2px solid var(--sari);padding-top:16px;min-width:0}
+.adim .no{font-family:var(--baslik);font-size:44px;font-weight:700;color:var(--sari);line-height:1}
+.adim p{color:var(--solgun);font-size:15px;margin:6px 0 0}
+.yardimIzgara{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:40px;margin-top:56px}
+.konular{display:grid;gap:6px;align-content:start}
+.konular a{display:flex;justify-content:space-between;text-decoration:none;padding:12px 16px;border-radius:14px;background:var(--yuzey);color:var(--murekkep);font-weight:500}
+.konular a span{color:var(--sonuk);font-family:var(--mono);font-size:12px}
+.sss details{border-top:1px solid var(--cizgi);padding:4px 0}
+.sss summary{cursor:pointer;list-style:none;padding:14px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+.sss summary::after{content:"+";color:var(--sari);font-family:var(--mono)}
+.sss details[open] summary::after{content:"–"}
+.sss details p{color:var(--solgun);margin:0 0 14px}
+
+/* ---------- hakkında ---------- */
+.hakkinda{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5cqw,64px);align-items:start;margin-top:36px}
+.foto{aspect-ratio:4/5;border:1.5px dashed var(--sonuk);border-radius:24px;display:grid;place-items:center;text-align:center;color:var(--solgun);background:repeating-linear-gradient(135deg,var(--yuzey) 0 14px,var(--zemin) 14px 28px);padding:20px;max-width:100%}
+.metinYeri{border:1.5px dashed var(--sonuk);border-radius:18px;padding:22px;color:var(--solgun);margin-top:22px}
+.metinYeri p{margin:0 0 10px}
+.bio p{font-size:17px;line-height:1.7;color:var(--murekkep);margin:0 0 16px}
+.bio p.vurgu{font-family:var(--baslik2);font-weight:600;font-size:20px;line-height:1.45;color:var(--sari);border-left:3px solid var(--sari);padding-left:16px;margin-top:22px}
+.ytDugme{margin-top:14px}
+.ytIkon{display:inline-grid;place-items:center;width:26px;height:18px;border-radius:5px;background:var(--sari);color:var(--sariUstu);font-size:10px}
+.portre{margin:0;aspect-ratio:1/1;border-radius:24px;overflow:hidden;position:relative;max-width:100%;box-shadow:0 30px 70px -20px rgba(0,0,0,.8)}
+.portre img{width:100%;height:100%;object-fit:cover;object-position:30% 40%;display:block;filter:contrast(1.05)}
+.portre::after{content:"";position:absolute;inset:0;background:linear-gradient(200deg,rgba(255,201,60,.18),transparent 45%);mix-blend-mode:screen;pointer-events:none}
+.imza{font-family:var(--baslik);font-size:28px;font-weight:700;margin-top:20px}
+.zaman{display:grid;gap:0;margin-top:26px}
+.zaman div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;padding:10px 0;border-top:1px solid var(--cizgi);font-size:15px}
+.zaman b{font-family:var(--mono);font-weight:500;color:var(--sari);font-size:13px}
+.zaman span{color:var(--solgun)}
+
+/* ---------- teşekkürler ---------- */
+.tesekkur{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 28px;margin-top:40px}
+.tesekkur h3{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sari);font-weight:500;margin-bottom:10px}
+.tesekkur ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tesekkur li strong{display:block;font-family:var(--baslik2);font-weight:700;font-size:17px}
+.tesekkur li span{color:var(--solgun);font-size:14px}
+.uvr{margin-top:40px;border:1px solid var(--sari);border-radius:22px;padding:26px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;background:var(--sariSis)}
+.uvr .buyuk{font-family:var(--baslik);font-size:56px;font-weight:800;color:var(--sari);line-height:1}
+.uvr p{margin:0}
+
+/* ---------- iletişim ---------- */
+.iletisim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:36px}
+.posta{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.adres{font-family:var(--baslik);font-size:clamp(28px,3.6cqw,44px);font-weight:700;color:var(--sari);word-break:break-all;user-select:all}
+.posta ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+/* ---------- alt bilgi ---------- */
+.alt{border-top:1px solid var(--cizgi);padding-block:40px 30px;display:grid;grid-template-columns:1.3fr repeat(3,minmax(0,1fr));gap:28px;font-size:14px}
+.alt h4{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sonuk);margin:0 0 10px}
+.alt a{display:block;color:var(--solgun);text-decoration:none;padding:3px 0}
+.alt a:hover{color:var(--murekkep)}
+.alt p{color:var(--sonuk);margin:8px 0 0}
+
+/* ---------- oy şeridi ---------- */
+.oy{margin-top:34px;border:1px dashed #4a3d1c;border-radius:16px;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:rgba(255,201,60,.035);font-size:13px}
+.oy .ne{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#c9a54a;margin-right:4px}
+.oy button{font:inherit;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--murekkep);border-radius:999px;padding:6px 12px}
+.oy button.secili[data-oy="begen"]{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.oy button.secili[data-oy="begenme"]{background:#3a2a2a;border-color:#7a4a4a;color:#ffd2c8}
+.oy textarea{flex:1 1 260px;min-width:0;min-height:38px;resize:vertical;background:var(--zemin);color:var(--murekkep);border:1px solid var(--cizgi);border-radius:12px;padding:8px 10px;font:inherit}
+.oy .durum{color:var(--sonuk);font-family:var(--mono);font-size:11px;min-width:80px}
+
+
+
+/* ---------- sekme şeridi + vitrinler ---------- */
+.sekmeler{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:30px}
+.sekmeler a{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;padding:16px 8px 14px;border-radius:20px;background:var(--yuzey);border:1px solid var(--cizgi);font-weight:600;font-size:14px;text-align:center;transition:transform .2s,border-color .2s}
+.sekmeler a:hover{transform:translateY(-3px);border-color:var(--sari)}
+.sekmeler img{width:64px;height:64px;object-fit:contain}
+.vitrin .giris{font-size:17px}
+.vitrin h2{font-size:clamp(44px,6.4cqw,84px)}
+.altBaslik{font-family:var(--baslik2);font-weight:700;font-size:clamp(20px,2.2cqw,26px);color:var(--sari);margin:10px 0 0;max-width:none}
+.cipler{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.cipler span{font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--cizgi);color:var(--murekkep);background:var(--yuzey)}
+.fasil + .oy{margin-top:26px}
+/* karaoke */
+.kara{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 24cqw;gap:3cqw;padding:3cqw 3cqw 3cqw 4cqw;min-height:0}
+.sozler{display:flex;flex-direction:column;justify-content:center;gap:2.2cqw}
+.sozler .sat{font-family:var(--baslik2);font-weight:700;font-size:3.6cqw;line-height:1.15;color:#5d5d66;transition:color .3s,opacity .3s}
+.sozler .sat.gecti{color:#7a6a3a;opacity:.6}
+.sozler .sat.simdi{font-size:4.4cqw;color:var(--murekkep)}
+.sozler .k{position:relative;display:inline-block;margin-right:1.1cqw}
+.sozler .k.dolu{color:var(--sari)}
+.sozler .k.dolar{background:linear-gradient(90deg,var(--turuncu) var(--p,0%),var(--murekkep) var(--p,0%));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mikser{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2cqw;align-items:end;background:var(--yuzey);border-radius:2cqw;padding:2cqw 1.6cqw}
+.kanal{display:flex;flex-direction:column;align-items:center;gap:1cqw;height:100%}
+.kanal .ray{flex:1;width:1cqw;border-radius:1cqw;background:var(--yuzey2);position:relative;min-height:20cqw}
+.kanal .ray i{position:absolute;left:0;right:0;bottom:0;border-radius:1cqw;background:linear-gradient(0deg,var(--sari),var(--turuncu));height:var(--s,50%);transition:height .12s}
+.kanal .ray b{position:absolute;left:50%;transform:translate(-50%,50%);bottom:var(--f,60%);width:3.4cqw;height:1.8cqw;border-radius:.6cqw;background:var(--murekkep)}
+.kanal small{font-family:var(--mono);font-size:1.5cqw;color:var(--solgun)}
+.kanal.kapali .ray i{background:#3a3a42}
+/* video */
+.vid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 26cqw;gap:2.4cqw;padding:2.4cqw 3cqw 3cqw;min-height:0}
+.oynatici{position:relative;border-radius:2cqw;overflow:hidden;background:#000;display:flex;flex-direction:column}
+.oynatici canvas{flex:1;width:100%;min-height:0;display:block}
+.zamanCubuk{height:5cqw;position:relative;background:#111114}
+.zamanCubuk::before{content:"";position:absolute;left:3%;right:3%;top:50%;height:.6cqw;transform:translateY(-50%);background:#33333a;border-radius:1cqw}
+.zamanCubuk .bolge{position:absolute;left:30%;width:18%;top:50%;height:1.6cqw;transform:translateY(-50%);background:rgba(255,201,60,.35);border:.3cqw solid var(--sari);border-radius:.6cqw}
+.zamanCubuk .oynat{position:absolute;top:18%;bottom:18%;width:.6cqw;background:var(--turuncu);left:var(--x,32%);box-shadow:0 0 1.5cqw var(--turuncu)}
+.dongu{position:absolute;left:30%;width:18%;bottom:5cqw;display:flex;justify-content:space-between;pointer-events:none}
+.dongu span{font-family:var(--mono);font-size:1.8cqw;background:var(--sari);color:var(--sariUstu);padding:.2cqw 1cqw;border-radius:.6cqw;transform:translateY(-.8cqw)}
+.calismalar{display:flex;flex-direction:column;gap:1.2cqw}
+.cl{background:var(--yuzey);border-radius:1.6cqw;padding:1.6cqw 2cqw;display:flex;flex-direction:column;gap:.3cqw}
+.cl b{font-family:var(--mono);font-weight:500;font-size:1.8cqw;color:var(--sari)}
+.cl span{font-size:2cqw;color:var(--solgun)}
+.cl.on{outline:.3cqw solid var(--sari)}
+.hizlar{display:flex;gap:1cqw;margin-top:auto}
+.hizlar span{flex:1;text-align:center;font-family:var(--mono);font-size:1.9cqw;padding:1cqw 0;border-radius:1cqw;background:var(--yuzey2);color:var(--solgun)}
+.hizlar span.on{background:var(--sari);color:var(--sariUstu)}
+/* metronom bul */
+.mb{flex:1;display:flex;flex-direction:column;gap:2.4cqw;padding:2.6cqw 4cqw 3cqw;min-height:0}
+.mbSonuc{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:2cqw}
+.mbSonuc div{background:var(--yuzey);border-radius:2cqw;padding:1.8cqw 2.4cqw;display:flex;align-items:baseline;gap:1cqw;flex-wrap:wrap}
+.mbSonuc small{flex-basis:100%;font-family:var(--mono);font-size:1.6cqw;color:var(--solgun);letter-spacing:.08em;text-transform:uppercase}
+.mbSonuc b{font-family:var(--baslik);font-size:6.4cqw;line-height:1;font-variant-numeric:tabular-nums}
+.mbSonuc div:first-child b{color:var(--sari)}
+.mbSonuc span{color:var(--solgun);font-size:2cqw}
+.mbDalga{position:relative;flex:1;min-height:14cqw;background:var(--yuzey);border-radius:2cqw;overflow:hidden;display:flex;align-items:center;gap:.35cqw;padding:0 1.5cqw}
+.mbDalga i{flex:1;background:#4a4a54;border-radius:1cqw}
+.mbDalga .izg{position:absolute;top:0;bottom:0;width:.25cqw;background:rgba(255,201,60,.28)}
+.mbDalga .izg.bir{background:var(--sari);width:.45cqw}
+.mbDalga .izg.bir::after{content:attr(data-o);position:absolute;top:.8cqw;left:.8cqw;font-family:var(--mono);font-size:1.6cqw;color:var(--sari)}
+.mbImlec{position:absolute;top:0;bottom:0;width:.5cqw;background:var(--turuncu);box-shadow:0 0 2cqw var(--turuncu);left:var(--x,10%);z-index:2}
+.mbAlt{display:flex;gap:1.2cqw;flex-wrap:wrap}
+.mbAlt .hap{font-family:var(--govde);font-size:2cqw;padding:1cqw 2.2cqw;border-radius:999px;background:var(--yuzey2);color:var(--murekkep)}
+.mbAlt .hap.s{background:var(--sari);color:var(--sariUstu)}
+
+
+/* ---------- katalog ---------- */
+.isaretler{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:22px;font-size:13px;color:var(--solgun)}
+.isaretler .etiket{margin-left:0}
+.isaretler span:not(.etiket){margin-right:10px}
+.etiket.iosmac{border:1px solid #5a4a2a;color:#d9b77a}
+.etiket.net{border:1px dashed var(--sonuk);color:var(--solgun)}
+.suzgec{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.suzgec button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--solgun);border-radius:999px;padding:7px 14px}
+.suzgec button[aria-pressed="true"]{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+.katalog{columns:3 300px;column-gap:16px;margin-top:24px}
+.alan{break-inside:avoid;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:18px 18px 14px;margin-bottom:16px;display:block}
+.alan header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.alan header img{width:44px;height:44px;object-fit:contain}
+.alan header h3{flex:1}
+.alan ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.alan li{font-size:14px;color:var(--solgun);line-height:1.5;padding-left:14px;position:relative}
+.alan li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--sari);opacity:.7}
+.alan li .etiket{margin-left:6px;font-size:9.5px}
+.katalogNot{color:var(--sonuk);font-size:13px;font-family:var(--mono)}
+.cevrim{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.cevrim > div{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:20px}
+.cevrim > div:first-child{border-color:#4a3d1c}
+.cevrim h3{margin-bottom:10px}
+.cevrim ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+
+
+/* ---------- forum + destek ---------- */
+.forumUst{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:24px}
+.kategoriler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.kat{position:relative;overflow:hidden;text-decoration:none;border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;border:1px solid var(--cizgi);background:var(--yuzey);min-height:190px}
+.kat::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;filter:blur(30px);opacity:.5}
+.kat.k1::after{background:#ff6a3d}.kat.k2::after{background:var(--sari)}.kat.k3::after{background:var(--turuncu)}
+.kat b{font-family:var(--baslik);font-size:32px;text-transform:uppercase;line-height:1}
+.kat span{color:var(--solgun);font-size:15px}
+.kat em{margin-top:auto;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--sonuk);display:flex;align-items:center;gap:6px}
+.nokta{width:7px;height:7px;border-radius:50%;background:var(--sari);display:inline-block}
+.yolHarita{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.sutun{background:var(--zemin);border:1px solid var(--cizgi);border-radius:20px;padding:16px;display:grid;gap:10px;align-content:start}
+.sutun h3{display:flex;align-items:center;gap:8px;font-size:16px}
+.dz{width:10px;height:10px;border-radius:50%}
+.dz.s1{border:2px solid var(--solgun)}.dz.s2{background:var(--turuncu);box-shadow:0 0 10px var(--turuncu)}.dz.s3{background:var(--sari)}
+.kart2{background:var(--yuzey);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.kart2 b{font-weight:600;font-size:15px}
+.kart2:has(.oyla){grid-template-columns:auto 1fr;column-gap:12px}
+.kart2:has(.oyla) small{grid-column:2}
+.oyla{grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-width:44px;border:1px solid var(--cizgi);background:var(--zemin);color:var(--solgun);border-radius:12px;padding:6px 4px;cursor:pointer;font:inherit}
+.oyla span{font-size:12px;line-height:1}.oyla em{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--murekkep)}
+.oyla:hover,.oyla.verildi{border-color:var(--sari);color:var(--sari)}
+.simdiYapilan{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:28px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(255,154,46,.14),rgba(255,154,46,.03));border:1px solid rgba(255,154,46,.35)}
+.simdiYapilan b{font-weight:600}
+.simdiYapilan .ayrac{color:var(--sonuk)}
+.canli{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--turuncu);margin-right:6px}
+.canli i{width:8px;height:8px;border-radius:50%;background:var(--turuncu);box-shadow:0 0 0 0 rgba(255,154,46,.6);animation:nabiz 1.6s infinite}
+@keyframes nabiz{0%{box-shadow:0 0 0 0 rgba(255,154,46,.6)}70%{box-shadow:0 0 0 10px rgba(255,154,46,0)}100%{box-shadow:0 0 0 0 rgba(255,154,46,0)}}
+.oyNot{color:var(--solgun);margin:14px 0 0;font-size:15px}
+.kart2 small{color:var(--sonuk);font-family:var(--mono);font-size:11px}
+.akis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:30px;border:1px solid var(--cizgi);border-radius:20px;overflow:hidden}
+.akis div{padding:16px;display:flex;gap:10px;align-items:center;border-left:1px solid var(--cizgi);font-size:14px;color:var(--solgun)}
+.akis div:first-child{border-left:0}
+.akis b{font-family:var(--baslik);font-size:30px;color:var(--sari)}
+.kural{color:var(--sonuk);font-size:14px;margin-top:16px}
+.destek{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(28px,5cqw,64px);align-items:start;position:relative;isolation:isolate}
+.destek::before{content:"";position:absolute;left:-10%;top:-30%;width:60%;height:120%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.10),transparent)}
+.destekMetin p{font-size:18px;color:var(--murekkep);line-height:1.65;margin:18px 0 0}
+.destekMetin p:first-child{margin-top:22px}
+.destekKartlar{display:grid;gap:12px;align-content:start;padding-top:8px}
+.dk{display:grid;gap:4px;text-decoration:none;border:1px solid var(--cizgi);background:var(--yuzey);border-radius:18px;padding:18px 20px}
+.dk b{font-family:var(--baslik2);font-size:19px}
+.dk span{color:var(--solgun);font-size:14px}
+.dk.ana2{background:var(--sari);border-color:var(--sari)}.dk.ana2 b,.dk.ana2 span{color:var(--sariUstu)}
+.trNot{margin:0;color:var(--sonuk);font-size:13px;line-height:1.5}
+.dk.bos2{background:none;border-style:dashed}
+
+
+/* ---------- gerçek ekranlar ---------- */
+.ipad.gercek .ekran{background:#0b0b0e}
+.ipad.gercek .ekran img{width:100%;height:100%;object-fit:cover;display:block}
+.galeriUst{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+.galeriSec{display:flex;flex-wrap:wrap;gap:8px}
+.galeriSec button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--cizgi);background:var(--yuzey);color:var(--solgun);border-radius:999px;padding:7px 14px}
+.galeriSec button[aria-pressed="true"]{color:var(--murekkep);border-color:var(--sari)}
+.galeriSahne{display:flex;justify-content:center;margin-top:26px}
+.galeriSahne .ipad.yatay{width:min(100%,980px)}
+.galeriSahne .ipad.dikey{width:min(100%,560px)}
+.galeriAlt{color:var(--solgun);text-align:center;margin:16px auto 0;font-size:15px}
+.cizimNot{font-family:var(--mono);font-size:11px;color:var(--sonuk);margin-top:10px;text-align:center}
+
+
+/* ---------- kahraman arka planı: eğik düzlemde 3.0 ekranları ---------- */
+.isikli > .arka{position:absolute;top:0;bottom:0;left:calc(-1*clamp(18px,4cqw,48px));width:calc(100% + 2*clamp(18px,4cqw,48px));overflow:hidden;z-index:-2;perspective:1300px;background:var(--zemin);-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+.duzlem{position:absolute;left:58%;top:48%;width:110%;aspect-ratio:4/3;transform-style:preserve-3d;transform:translate(-50%,-50%) rotateX(30deg) rotateZ(-14deg) scale(1.2);animation:kamera 28s ease-in-out infinite alternate}
+@keyframes kamera{0%{transform:translate(-38%,-55%) rotateX(32deg) rotateZ(-15deg) scale(1.12)}50%{transform:translate(-52%,-47%) rotateX(27deg) rotateZ(-10deg) scale(1.3)}100%{transform:translate(-63%,-41%) rotateX(23deg) rotateZ(-7deg) scale(1.44)}}
+.duzlem .kat{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;opacity:0;transform:translate3d(26%,0,0) scale(1.05);filter:brightness(.62) saturate(1.15) blur(10px);transition:transform 1.9s cubic-bezier(.2,.8,.15,1),opacity 1.3s ease,filter 1.6s ease;box-shadow:0 0 120px rgba(255,201,60,.12)}
+.duzlem .kat.on{opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(.62) saturate(1.15) blur(0)}
+.duzlem .kat.cik{opacity:0;transform:translate3d(-26%,0,-60px) scale(.96);filter:brightness(.5) saturate(1.1) blur(10px)}
+.duzlem .parilti{position:absolute;inset:0;border-radius:28px;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,214,120,.42) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;mix-blend-mode:screen;opacity:0}
+.duzlem .parilti.git{animation:parla 1.7s cubic-bezier(.3,.6,.2,1)}
+@keyframes parla{0%{background-position:130% 0;opacity:1}100%{background-position:-30% 0;opacity:0}}
+.kahraman h1,.kahraman .giris{text-shadow:0 2px 30px rgba(0,0,0,.65)}
+.kahraman .giris{color:#d6d3cb}
+@media (prefers-reduced-motion:reduce){.duzlem{animation:none}}
+
+
+/* ---------- BC Pano ---------- */
+.panoGorsel{margin-top:34px;display:flex;justify-content:center}
+.panoGorsel .ipad{width:min(100%,1060px)}
+.kimlik{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4cqw,56px);align-items:center;margin-top:56px}
+.kimlikKart{position:relative;overflow:hidden;border-radius:26px;padding:26px;background:radial-gradient(120% 140% at 0% 0%,rgba(255,201,60,.22),transparent 55%),linear-gradient(160deg,#1c1a14,#0f0f12);border:1px solid #3a321c;box-shadow:0 30px 80px -30px rgba(0,0,0,.9);transform:rotate(-2deg);animation:kartSal 7s ease-in-out infinite alternate}
+@keyframes kartSal{to{transform:rotate(1deg) translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.kimlikKart{animation:none}}
+.kimlikKart::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,230,160,.18) 50%,transparent 60%);background-size:250% 100%;animation:parla2 5s ease-in-out infinite}
+@keyframes parla2{0%{background-position:130% 0}60%,100%{background-position:-30% 0}}
+.kkUst{display:flex;align-items:center;gap:14px}
+.kkAvatar{width:64px;height:64px;border-radius:50%;flex:none;background:url(ekranlar/baris.jpg) 30% 25%/180% no-repeat;border:3px solid var(--sari)}
+.kkUst b{display:block;font-family:var(--baslik);font-size:28px;line-height:1}
+.kkUst div span{color:var(--solgun);font-family:var(--mono);font-size:13px}
+.kkNo{margin-left:auto;background:var(--sari);color:var(--sariUstu);font-family:var(--mono);font-weight:500;font-size:14px;padding:4px 10px;border-radius:10px}
+.kkAlt{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.kkAlt > span{font-size:13px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--murekkep)}
+.kkCanli{display:inline-flex;align-items:center;gap:8px}
+.kkCanli i{width:8px;height:8px;border-radius:50%;background:var(--sari);animation:nabiz 1.6s infinite}
+.kimlikMetin h3{font-family:var(--baslik);font-size:clamp(28px,3.2cqw,40px);text-transform:uppercase;line-height:1}
+.kimlikIki{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.kimlikIki > div{border-top:2px solid var(--sari);padding-top:12px;min-width:0}
+.kimlikIki b{font-family:var(--baslik2);font-size:19px}
+.kod{display:inline-block;margin-left:8px;font-family:var(--mono);font-size:13px;color:var(--sari);background:var(--sariSis);padding:2px 8px;border-radius:8px}
+.kimlikIki p{color:var(--solgun);font-size:15px;margin:8px 0 0}
+.panoIzgara{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:48px}
+.pz{display:block;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:18px;min-width:0;transition:border-color .2s,transform .2s}
+.pzDaha{display:block;margin-top:10px;color:var(--sari);font-size:13px;font-weight:600}
+.pzPerde{position:fixed;inset:0;z-index:100;background:rgba(5,5,7,.78);backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px}
+.pzPencere{width:min(1100px,100%);max-height:calc(100dvh - 40px);overflow:auto;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:24px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);animation:pzAc .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes pzAc{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.pzResim{background:#050506;display:flex;align-items:center;padding:16px}
+.pzResim img{width:100%;border-radius:14px;display:block}
+.pzYazi{padding:26px 26px 22px;display:flex;flex-direction:column;gap:12px}
+.pzYazi h3{font-family:var(--baslik);font-size:36px;text-transform:uppercase;line-height:1}
+.pzYazi p{color:var(--murekkep);margin:0;font-size:16px}
+.pzYazi ul{margin:0;padding-left:18px;color:var(--solgun);font-size:15px;display:grid;gap:6px}
+.pzAlt{display:flex;gap:8px;margin-top:auto;padding-top:10px}
+.pzAlt button{font:inherit;cursor:pointer;border:1px solid var(--cizgi);background:var(--zemin);color:var(--murekkep);border-radius:12px;padding:9px 14px}
+.pzAlt .kapat{margin-left:auto;background:var(--sari);color:var(--sariUstu);border-color:var(--sari);font-weight:600}
+@container site (max-width:700px){
+  .surumKap .sy{display:none}.pzPencere{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.pzPencere{grid-template-columns:minmax(0,1fr)}}
+.pz:hover{border-color:#4a3d1c;transform:translateY(-2px)}
+.pzIk{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--sariSis);color:var(--sari);font-size:16px;margin-bottom:10px}
+.pz h3{font-size:16px;margin-bottom:6px}
+.pz p{color:var(--solgun);font-size:14px;margin:0;line-height:1.5}
+.panoNot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--solgun);font-size:14px;margin-top:20px}
+.panoNot .etiket{margin-left:0}
+
+/* ---------- ışıklı arka planlar ---------- */
+.isikli{position:relative;isolation:isolate}
+.isikli > canvas.isik{position:absolute;top:0;bottom:0;left:calc(-1*clamp(18px,4cqw,48px));width:calc(100% + 2*clamp(18px,4cqw,48px));height:100%;z-index:-1;display:block;pointer-events:none}
+.fotoBant{position:relative;isolation:isolate;margin-inline:calc(-1*clamp(18px,4cqw,48px));min-height:clamp(320px,42cqw,520px);display:flex;align-items:flex-end;overflow:hidden;border-top:1px solid var(--cizgi)}
+.fotoBant canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
+.fotoBant .yazi{padding:clamp(22px,4cqw,48px);padding-bottom:clamp(26px,4cqw,52px);max-width:900px}
+.fotoBant h2{font-size:clamp(40px,7cqw,96px);text-shadow:0 4px 40px rgba(0,0,0,.6)}
+.fotoBant h2 em{font-style:normal;color:var(--sari)}
+.fotoBant .yer{margin-top:16px;background:rgba(0,0,0,.5)}
+.fotoBant + .oy{margin-top:18px}
+.fasil{position:relative}
+.fasil .gorsel{position:relative;isolation:isolate}
+.fasil .gorsel::before{content:"";position:absolute;inset:-10% -6%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.16),rgba(255,154,46,.06) 55%,transparent);filter:blur(10px)}
+#tesekkurler{background:radial-gradient(rgba(255,201,60,.07) 1px,transparent 1.4px) 0 0/22px 22px}
+
+/* ---------- dar kap (telefon) ---------- */
+@container site (max-width:900px){
+  .kahraman{grid-template-columns:minmax(0,1fr)}
+  .kartlar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sekmeler{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .panoIzgara{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kimlik{grid-template-columns:minmax(0,1fr)}
+  .adimlar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tesekkur{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fiyat{grid-template-columns:minmax(0,1fr)}
+  .alt{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container site (max-width:700px){
+  .menu nav{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:18px;padding:8px;z-index:5}
+  .menu nav.acik{display:flex}
+  .menu nav a{padding:12px 14px;font-size:16px}
+  .menu{justify-content:space-between}
+  .menu .indir{display:none}
+  .hamburger{display:inline-grid;place-items:center}
+  .fasil,.yardimIzgara,.hakkinda,.iletisim{grid-template-columns:minmax(0,1fr)}
+  .fasil.ters > :first-child{order:0}
+  .kartlar,.adimlar,.tesekkur{grid-template-columns:minmax(0,1fr)}
+  .sekmeler{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .panoIzgara{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kimlikIki{grid-template-columns:minmax(0,1fr)}
+  .sekmeler img{width:52px;height:52px}
+  .kart{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .kart img{width:56px;height:56px}
+  .kart h3{flex:1}
+  .kart p{flex-basis:100%}
+  .alt{grid-template-columns:minmax(0,1fr)}
+  .cevrim,.kategoriler,.yolHarita,.destek{grid-template-columns:minmax(0,1fr)}
+  .akis{grid-template-columns:minmax(0,1fr)}
+  .akis div{border-left:0;border-top:1px solid var(--cizgi)}
+  .akis div:first-child{border-top:0}
+  .uvr{grid-template-columns:minmax(0,1fr)}
+  .magaza .dugme{flex:1 1 100%}
+  .foto{aspect-ratio:1/1}
+}
+/* ===== çok sayfalı site: uygulama kabuğu + sekme sayfaları + animasyon (2026-10-31) ===== */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vtCik .22s ease both}
+::view-transition-new(root){animation:vtGir .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes vtCik{to{opacity:0;transform:translateY(-6px)}}
+@keyframes vtGir{from{opacity:0;transform:translateY(14px)}}
+.site .ic{--pad:clamp(18px,4cqw,48px)}
+.kap{--pad:clamp(16px,3vw,40px)}
+.kabuk{view-transition-name:kabuk;position:sticky;top:env(safe-area-inset-top,0px);z-index:60;margin-inline:calc(-1*var(--pad,24px));padding-inline:var(--pad,24px);background:rgba(10,10,13,.84);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--cizgi)}
+.kabukUst{display:flex;align-items:center;gap:12px;padding-block:12px 4px}
+.kabuk .bos{flex:1}
+.kabuk .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:30px;line-height:1;letter-spacing:.01em}
+.kabuk .logo img{width:46px;height:46px;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.kabuk .logo b{font-weight:800}
+.kabuk .logo b span{color:var(--sari)}
+.kabuk .surumKap .sy{color:var(--solgun)}
+.kabuk .surum{color:var(--sari)}
+.sagMenu{display:flex;gap:4px;align-items:center}
+.skMetin{color:var(--solgun);text-decoration:none;font-weight:600;font-size:15px;padding:8px 13px;border-radius:999px;transition:background .2s,color .2s}
+.skMetin:hover,.skMetin.aktif{color:var(--murekkep);background:var(--yuzey)}
+.skMetin.forumSk{color:var(--sariUstu);background:var(--sari);animation:forumNabiz 2.6s ease-out infinite}
+.skMetin.forumSk:hover,.skMetin.forumSk.aktif{color:var(--sariUstu);background:#ffd666}
+@keyframes forumNabiz{0%{box-shadow:0 0 0 0 rgba(255,201,60,.5)}70%{box-shadow:0 0 0 11px rgba(255,201,60,0)}100%{box-shadow:0 0 0 0 rgba(255,201,60,0)}}
+.kabuk .dugme.ana{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--sari);color:var(--sariUstu);border:0;border-radius:12px;padding:10px 16px;font-weight:700;text-decoration:none;font-family:var(--govde);font-size:15px}
+.sekmeSerit{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 10px;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent)}
+.sekmeSerit::-webkit-scrollbar{display:none}
+.sk{flex:none;scroll-snap-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:80px;padding:8px 8px 10px;border-radius:14px;text-decoration:none;color:var(--solgun);font-size:12px;font-weight:600;line-height:1.15;text-align:center;transition:background .2s,color .2s}
+.sk img{width:36px;height:36px;object-fit:contain;transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .3s;filter:saturate(.85)}
+.sk:hover{color:var(--murekkep);background:var(--yuzey)}
+.sk:hover img{transform:translateY(-4px) scale(1.1) rotate(-4deg);filter:saturate(1.1) drop-shadow(0 6px 10px rgba(255,201,60,.25))}
+.sk.aktif{color:var(--murekkep);background:linear-gradient(180deg,rgba(255,201,60,.16),rgba(255,201,60,.04));box-shadow:inset 0 0 0 1px rgba(255,201,60,.35)}
+.sk.aktif img{filter:saturate(1.15) drop-shadow(0 0 12px rgba(255,201,60,.45))}
+.sk.aktif::after{content:"";position:absolute;bottom:3px;left:50%;width:18px;height:3px;margin-left:-9px;border-radius:2px;background:var(--sari);box-shadow:0 0 10px var(--sari)}
+.sk.skTel{display:none;min-width:auto;padding:8px 14px;font-size:13px;align-self:center;border:1px solid var(--cizgi);border-radius:999px}
+.sk.skTel.forumSk{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}
+@media (max-width:820px){
+  .sagMenu{display:none}
+  .sk.skTel{display:flex}
+  .kabuk .logo{font-size:24px;gap:9px}
+  .kabuk .logo img{width:38px;height:38px;border-radius:10px}
+  .kabuk .indir{padding:8px 12px;font-size:14px}
+  .kabuk .surumKap .sy{display:none}
+}
+/* kaydırınca belirme (JS yoksa her şey görünür) */
+html.jsHazir .gorun{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .85s cubic-bezier(.2,.8,.2,1);transition-delay:var(--g,0ms)}
+html.jsHazir .gorun.gor{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.jsHazir .gorun{opacity:1;transform:none}.yuzen,.parilti2,.skMetin.forumSk,.fvKart{animation:none!important}}
+/* sekme sayfası */
+.sekmeSayfa{border-top:0!important;padding-top:clamp(28px,4vw,56px)!important}
+.sHero{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,64px);align-items:center}
+.sMetin h1{font-size:clamp(54px,7.4vw,108px);margin-top:6px}
+.sMetin .ust img{width:28px;height:28px;vertical-align:-9px;margin-right:2px}
+.sMetin .altBaslik{font-size:clamp(20px,2vw,26px)}
+.etiketSatir{display:flex;gap:6px;margin-top:14px}.etiketSatir .etiket{margin-left:0}
+.sekmeSayfa .satir,.forumVitrin .satir{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px}
+.sGorsel{position:relative;perspective:1500px;min-width:0}
+.sGorsel::before{content:"";position:absolute;inset:-12% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.20),rgba(255,154,46,.07) 55%,transparent);filter:blur(14px)}
+.yuzen{animation:yuzen 7s ease-in-out infinite}
+@keyframes yuzen{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.egik{transform:rotateY(var(--ry,-9deg)) rotateX(var(--rx,4deg));transition:transform .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 50px 100px -30px rgba(0,0,0,.9),0 0 0 6px #111115,0 0 60px rgba(255,201,60,.08)}
+.egik .ekran{position:relative}
+.parilti2{position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 35%,rgba(255,230,160,.22) 50%,transparent 65%);background-size:250% 100%;mix-blend-mode:screen;animation:parla3 6.5s ease-in-out infinite}
+@keyframes parla3{0%{background-position:140% 0}45%,100%{background-position:-40% 0}}
+.alanIzgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;margin-top:clamp(40px,6vw,72px)}
+.alanKart{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:22px;padding:22px 22px 18px;min-width:0;transition:border-color .25s,transform .25s}
+.alanKart:hover{border-color:#4a3d1c;transform:translateY(-3px)}
+.alanKart header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.alanKart header img{width:46px;height:46px;object-fit:contain}
+.alanKart h3{font-family:var(--baslik);font-size:26px;text-transform:uppercase;line-height:1}
+.alanKart ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.alanKart li{position:relative;padding-left:16px;color:#cfccc4;font-size:15px;line-height:1.5}
+.alanKart li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--sari);box-shadow:0 0 8px rgba(255,201,60,.6)}
+.alanKart li .etiket{margin-left:6px;font-size:9.5px}
+.ikinciGorsel{margin-top:44px;display:flex;justify-content:center}.ikinciGorsel .ipad{width:min(100%,980px)}
+.oncSnr{display:flex;justify-content:space-between;gap:12px;margin:56px 0 8px;flex-wrap:wrap}
+.oncSnr a{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--cizgi);border-radius:18px;text-decoration:none;color:var(--murekkep);background:var(--yuzey);font-weight:600;transition:border-color .2s,transform .2s}
+.oncSnr a:hover{border-color:var(--sari);transform:translateY(-2px)}
+.oncSnr a img{width:40px;height:40px;object-fit:contain}
+.oncSnr small{display:block;font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sonuk);font-weight:400}
+.oncSnr a.snr{margin-left:auto;text-align:right}
+@media (max-width:860px){.sHero{grid-template-columns:minmax(0,1fr)}.sGorsel{order:-1}}
+/* ana sayfa: forum vitrini */
+@property --aci{syntax:'<angle>';inherits:false;initial-value:0deg}
+.forumVitrin{border-top:0!important;padding-top:clamp(24px,4vw,48px)!important}
+.fvKart{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);padding:clamp(22px,3.4vw,44px);border-radius:28px;border:1.5px solid transparent;background:radial-gradient(120% 140% at 0% 0%,rgba(255,201,60,.14),transparent 55%) padding-box,linear-gradient(160deg,#16140f,#0f0f12) padding-box,conic-gradient(from var(--aci),#3a321c 0 58%,#FFC93C 72%,#FF9A2E 78%,#3a321c 90%) border-box;animation:donus 7s linear infinite;overflow:hidden}
+@keyframes donus{to{--aci:360deg}}
+.fvMetin h2{font-size:clamp(46px,6.4vw,88px)}
+.fvListe{display:grid;gap:10px;align-content:center;min-width:0}
+.fvKonu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);transition:transform .25s,border-color .25s,background .25s;animation:fvGir .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--g,0ms)}
+@keyframes fvGir{from{opacity:0;transform:translateX(18px)}}
+.fvKonu:hover{transform:translateX(5px);border-color:#4a3d1c;background:rgba(255,201,60,.05)}
+.fvOy{display:flex;flex-direction:column;align-items:center;min-width:46px;padding:6px 4px;border-radius:12px;border:1px solid var(--cizgi);font:600 14px var(--mono);color:var(--sari);line-height:1.1}
+.fvOy span{font-size:11px;color:var(--solgun)}
+.fvKonu b{display:block;font-weight:600;font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}
+.fvKonu small{display:block;margin-top:3px;color:var(--sonuk);font:11px var(--mono);letter-spacing:.04em}
+.fvBos{color:var(--solgun);margin:0}
+.fvTum{justify-self:start;color:var(--sari);text-decoration:none;font-weight:600;font-size:14px;margin-top:4px}
+@media (max-width:860px){.fvKart{grid-template-columns:minmax(0,1fr)}}
+/* ana sayfa: sekme kutuları */
+.kutuIzgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:12px;margin-top:28px}
+.sekmeKutu{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px 18px 20px;border-radius:20px;background:radial-gradient(240px circle at var(--mx,-200px) var(--my,-200px),rgba(255,201,60,.12),transparent 60%),var(--yuzey);border:1px solid var(--cizgi);text-decoration:none;color:var(--murekkep);overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .3s}
+.sekmeKutu img{width:58px;height:58px;object-fit:contain;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.sekmeKutu b{font-family:var(--baslik);font-size:25px;font-weight:800;text-transform:uppercase;line-height:1}
+.sekmeKutu span{color:var(--solgun);font-size:13.5px;line-height:1.45}
+.sekmeKutu em{position:absolute;right:16px;top:16px;font-style:normal;color:var(--sonuk);transition:transform .25s,color .25s}
+.sekmeKutu:hover{transform:translateY(-5px);border-color:#4a3d1c;box-shadow:0 20px 44px -22px rgba(255,201,60,.4)}
+.sekmeKutu:hover img{transform:scale(1.14) rotate(-6deg)}
+.sekmeKutu:hover em{color:var(--sari);transform:translateX(4px)}
+/* indir çağrısı */
+.ctaBolum{text-align:center;position:relative;isolation:isolate}
+.ctaBolum::before{content:"";position:absolute;left:50%;top:40%;width:min(900px,100%);height:340px;transform:translate(-50%,-50%);z-index:-1;background:radial-gradient(closest-side,rgba(255,201,60,.16),transparent);filter:blur(20px)}
+.ctaBolum h2{font-size:clamp(46px,7vw,96px)}
+.ctaBolum .giris{margin-inline:auto}
+.ctaBolum .magaza{justify-content:center}
+/* Türkçe büyük harf dönüşümü "iOS"u "İOS" yapıyordu */
+.etiket.iosmac,.etiket.ipadmac{text-transform:none}
+/* telefonda üst çubuk sığsın, sayfa yana kaymasın */
+body{overflow-x:clip}
+.kabukUst{min-width:0}
+.kabuk .logo{min-width:0;flex-shrink:1}
+@media (max-width:520px){.kabuk .indir{display:none}.kabuk .dil{padding:5px 9px;font-size:11px;white-space:nowrap}.kabuk .logo{font-size:22px}}
+
+</style>
+</head>
+<body class="">
+<div class="sahne" id="sahne">
+<div class="site" id="site">
+<div class="ic">
+<header class="kabuk">
+  <div class="kabukUst">
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
+    <span class="bos"></span>
+    <nav class="sagMenu" aria-label="Site"><a class="skMetin forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="skMetin" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="skMetin" href="hakkinda.html"><span data-en="About">Hakkında</span></a></nav>
+    <button class="dil" id="dilDugme" type="button">TR · EN</button>
+    <a class="dugme ana indir" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a>
+  </div>
+  <nav class="sekmeSerit" aria-label="Sekmeler"><a class="sk skTel forumSk" href="forum.html"><span data-en="Forum">Forum</span></a><a class="sk skTel" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="sk skTel" href="hakkinda.html"><span data-en="About">Hakkında</span></a><a class="sk" href="sarkilar.html"><img src="simgeler/repertoire.png" alt="" width="34" height="34"><span data-en="Songs">Şarkılar</span></a><a class="sk" href="playlistler.html"><img src="simgeler/playlist.png" alt="" width="34" height="34"><span data-en="Playlists">Playlistler</span></a><a class="sk" href="akorlar.html"><img src="simgeler/acoustic-guitar.png" alt="" width="34" height="34"><span data-en="Chords">Akorlar</span></a><a class="sk" href="tablar.html"><img src="simgeler/pick.png" alt="" width="34" height="34"><span data-en="Tabs">Tablar</span></a><a class="sk" href="duzenlemeler.html"><img src="simgeler/arrangements.png" alt="" width="34" height="34"><span data-en="Arrangements">Düzenlemeler</span></a><a class="sk" href="karaoke.html"><img src="simgeler/karaoke.png" alt="" width="34" height="34"><span data-en="Karaoke">Karaoke</span></a><a class="sk" href="backing.html"><img src="simgeler/backing_track.png" alt="" width="34" height="34"><span data-en="Backing Track">Backing Track</span></a><a class="sk" href="bass.html"><img src="simgeler/bass.png" alt="" width="34" height="34"><span data-en="Bass">Bass</span></a><a class="sk" href="video.html"><img src="simgeler/video.png" alt="" width="34" height="34"><span data-en="Video">Video</span></a><a class="sk" href="ai-davul.html"><img src="simgeler/ai_drums.png" alt="" width="34" height="34"><span data-en="AI Drums">AI Davul</span></a><a class="sk" href="akor-bulma.html"><img src="simgeler/chord_finder.png" alt="" width="34" height="34"><span data-en="Chord Finder">Akor Bulma</span></a><a class="sk aktif" href="metronom-bul.html" aria-current=page><img src="simgeler/metronome.png" alt="" width="34" height="34"><span data-en="Beat Finder">Metronom Bul</span></a><a class="sk" href="one-man.html"><img src="simgeler/one_man_band.png" alt="" width="34" height="34"><span data-en="One Man">One Man</span></a><a class="sk" href="pano.html"><img src="simgeler/group_connection.png" alt="" width="34" height="34"><span data-en="BC Board">BC Pano</span></a></nav>
+</header>
+<main class="sayfa">
+<section class="bolum sekmeSayfa" id="metronom-bul">
+  <div class="sHero">
+    <div class="sMetin gorun">
+      <p class="ust"><img src="simgeler/metronome.png" alt="" width="28" height="28"> <span data-en="Tab">Sekme</span> · <span data-en="Beat Finder">Metronom Bul</span></p>
+      <h1 data-en="Beat Finder">Metronom Bul</h1>
+      <p class="altBaslik" data-en="The metronome learns the song.">Metronom şarkıyı öğrenir.</p>
+      <p class="giris" data-en="Give BC Stage a recording. It finds the tempo, the meter and beat one, then clicks along with the song.">BC Stage’e bir kayıt ver. Tempoyu, ölçüyü ve ilk vuruşu bulur, sonra şarkıyla birlikte tık atar.</p>
+      <div class="etiketSatir"><span class="etiket ipadmac">iPad · Mac</span></div>
+      <div class="satir"><a class="dugme ikinci" href="yardim.html#metronombul" data-en="How it works →">Nasıl çalışır →</a><a class="dugme ana" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a></div>
+    </div>
+    <div class="sGorsel gorun"><div class="yuzen"><div class="ipad yatay gercek egik"><div class="ekran"><img src="ekranlar/3/metronom_bul_yatay.jpg" alt="BC Stage 3.0 · Metronom Bul"><span class="parilti2" aria-hidden="true"></span></div></div></div></div>
+  </div>
+  <div class="alanIzgara"><article class="alanKart gorun"><header><img src="simgeler/metronome.png" alt=""><h3 data-en="Beat Finder">Metronom Bul</h3></header><ul><li><span data-en="Pick a song and the metronome locks to its beat; the song is not stretched">Şarkıyı seç, metronom şarkının vuruşuna oturur; şarkı gerilmez</span></li><li><span data-en="Click-track or live recording; follows the tempo of live takes">Klikli kayıt ya da canlı kayıt; canlıda tempoyu izler</span></li><li><span data-en="Fine tuning: tempo multiple, where &quot;1&quot; falls, phase; fix it with Tap along">İnce ayar: tempo katı, &quot;1&quot;in yeri, faz; &quot;Vuruşa vur&quot; ile düzelt</span></li><li><span data-en="Write its drums: 4–6 style candidates, played with your own kit, ending options">Davulunu yaz: 4–6 tarz adayı, kendi kitinle çalar, bitiş seçenekleri</span></li><li><span data-en="iPad and Mac only">Yalnız iPad ve Mac</span><span class="etiket ipadmac">iPad · Mac</span></li></ul></article><article class="alanKart gorun"><header><img src="simgeler/metronome.png" alt=""><h3 data-en="Metronome">Metronom</h3></header><ul><li><span data-en="BPM, tap tempo, 2–7 beats per bar, accented first beat">BPM, tap tempo, ölçüde 2–7 vuruş, vurgulu ilk vuruş</span></li><li><span data-en="Classic, woodblock, beep and clave sounds">Klasik, tahta blok, bip, klave sesleri</span></li><li><span data-en="Silent mode (light only), headphones only, vibration">Sessiz kip (yalnız ışık), yalnız kulaklıkla, titreşim</span></li><li><span data-en="Tempo search online">İnternetten tempo bulma</span><span class="etiket net">internet</span></li><li><span data-en="Measure audio latency and correct the click">Ses gecikmesini ölçüp tıkı düzeltme</span></li></ul></article></div>
+  
+</section><nav class="oncSnr" aria-label="Sekmeler arası">
+  <a href="akor-bulma.html"><img src="simgeler/chord_finder.png" alt=""><span><small data-en="Previous">Önceki</small><span data-en="Chord Finder">Akor Bulma</span></span></a>
+  <a href="one-man.html" class="snr"><span><small data-en="Next">Sonraki</small><span data-en="One Man">One Man</span></span><img src="simgeler/one_man_band.png" alt=""></a>
+</nav>
+</main>
+<footer class="alt">
+  <div><a class="logo" href="index.html" style="padding:0" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="44" height="44"><b>BC <span>STAGE</span></b></a><p data-en="For musicians on stage.">Sahnedeki müzisyen için.</p><p>© 2026 BC Labs · bcstage.app</p></div>
+  <div><h4 data-en="Explore">Keşfet</h4><a href="ozellikler.html" data-en="Features">Özellikler</a><a href="index.html#kimin" data-en="Who it's for">Kimin için</a><a href="index.html#sekmeIzgara" data-en="All tabs">Bütün sekmeler</a><a href="pano.html" data-en="BC Board">BC Pano</a></div>
+  <div><h4 data-en="Learn">Öğren</h4><a href="yardim.html" data-en="Guide">Kılavuz</a><a href="yardim.html" data-en="FAQ">Sık sorulanlar</a><a href="hakkinda.html#tesekkurler" data-en="Thanks">Teşekkürler</a></div>
+  <div><h4 data-en="BC Labs">BC Labs</h4><a href="hakkinda.html" data-en="About">Hakkında</a><a href="https://www.youtube.com/@Bar%C4%B1%C5%9F%C3%87ekergil" target="_blank" rel="noopener">YouTube</a><a href="forum.html" data-en="Forum">Forum</a><a href="hakkinda.html#destek" data-en="Support">Destek ol</a><a href="hakkinda.html#iletisim" data-en="Contact">İletişim</a><a href="gizlilik.html" data-en="Privacy">Gizlilik</a></div>
+</footer>
+</div>
+</div>
+</div>
+<script>
+(function(){
+  let dil='tr';
+    // --- çizimler: dalga ve ritim ızgarası (tohumlu, her açılışta aynı)
+  let t=7; const r=()=>((t=(t*16807)%2147483647)/2147483647);
+  const d=document.getElementById('dalga');
+  if(d){for(let i=0;i<64;i++){const e=document.createElement('i');const h=18+Math.abs(Math.sin(i*.37))*55+r()*25;e.style.height=Math.min(100,h)+'%';if(i>=26&&i<34)e.className='c';d.appendChild(e);}}
+  const rt=document.getElementById('ritim');
+  if(rt){const satirlar=[['HH','v.v.v.v.v.v.v.v.'],['SN','....v..y.y..v...'],['KK','v..y..v...v..y..'],['BAS','v..y..v...v..y..']];
+    satirlar.forEach(([ad,k])=>{const b=document.createElement('b');b.textContent=ad;rt.appendChild(b);for(const c of k){const i=document.createElement('i');if(c==='v')i.className='v';if(c==='y')i.className='y';rt.appendChild(i);}});}
+
+
+  // --- sahne ışıkları (kahraman) ve kalabalık bandı
+  const azHareket=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tuval(c){const dpr=Math.min(2,devicePixelRatio||1);const w=c.clientWidth,h=c.clientHeight;if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr)}const x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);return[x,w,h]}
+  function huzme(x,ox,oy,aci,boy,gen,renk,alfa){x.save();x.translate(ox,oy);x.rotate(aci);const g=x.createLinearGradient(0,0,0,boy);g.addColorStop(0,'rgba('+renk+','+alfa+')');g.addColorStop(.55,'rgba('+renk+','+alfa*.35+')');g.addColorStop(1,'rgba('+renk+',0)');x.fillStyle=g;x.beginPath();x.moveTo(-6,0);x.lineTo(6,0);x.lineTo(gen,boy);x.lineTo(-gen,boy);x.closePath();x.fill();x.restore()}
+  let tz=9;const rr=()=>((tz=(tz*16807)%2147483647)/2147483647);
+  const zerre=[...Array(70)].map(()=>({x:rr(),y:rr(),r:.6+rr()*1.8,v:.2+rr()*.6,f:rr()*6}));
+  const SIRALAR=[{n:19,o:.58,y:.78,r:'#1a1208',a:.85},{n:13,o:.78,y:.90,r:'#0d0a06',a:.95},{n:9,o:1,y:1.02,r:'#030304',a:1}];
+  const kalabalik=SIRALAR.map((sr,si)=>[...Array(sr.n)].map((_,i)=>({x:(i+.5)/sr.n+(rr()-.5)*.6/sr.n,s:sr.o*(.88+rr()*.24),kol:rr()<.18?2:(rr()<.35?1:(rr()<.25?3:0)),yan:rr()<.5?-1:1,ea:(rr()-.5)*.35,f:rr()*6,eg:(rr()-.5)*.18,sac:rr()<.4})));
+  function kahraman(z){const c=document.getElementById('isikKahraman');if(!c||!c.clientWidth)return;const[x,w,h]=tuval(c);
+    x.clearRect(0,0,w,h);
+    x.globalCompositeOperation='lighter';
+    const L=[[.18,'255,201,60',.20,.55],[.42,'255,154,46',.13,-.35],[.66,'255,201,60',.16,.25],[.9,'255,220,150',.10,-.5]];
+    L.forEach(([px,renk,a,faz],i)=>huzme(x,w*px,-10,Math.sin(z*.00025+faz*3)*.32+(px-.5)*.5,h*1.25,w*.16,renk,a));
+    const zemin=x.createRadialGradient(w*.62,h*1.02,0,w*.62,h*1.02,w*.55);zemin.addColorStop(0,'rgba(255,190,70,.16)');zemin.addColorStop(1,'rgba(255,190,70,0)');x.fillStyle=zemin;x.fillRect(0,0,w,h);
+    zerre.forEach(p=>{const yy=((p.y-z*.000012*p.v)%1+1)%1;const xx=p.x+Math.sin(z*.0004+p.f)*.01;x.fillStyle='rgba(255,215,130,'+(.12+.25*Math.abs(Math.sin(z*.001+p.f)))+')';x.beginPath();x.arc(xx*w,yy*h,p.r,0,7);x.fill()});
+    x.globalCompositeOperation='source-over';
+    const ust=x.createLinearGradient(0,0,0,h);ust.addColorStop(0,'rgba(10,10,13,0)');ust.addColorStop(.85,'rgba(10,10,13,.2)');ust.addColorStop(1,'rgba(10,10,13,1)');x.fillStyle=ust;x.fillRect(0,0,w,h);
+    const sol=x.createLinearGradient(0,0,w*.85,0);sol.addColorStop(0,'rgba(10,10,13,.92)');sol.addColorStop(.45,'rgba(10,10,13,.6)');sol.addColorStop(1,'rgba(10,10,13,.1)');x.fillStyle=sol;x.fillRect(0,0,w,h)}
+  function bant(z){const c=document.getElementById('isikKalabalik');if(!c||!c.clientWidth)return;const[x,w,h]=tuval(c);
+    const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'#1a1206');g.addColorStop(.6,'#2a1a05');g.addColorStop(1,'#0A0A0D');x.fillStyle=g;x.fillRect(0,0,w,h);
+    x.globalCompositeOperation='lighter';
+    const ark=x.createRadialGradient(w*.5,h*.25,0,w*.5,h*.25,w*.5);ark.addColorStop(0,'rgba(255,201,60,.55)');ark.addColorStop(.4,'rgba(255,154,46,.18)');ark.addColorStop(1,'rgba(255,154,46,0)');x.fillStyle=ark;x.fillRect(0,0,w,h);
+    for(let i=0;i<7;i++){const px=(i+.5)/7;huzme(x,w*px,-10,Math.sin(z*.0003+i*1.7)*.4+(px-.5)*.8,h*1.3,w*.07,i%2?'255,154,46':'255,201,60',.16)}
+    x.globalCompositeOperation='source-over';
+    const birim=Math.max(16,Math.min(w*.048,h*.115));
+    SIRALAR.forEach((sr,si)=>{
+      const tabanY=h*sr.y;
+      kalabalik[si].forEach(p=>{
+        const u=birim*p.s, cx=p.x*w, sal=Math.sin(z*.0018+p.f), omY=tabanY-u*1.15, W=u*1.55;
+        x.fillStyle=sr.r;x.strokeStyle=sr.r;x.globalAlpha=sr.a;
+        // gövde ve omuzlar
+        x.beginPath();x.moveTo(cx-W,h+2);x.lineTo(cx-W,omY+u*.55);x.quadraticCurveTo(cx-W,omY,cx-W*.55,omY-u*.05);x.lineTo(cx+W*.55,omY-u*.05);x.quadraticCurveTo(cx+W,omY,cx+W,omY+u*.55);x.lineTo(cx+W,h+2);x.closePath();x.fill();
+        // boyun
+        x.fillRect(cx-u*.2,omY-u*.42,u*.4,u*.5);
+        // baş
+        const bx=cx+sal*u*.05, by=omY-u*.82;
+        x.save();x.translate(bx,by);x.rotate(p.eg+sal*.04);
+        x.beginPath();x.ellipse(0,0,u*.42,u*.52,0,0,7);x.fill();
+        if(p.sac){x.beginPath();x.ellipse(0,-u*.22,u*.48,u*.34,0,Math.PI,0);x.fill()}
+        x.restore();
+        // kollar
+        const kol=(yon,acı)=>{const sx=cx+yon*W*.72, sy=omY+u*.12, L1=u*1.05, L2=u*.95;
+          const a1=-Math.PI/2+yon*(.38+acı)+sal*.08*yon, ex=sx+Math.cos(a1)*L1, ey=sy+Math.sin(a1)*L1;
+          const a2=a1-yon*.18+sal*.06, hx=ex+Math.cos(a2)*L2, hy=ey+Math.sin(a2)*L2;
+          x.lineCap='round';x.lineJoin='round';x.lineWidth=u*.34;x.beginPath();x.moveTo(sx,sy);x.lineTo(ex,ey);x.lineTo(hx,hy);x.stroke();
+          x.beginPath();x.arc(hx,hy,u*.2,0,7);x.fill();return[hx,hy]};
+        if(p.kol===2){kol(-1,p.ea);kol(1,-p.ea)}
+        else if(p.kol===1){kol(p.yan,p.ea)}
+        else if(p.kol===3){const[hx,hy]=kol(p.yan,p.ea-.2);
+          x.globalAlpha=1;x.save();x.translate(hx,hy-u*.32);x.rotate(p.yan*.12);
+          x.fillStyle='rgba(255,236,190,.95)';x.fillRect(-u*.16,-u*.26,u*.32,u*.52);x.restore();
+          x.globalCompositeOperation='lighter';const g=x.createRadialGradient(hx,hy-u*.32,0,hx,hy-u*.32,u*1.6);g.addColorStop(0,'rgba(255,220,150,.35)');g.addColorStop(1,'rgba(255,220,150,0)');x.fillStyle=g;x.fillRect(hx-u*1.6,hy-u*1.92,u*3.2,u*3.2);x.globalCompositeOperation='source-over'}
+        x.globalAlpha=1;
+      });
+      // sıralar arasına sis: arka sıra ışıkta erisin
+      if(si<SIRALAR.length-1){const sis=x.createLinearGradient(0,tabanY-birim*2.5,0,tabanY);sis.addColorStop(0,'rgba(60,40,10,0)');sis.addColorStop(1,'rgba(40,28,8,.35)');x.fillStyle=sis;x.fillRect(0,tabanY-birim*2.5,w,birim*2.5)}
+    });
+    const k=x.createLinearGradient(0,0,0,h);k.addColorStop(0,'rgba(10,10,13,.5)');k.addColorStop(.35,'rgba(10,10,13,0)');k.addColorStop(.75,'rgba(10,10,13,0)');k.addColorStop(1,'rgba(10,10,13,.85)');x.fillStyle=k;x.fillRect(0,0,w,h)}
+
+  // --- vitrinler: karaoke, akor bulma, video, metronom bul (uydurma örnek söz)
+  const SOZ_TR=[['Son','tren','geçti,','peron','boş','kaldı'],['Işıklar','sönerken','adını','andım'],['Bir','bilet','aldım,','dönüşü','yok'],['Gece','treni','beni','bekleme']];
+  const SOZ_EN=[['The','last','train','left','the','station'],['I','called','your','name','again'],['One','ticket','and','no','way','back'],['Night','train,','don\'t','wait','up']];
+  let SOZ=SOZ_TR;
+  const sozEl=document.getElementById('sozler');
+  function sozKur(){if(!sozEl)return;SOZ=dil==='en'?SOZ_EN:SOZ_TR;sozEl.innerHTML='';SOZ.forEach(s=>{const d=document.createElement('div');d.className='sat';s.forEach(w=>{const k=document.createElement('span');k.className='k';k.textContent=w;d.appendChild(k)});sozEl.appendChild(d)});
+    if(mk)[...mk.querySelectorAll('small')].forEach((e,i)=>e.textContent=(dil==='en'?KAN_EN:KAN)[i][0])}
+  window._sozKur=sozKur;
+  const KAN=[['VOK',.0,1],['DAVUL',.0,1],['DİĞER',.7,0],['BİZİM',.8,0],['TIK',.4,0]];
+  const KAN_EN=[['VOX'],['DRUMS'],['OTHER'],['OURS'],['CLICK']];
+  const mk=document.getElementById('mikser');
+  if(mk){KAN.forEach(([ad,f,kapali])=>{const k=document.createElement('div');k.className='kanal'+(kapali?' kapali':'');k.innerHTML='<div class="ray" style="--f:'+(f*100)+'%"><i></i><b></b></div><small>'+ad+'</small>';mk.appendChild(k)})}
+  sozKur();
+  const akorS=[...document.querySelectorAll('#akorSerit span')];
+  const mbD=document.getElementById('mbDalga');
+  if(mbD){for(let i=0;i<72;i++){const e=document.createElement('i');e.style.height=(20+Math.abs(Math.sin(i*.9))*50*(i%6===0?1.3:.8)+rr()*15)+'%';mbD.appendChild(e)}
+    for(let i=0;i<16;i++){const g=document.createElement('div');g.className='izg'+(i%4===0?' bir':'');if(i%4===0)g.dataset.o=String(i/4+1);g.style.left=(6+i*5.9)+'%';mbD.appendChild(g)}}
+  const vidT=document.getElementById('vidTuval');
+  function videoCiz(z){if(!vidT||!vidT.clientWidth)return;const[x,w,h]=tuval(vidT);
+    const g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,'#1b140a');g.addColorStop(1,'#060608');x.fillStyle=g;x.fillRect(0,0,w,h);
+    const s=x.createRadialGradient(w*.7,h*.1,0,w*.7,h*.1,w*.7);s.addColorStop(0,'rgba(255,190,80,.35)');s.addColorStop(1,'rgba(255,190,80,0)');x.fillStyle=s;x.fillRect(0,0,w,h);
+    x.save();x.translate(w*.08,h*.62);x.rotate(-.18);const L=w*.95,K=h*.2;
+    x.fillStyle='#3b2715';x.fillRect(0,-K/2,L,K);
+    x.strokeStyle='#bfb59a';for(let i=1;i<14;i++){const fx=L*(1-Math.pow(.92,i))*1.9;if(fx>L)break;x.lineWidth=2;x.beginPath();x.moveTo(fx,-K/2);x.lineTo(fx,K/2);x.stroke()}
+    for(let t=0;t<6;t++){const ty=-K/2+K*(t+.5)/6;const tit=(t===2)?Math.sin(z*.05)*1.2:0;x.strokeStyle='rgba(230,225,210,'+(.5+t*.06)+')';x.lineWidth=.8+t*.25;x.beginPath();x.moveTo(0,ty+tit);x.lineTo(L,ty);x.stroke()}
+    const pz=(Math.sin(z*.0016)+1)/2;const fx=L*(.22+pz*.12);
+    x.fillStyle='rgba(255,201,60,.95)';[[fx,1],[fx+L*.07,3],[fx+L*.035,2]].forEach(([px,t])=>{x.beginPath();x.arc(px,-K/2+K*(t+.5)/6,K*.07,0,7);x.fill()});
+    x.restore();
+    x.fillStyle='rgba(0,0,0,.35)';x.fillRect(0,0,w,h*.12);x.fillStyle='rgba(244,242,236,.85)';x.font='600 '+Math.max(10,w*.028)+'px Geist, system-ui';x.fillText('0:47 / 3:12',w*.03,h*.08)}
+  function vitrin(z){
+    const T=z/1000;
+    if(sozEl){const sat=[...sozEl.children];const tum=SOZ.flat().length;const hiz=2.6;const n=(T*hiz)%(tum+3);let say=0;
+      sat.forEach((d,si)=>{const ks=[...d.children];const bas=say,son=say+ks.length;d.className='sat'+(n>=son?' gecti':(n>=bas?' simdi':''));
+        ks.forEach((k,ki)=>{const idx=bas+ki;if(n>=idx+1){k.className='k dolu';k.style.removeProperty('--p')}else if(n>=idx){k.className='k dolar';k.style.setProperty('--p',((n-idx)*100).toFixed(0)+'%')}else{k.className='k';k.style.removeProperty('--p')}});say=son})}
+    if(mk){[...mk.children].forEach((k,i)=>{const v=k.classList.contains('kapali')?.12:(.35+.45*Math.abs(Math.sin(T*(3+i*1.3)+i))*(.7+.3*Math.sin(T*9+i)));k.querySelector('i').style.height=(v*100).toFixed(0)+'%'})}
+    if(akorS.length){const ai=Math.floor(T/1.25)%akorS.length;akorS.forEach((e,i)=>e.classList.toggle('on',i===ai))}
+    const bpm=96,vur=60/bpm,ilk=Math.floor(T/vur);
+    document.querySelectorAll('#mbVurus i').forEach((e,i)=>e.classList.toggle('on',i===ilk%4&&(T%vur)<vur*.45));
+    const im=document.getElementById('mbImlec');if(im){const yuz=(T/(vur*16))%1;im.style.setProperty('--x',(6+yuz*94.4).toFixed(2)+'%')}
+    const vi=document.getElementById('oynatImlec');if(vi){vi.style.setProperty('--x',(30+((T*0.06)%1)*18).toFixed(2)+'%')}
+    videoCiz(z)}
+
+  // --- kahraman arka planı: ekranlar sırayla geçer
+  const katlar=[...document.querySelectorAll('#duzlem .kat')];
+  if(katlar.length&&!azHareket){let ki=0;const par=document.getElementById('parilti');
+    setInterval(()=>{const eski=katlar[ki];eski.classList.remove('on');eski.classList.add('cik');setTimeout(()=>eski.classList.remove('cik'),2000);
+      ki=(ki+1)%katlar.length;katlar[ki].classList.add('on');if(par){par.classList.remove('git');void par.offsetWidth;par.classList.add('git')}},4600)}
+  function ciz(z){kahraman(z);bant(z);vitrin(z);if(!azHareket)requestAnimationFrame(ciz)}
+  requestAnimationFrame(z=>ciz(azHareket?9000:z));
+  addEventListener('resize',()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}});
+  new ResizeObserver(()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}}).observe(document.getElementById('site'));
+
+
+  // --- katalog: envanterden (2026-10-18), geliştirmedekiler yok. v=VIP i=iPad·Mac o=iOS·Mac n=internet
+  const KAT=[
+   ['sahne','Şarkılar ve sahne sayfası','repertoire',[
+    'Kategori, etiket ve renkle kütüphane; ada, sanatçıya ya da söze göre arama','Akıllı klasörler: Favoriler, En çok çalınan, Unutulanlar',
+    'Söz+akor ya da yalnız söz; iki parmakla yakınlaştır, yana kaydırıp komşu şarkıya geç, otomatik kaydırma','Sözü ortala, ekrana sığdır, ekran kapanmasın, sahnede akor şemaları',
+    'Üstte bölüm bandı ("Nakarat 2/3"), dokununca o bölüme gider; bölüm sırası ve ×N tekrarları','Transpoze, ton seçimi, kapo 0–11; ton ve BPM rozetleri',
+    'Akor kipi: sözün üstüne kelime kelime akor yerleştir, hizala, ortala','Şarkı başına resim, yazı tipi, punto ve renk; sahne notu kart olarak',
+    'PDF olarak dışa aktar, PDF\'ten içe al','Sanatçı kartı: resim, biyografi, kütüphanendeki şarkı sayısı|n',
+    'İçe alma: ChordPro, düz metin, SongBook, OnSong arşivi, Dropbox klasörü','Hızlı şarkı: ad ya da bir dize yaz, sözüyle gelsin|n','Ücretsiz sürümde 30 şarkı|v']],
+   ['sahne','Listeler','playlist',[
+    'Renkli listeler, elle sıralama, set başlıklarıyla bölme','Toplam süre; şarkı başına süre',
+    'Set raporu: art arda aynı ton, tempo sıçraması, tekdüze tempo, eksik bilgiler','Listeye ritim atama',
+    'Eksik sözleri toplu getirme|n','Liste, .txt ya da paket olarak paylaş; gruba gönder','Ücretsiz sürümde 2 liste|v']],
+   ['grup','Grup senkronu','arrangements',[
+    'Lider açar; şarkı, liste, bölüm ve kaydırma konumu bütün cihazlarda','Takipçinin kütüphanesinde şarkının olması gerekmez, içeriğiyle gider',
+    'İnternet gerekmez, aynı Wi-Fi yeter; sunucu yok','Bas-konuş: herkese, lidere ya da tek kişiye',
+    '"Gruba sor" anketleri, şarkıya yıldız','Liderden not, sahne notları; şarkı, liste ve tab gönderme','Lider olmak da katılmak da VIP, 3 gün deneme|v']],
+   ['sahne','Pedal ve MIDI','pick',[
+    'Bluetooth sayfa çevirici ve MIDI pedal; "Öğret" ile eşle','Sonraki/önceki şarkı, bölüm, ölçü; kaydırma; bas-konuş',
+    'Ritim çal/dur, fill, final, A/B/C, crash; looper kaydet ve geri al','MIDI çıkışı: şarkı açılınca klavyelerde ses değişir (Program Change, iki klavye)',
+    'MIDI cihazları ve MIDI kaydı penceresi','Pedal desteği VIP, 3 gün deneme|v']],
+   ['calisma','Akorlar','acoustic-guitar',[
+    'Gitar, ukulele ve piyano akor sözlüğü; dokununca çalar','Her akorun öteki basış yerleri; kendi akor şeklini çiz',
+    'Piyanoda 1–3 oktav, temel ve çevrimler','Şarkı sayfasında diyagram şeridi',
+    'Web\'den akor getir, sözüne yerleştir; dokuz dilde akor siteleri|n']],
+   ['calisma','Gamlar, arpejler, egzersizler','acoustic-guitar',[
+    'Sapta gam, dereceler ya da nota adları, gamın akorları ve ödünç akorlar','Arpejler sapın her yerinde, drop çevrimler',
+    'Parmak egzersizi aileleri, tempo artışlı çalışma programı, tık alt bölümleri','Akor dizisi yaz, uyan gamları bul; piyano eşliği',
+    'Şarkının akorlarını tek dokunuşla egzersize taşı','Hepsi VIP, 3 gün deneme|v']],
+   ['calisma','Tablar ve BC Tab','pick',[
+    'Guitar Pro (.gp3–.gp7, .gpx) ve MusicXML aç','Kanal kanal çalma, çalgı seçimi, sustur/solo, mikser',
+    'Ölçü döngüsü, %50–100 hız, hız antrenörü, geri sayım','Kayan şerit ya da nota defteri görünümü',
+    'Tab yaz: teknikler, üçlemeler, röpriz, D.S. al Coda, bölüm renkleri','Kayıpsız kaydet (.bctab), dosya olarak paylaş',
+    'BC ID ile kişiye gönder, 7 gün bekler|n','Ücretsiz sürümde 10 tab|v']],
+   ['calisma','Akor şemaları (aranjeler)','arrangements',[
+    'iReal tarzı şema: bölümler, ölçüler, vuruşlar; söz yok','4/4\'ten 9/8\'e usuller, parça ortasında usul değişimi',
+    'Akor klavyesi: bas notası, es, ritim çizgisi, %; klavye kısayolları','Röpriz, 1./2. son, D.C., D.S., Segno, Coda, Fine işaretleri',
+    'Metronomla yürüme: röprizleri, 1./2. sonları ve D.S./Coda\'yı çalınış sırasıyla takip eder, sonda başa döner; piyano eşliği','Karaokeye bağlı şemada kayıtla birlikte yürüme ve döngü',
+    'Sesten otomatik şema: ton, tempo, usul, bölüm, akor|o','Ücretsiz sürümde 10 şema|v']],
+   ['calisma','Karaoke','karaoke',[
+    'Ses dosyasını şarkıya bağla ya da .bckaraoke paketi aç','Cihazda vokal ayırma, model uygulamanın içinde|o',
+    'Sözleri kelime kelime zamana oturtma, dokuz dil|o','Sözleri sesten çıkar (Whisper, ilk kullanımda iner)|n',
+    'Kelime kelime dolan söz, akorlar kelimenin üstünde, satıra dokunup atla','Düzenleyici: kelime blokları, vurarak işaretle, hız, ton, gecikme',
+    'Şarkı çözümleme: ton, tempo, usul, akor, vokal aralığı, bölümler|o','İz mikseri: vokal, asıl davul, diğer, bizim davul; hazır ayarlar|i']],
+   ['calisma','Akor Bulma','chord_finder',[
+    'Ses dosyasından söz ve akor: ayır, yaz, zamana oturt, akorları bul','Hepsi cihazda; söz dili otomatik, Türkçe ya da İngilizce',
+    'Ton, akor cetveli, kapo planları ("Kapo 2 · N barre")','Şarkılar\'a ve Karaoke\'ye tek pencereden kaydet',
+    'Yalnız iPad ve Mac|i']],
+   ['calisma','Video çalışma','video',[
+    'Galeriden video, video kütüphanesi ve listeler','0,25×–1,0× yavaşlatma, ses kalınlaşmaz',
+    'Dalga şeridinde A–B seçimi, ×120\'ye kadar yakınlaştırma','Döngü kilidi, hız merdiveni (her turda hızlanır)',
+    'Döngüyü adıyla kaydet','iPad, Mac ve yatay telefonda']],
+   ['calisma','Metronom Bul','metronome',[
+    'Şarkıyı seç, metronom şarkının vuruşuna oturur; şarkı gerilmez','Klikli kayıt ya da canlı kayıt; canlıda tempoyu izler',
+    'İnce ayar: tempo katı, "1"in yeri, faz; "Vuruşa vur" ile düzelt','Davulunu yaz: 4–6 tarz adayı, kendi kitinle çalar, bitiş seçenekleri',
+    'Yalnız iPad ve Mac|i']],
+   ['ritim','Metronom','metronome',[
+    'BPM, tap tempo, ölçüde 2–7 vuruş, vurgulu ilk vuruş','Klasik, tahta blok, bip, klave sesleri',
+    'Sessiz kip (yalnız ışık), yalnız kulaklıkla, titreşim','İnternetten tempo bulma|n','Ses gecikmesini ölçüp tıkı düzeltme']],
+   ['ritim','AI Davul','ai_drums',[
+    'Cihazda yapay zekâyla kick, snare, hi-hat, tom; dört aday, dinle, kaydet','Akustik, elektronik ya da fırça kit; ses başına yeniden üret',
+    'Tom seti, açık hi-hat, cross-stick; konga, bongo, tef, shaker','Oda: kuru, küçük oda, stüdyo, salon',
+    'Kit mikseri; kitler One Man ve "Davulunu yaz"da','17 tarzda 6.401 kalıp, bölüme göre ve Şarkı kipinde','Model ilk kullanımda iner|n','Yalnız iPad ve Mac|i']],
+   ['ritim','One Man Mode','one_man_band',[
+    'Beş kanallı onaltılık ızgara, vuruş şiddeti, kopyala/yapıştır','Canlı: ölçü başında gir, fill, final, A/B/C, crash',
+    '2/4\'ten 13/8\'e ölçüler','MIDI groove al (GM, EZdrummer, Superior, Addictive)',
+    'Şarkı sayfasında ve looper\'da ritim şeridi','VIP, 3 gün deneme|v']],
+   ['ritim','Looper','looper',[
+    'Metronoma kilitli döngüler, birden çok klip, overdub','Ölçülü ya da serbest uzunluk; /2 ve ×2',
+    'Giriş sayımı, 1. vuruşa ve ızgaraya oturtma','Geriye dönük yakalama: çaldığını sonradan al',
+    'Mikser, quantize (1/4–1/16, swing)','Döngü düzenleyici: atakları sürükle, tempoyu döngüden bul','Altta davul çubuğu; pedalla kayıt']],
+   ['ayar','Yedek, bulut, hesap','repertoire',[
+    'Otomatik ve elle yerel yedek, geri yükleme','Kendi iCloud, Dropbox ya da Google Drive hesabına eşitleme; bizim sunucumuza gitmez|n',
+    'BC hesabı isteğe bağlı; Apple ile ya da e-posta koduyla giriş|n','Gitar + vokal, Şarkıcı, Tek kişilik grup kipleri',
+    'Söz, başlık, akor ve arayüz için ayrı yazı tipi ve boyut']],
+   ['ayar','Temalar ve diller','playlist',[
+    '20 hazır tema, 10 koyu ve 10 açık','Kendi temanı kur: zemin, vurgu, kutular, canlı önizleme',
+    '9 arayüz dili: English, Türkçe, Deutsch, Français, Español, Português, Русский, 日本語, 中文','iPad ve Mac\'te kenar çubuğu']],
+   ['grup','BC Pano ve topluluk','singer_vocal',[
+    'Herkese açık profil, @kullanıcı adı, gizlilik anahtarları','Konserler: mekân, bilet, yol tarifi, hatırlatma',
+    'Ekipmanım: satılık işareti, teklif','Müzisyen arama: enstrüman, tür, il, ilçe, müsait',
+    'Repertuvarı profilde yayınla (söz yayınlanmaz)','BC hesabı ve internet gerekir|n']]
+  ];
+  const KAT_EN=[
+   ['sahne','Songs and the stage page','repertoire',[
+    'Library with categories, tags and colours; search by title, artist or lyrics','Smart folders: Favourites, Most played, Forgotten',
+    'Lyrics with chords or lyrics only; pinch to zoom, swipe to the next song, auto-scroll','Centre lyrics, fit to screen, keep screen awake, chord diagrams on stage',
+    'Section band on top ("Chorus 2/3"), tap to jump; section order and ×N repeats','Transpose, key choice, capo 0–11; key and BPM badges',
+    'Chord mode: place chords word by word over the lyrics, align, centre','Per-song image, font, size and colour; stage note as a card',
+    'Export to PDF, import from PDF','Artist card: photo, biography, songs in your library|n',
+    'Import: ChordPro, plain text, SongBook, OnSong archive, Dropbox folder','Quick song: type a title or a line and the lyrics come with it|n','30 songs in the free version|v']],
+   ['sahne','Setlists','playlist',[
+    'Coloured setlists, manual order, split with set headers','Total length; length per song',
+    'Set report: same key back to back, tempo jumps, flat tempo, missing info','Assign a rhythm to a setlist',
+    'Fetch missing lyrics in one go|n','Share as a list, .txt or package; send to the group','2 setlists in the free version|v']],
+   ['grup','Group sync','arrangements',[
+    'The leader opens it; song, setlist, section and scroll position on every device','Followers don\'t need the song in their library; it travels with its content',
+    'No internet needed, the same Wi-Fi is enough; no server','Talkback: to everyone, to the leader or to one person',
+    '"Ask the group" polls, star ratings for songs','Notes from the leader, stage notes; send songs, setlists and tabs','Leading and joining are VIP, 3-day trial|v']],
+   ['sahne','Pedals and MIDI','pick',[
+    'Bluetooth page turners and MIDI pedals; pair with Learn','Next/previous song, section, bar; scrolling; talkback',
+    'Drums play/stop, fill, finale, A/B/C, crash; looper record and undo','MIDI out: keyboards change sounds when a song opens (Program Change, two keyboards)',
+    'MIDI devices and a MIDI log window','Pedal support is VIP, 3-day trial|v']],
+   ['calisma','Chords','acoustic-guitar',[
+    'Guitar, ukulele and piano chord dictionary; tap to hear','Other voicings for every chord; draw your own shapes',
+    'Piano across 1–3 octaves, root position and inversions','Chord diagram strip on the song page',
+    'Fetch chords from the web and place them on your lyrics; chord sites in nine languages|n']],
+   ['calisma','Scales, arpeggios, exercises','acoustic-guitar',[
+    'Scales on the neck, degrees or note names, the scale\'s chords and borrowed chords','Arpeggios all over the neck, drop voicings',
+    'Families of finger exercises, practice plans with tempo steps, click subdivisions','Write a progression, find the scales that fit; piano backing',
+    'Send a song\'s chords to the exercises with one tap','All VIP, 3-day trial|v']],
+   ['calisma','Tabs and BC Tab','pick',[
+    'Open Guitar Pro (.gp3–.gp7, .gpx) and MusicXML','Channel-by-channel playback, instrument choice, mute/solo, mixer',
+    'Bar loop, 50–100% speed, speed trainer, count-in','Scrolling strip or sheet view',
+    'Write tabs: techniques, tuplets, repeats, D.S. al Coda, section colours','Lossless save (.bctab), share as a file',
+    'Send to a person by BC ID; waits 7 days|n','10 tabs in the free version|v']],
+   ['calisma','Chord charts (arrangements)','arrangements',[
+    'iReal-style chart: sections, bars, beats; no lyrics','Meters from 4/4 to 9/8, meter changes mid-song',
+    'Chord keyboard: bass note, rest, rhythm slash, %; keyboard shortcuts','Repeat signs, 1st/2nd endings, D.C., D.S., Segno, Coda, Fine',
+    'Walks with the metronome: follows repeats, 1st/2nd endings and D.S./Coda in playing order, back to the top at the end; piano backing','Charts linked to karaoke walk with the recording and loop',
+    'Automatic chart from audio: key, tempo, meter, sections, chords|o','10 charts in the free version|v']],
+   ['calisma','Karaoke','karaoke',[
+    'Link an audio file to a song or open a .bckaraoke package','Vocal separation on the device, model built into the app|o',
+    'Word-by-word lyric timing, nine languages|o','Lyrics from audio (Whisper, downloads on first use)|n',
+    'Words fill as they are sung, chords above the words, tap a line to jump','Editor: word blocks, tap to mark, speed, key, latency',
+    'Song analysis: key, tempo, meter, chords, vocal range, sections|o','Track mixer: vocal, original drums, other, our drums; presets|i']],
+   ['calisma','Chord Finder','chord_finder',[
+    'Lyrics and chords from an audio file: separate, transcribe, time, find chords','All on the device; lyric language automatic, Turkish or English',
+    'Key, chord chart, capo plans ("Capo 2 · N barre")','Save to Songs and Karaoke from one window',
+    'iPad and Mac only|i']],
+   ['calisma','Video practice','video',[
+    'Videos from your gallery, a video library and playlists','Slow down 0.25×–1.0× without lowering the pitch',
+    'A–B selection on the waveform, zoom up to ×120','Loop lock, speed ladder (faster every pass)',
+    'Save a loop with a name','On iPad, Mac and phones in landscape']],
+   ['calisma','Beat Finder','metronome',[
+    'Pick a song and the metronome locks to its beat; the song is not stretched','Click-track or live recording; follows the tempo of live takes',
+    'Fine tuning: tempo multiple, where "1" falls, phase; fix it with Tap along','Write its drums: 4–6 style candidates, played with your own kit, ending options',
+    'iPad and Mac only|i']],
+   ['ritim','Metronome','metronome',[
+    'BPM, tap tempo, 2–7 beats per bar, accented first beat','Classic, woodblock, beep and clave sounds',
+    'Silent mode (light only), headphones only, vibration','Tempo search online|n','Measure audio latency and correct the click']],
+   ['ritim','AI Drums','ai_drums',[
+    'Kick, snare, hi-hat and toms made with AI on the device; four candidates, listen, save','Acoustic, electronic or brush kit; regenerate any sound',
+    'Tom set, open hi-hat, cross-stick; conga, bongo, tambourine, shaker','Room: dry, small room, studio, hall',
+    'Kit mixer; kits work in One Man and Write its drums','6,401 patterns in 17 styles, by section and in Song mode','Model downloads on first use|n','iPad and Mac only|i']],
+   ['ritim','One Man Mode','one_man_band',[
+    'Five-lane sixteenth grid, velocity, copy/paste','Live: enter on the bar, fill, finale, A/B/C, crash',
+    'Meters from 2/4 to 13/8','Import MIDI grooves (GM, EZdrummer, Superior, Addictive)',
+    'Drum strip on the song page and in the looper','VIP, 3-day trial|v']],
+   ['ritim','Looper','looper',[
+    'Loops locked to the metronome, several clips, overdub','Bar-based or free length; /2 and ×2',
+    'Count-in, snap to beat one and the grid','Retrospective capture: grab what you just played',
+    'Mixer, quantize (1/4–1/16, swing)','Loop editor: drag transients, find the tempo from the loop','Drum bar underneath; record from the pedal']],
+   ['ayar','Backup, cloud, account','repertoire',[
+    'Automatic and manual local backup, restore','Sync to your own iCloud, Dropbox or Google Drive; never to our server|n',
+    'BC account is optional; sign in with Apple or an email code|n','Guitar + vocals, Singer, One-person band modes',
+    'Separate fonts and sizes for lyrics, titles, chords and the interface']],
+   ['ayar','Themes and languages','playlist',[
+    '20 ready-made themes, 10 dark and 10 light','Build your own theme: background, accent, boxes, live preview',
+    '9 interface languages: English, Türkçe, Deutsch, Français, Español, Português, Русский, 日本語, 中文','Sidebar on iPad and Mac']],
+   ['grup','BC Board and community','singer_vocal',[
+    'Public profile, @username, privacy switches','Gigs: venue, tickets, directions, reminder',
+    'My gear: for-sale mark, offers','Musician search: instrument, genre, province, district, available',
+    'Publish your repertoire on your profile (lyrics never published)','Needs a BC account and internet|n']]
+  ];
+  const ALAN=[['hepsi','Hepsi','All'],['sahne','Sahne','Stage'],['calisma','Çalışma','Practice'],['ritim','Ritim','Rhythm'],['grup','Grup ve topluluk','Group and community'],['ayar','Ayarlar','Settings']];
+  let katF='hepsi';
+  const ET={v:'<span class="etiket vip">VIP</span>',i:'<span class="etiket ipadmac">iPad · Mac</span>',o:'<span class="etiket iosmac">iOS · Mac</span>',n:'<span class="etiket net">internet</span>'};
+  const kiz=document.getElementById('katalogIzgara'),sz=document.getElementById('suzgec');
+  const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function katalogCiz(f){if(!kiz)return;katF=f;const KK=dil==='en'?KAT_EN:KAT;kiz.innerHTML=KK.filter(k=>f==='hepsi'||k[0]===f).map(([,ad,img,m])=>'<article class="alan"><header><img src="simgeler/'+img+'.png" alt=""><h3>'+esc(ad)+'</h3></header><ul>'+m.map(x=>{const[t,e]=x.split('|');return '<li>'+esc(t)+(e?e.split('').map(c=>ET[c]||'').join(''):'')+'</li>'}).join('')+'</ul></article>').join('');
+    sz.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.f===f);const al=ALAN.find(x=>x[0]===b.dataset.f);b.textContent=dil==='en'?al[2]:al[1]})}
+  window._katalog=()=>katalogCiz(katF);
+  if(kiz){ALAN.forEach(([f,ad])=>{const b=document.createElement('button');b.type='button';b.dataset.f=f;b.textContent=ad;b.onclick=()=>katalogCiz(f);sz.appendChild(b)});katalogCiz('hepsi')}
+
+  // --- dil: data-en'li öğelerin Türkçesi saklanıp değiştiriliyor
+  const ogeler=[...document.querySelectorAll('[data-en]')];
+  ogeler.forEach(e=>e.dataset.tr=e.textContent);
+    dil='tr';
+  function gorselDil(d){document.querySelectorAll('img[src*="ekranlar/3/"]').forEach(im=>{const tr=im.getAttribute('src').replace('ekranlar/3/en/','ekranlar/3/');const yeni=d==='en'?tr.replace('ekranlar/3/','ekranlar/3/en/'):tr;if(yeni===im.getAttribute('src'))return;im.onerror=()=>{im.onerror=null;im.src=tr};im.src=yeni})}
+  function dilKur(d){dil=d;gorselDil(d);setTimeout(()=>{window._katalog&&window._katalog();window._sozKur&&window._sozKur()},0);ogeler.forEach(e=>e.textContent=e.dataset[d]);document.documentElement.lang=d;document.getElementById('dilDugme').textContent=d==='tr'?'TR · EN':'EN · TR';try{localStorage.setItem('bcsite_dil',d)}catch(e){}}
+    document.getElementById('dilDugme').onclick=()=>{dilKur(dil==='tr'?'en':'tr');window._galeri&&window._galeri()};
+  let ilkDil=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')ilkDil=k}catch(e){}
+  if(location.hash==='#en')ilkDil='en';if(location.hash==='#tr')ilkDil='tr';
+  if(ilkDil==='en')dilKur('en');
+
+
+  // --- galeri
+  const GAL=[['sarkilar','Şarkılar','Songs','Liste, kapaklar ve şarkı ayrıntısı: ton, tempo, kapo, akorlar.','List, covers and song details: key, tempo, capo, chords.'],
+   ['sahne','Sahne sayfası','Stage page','Akorlar sözün üstünde, bölümler üstte.','Chords above the words, sections on top.'],
+   ['setlist','Liste','Setlist','Gecenin sırası, ton ve tempo her satırda.','The night\'s order, key and tempo on every row.'],
+   ['akorlar','Akorlar','Chords','Akor sözlüğü, gamlar, arpejler, egzersizler.','Chord dictionary, scales, arpeggios, exercises.'],
+   ['tablar','Tablar','Tabs','Guitar Pro tabları, kanal kanal çalma.','Guitar Pro tabs, channel by channel.'],
+   ['duzenlemeler','Akor şemaları','Charts','iReal tarzı şema, metronomla yürür.','iReal-style chart that walks with the metronome.'],
+   ['karaoke','Karaoke','Karaoke','Karaoke listesi; yarım kalanlar işaretli.','Karaoke list; unfinished ones marked.'],
+   ['looper','Looper','Looper','Metronoma kilitli döngüler.','Loops locked to the metronome.'],
+   ['ai_davul','AI Davul','AI Drums','Cihazda davul sesi ve kit üretimi.','Drum sounds and kits made on the device.'],
+   ['one_man','One Man Mode','One Man Mode','Beş kanallı davul ızgarası, fill, final, A/B/C.','Five-lane drum grid, fill, finale, A/B/C.'],
+   ['pano','BC Pano','BC Board','Konserler, profil ve müzisyen topluluğu.','Gigs, profile and the musician community.']];
+  let gSec='sarkilar',gYon='yatay';
+  const gs=document.getElementById('galeriSec'),gi=document.getElementById('galeriImg'),gp=document.getElementById('galeriIpad'),ga=document.getElementById('galeriAlt');
+  function galeri(){const g=GAL.find(x=>x[0]===gSec);const trYol='ekranlar/3/'+gSec+'_'+gYon+'.jpg';gi.onerror=()=>{gi.onerror=null;gi.src=trYol};gi.src=dil==='en'?trYol.replace('ekranlar/3/','ekranlar/3/en/'):trYol;gi.alt=g[1];gp.className='ipad '+gYon+' gercek';ga.textContent=dil==='en'?g[4]:g[3];
+    gs.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.g===gSec);b.textContent=dil==='en'?GAL.find(x=>x[0]===b.dataset.g)[2]:GAL.find(x=>x[0]===b.dataset.g)[1]});
+    document.getElementById('yYatay').setAttribute('aria-pressed',gYon==='yatay');document.getElementById('yDikey').setAttribute('aria-pressed',gYon==='dikey')}
+  if(gs){GAL.forEach(g=>{const b=document.createElement('button');b.type='button';b.dataset.g=g[0];b.onclick=()=>{gSec=g[0];galeri()};gs.appendChild(b)});
+    document.getElementById('yYatay').onclick=()=>{gYon='yatay';galeri()};document.getElementById('yDikey').onclick=()=>{gYon='dikey';galeri()};}
+  if(gs)galeri();
+  window._galeri=galeri;
+  // --- menü (telefon)
+  const hb=document.getElementById('hamburger'),nav=document.getElementById('nav');
+  if(hb&&nav)hb.onclick=()=>{const a=nav.classList.toggle('acik');hb.setAttribute('aria-expanded',a)};
+  if(nav)nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('acik');hb.setAttribute('aria-expanded',false)}});
+
+  // --- forum oyla (taslak: yalnız görsel geri bildirim, forum açılınca sunucuya yazacak)
+  document.querySelectorAll('.oyla').forEach(b=>b.addEventListener('click',()=>{const v=b.classList.toggle('verildi');const e=b.querySelector('em');e.textContent=String(Number(e.textContent)+(v?1:-1))}));
+
+  // --- BC Pano ayrıntı pencereleri (görsel yoksa genel pano görseli)
+  const PZ={
+   konser:{tr:['Sıradaki konser','Bir sonraki sahnen panonun en üstünde durur. Konseri bir kez gir, gerisini BC Stage hatırlar.',['Mekânı ara ya da elle yaz, tarih ve saati seç','Bilet bağlantısı ekle; dinleyicin tek dokunuşla ulaşsın','Yol tarifi düğmesi haritayı açar','Konserden önce cihazında hatırlatma','İstersen konserlerin profilinde görünür, takipçilerine de hatırlatılır']],
+           en:['Next gig','Your next show sits at the top of the board. Enter it once and BC Stage remembers the rest.',['Search for the venue or type it, pick the date and time','Add a ticket link so your audience is one tap away','Directions opens the map','A reminder on your device before the gig','Show your gigs on your profile; your followers get reminded too']]},
+   musait:{tr:['Konserlere açığım','Tek anahtarla müzisyen aramalarında görünür olursun. Grup ya da mekân seni şehrine, türüne ve çalgına göre bulur.',['Anahtarı aç, durumun profilinde görünsün','Şehrini, türlerini ve çalgılarını seç','Teklifler doğrudan sana gelir, hareket akışında görünür','Kapattığın an aramalardan çıkarsın']],
+           en:['Open to gigs','One switch makes you visible in musician searches. Bands and venues find you by city, genre and instrument.',['Turn it on and your status shows on your profile','Pick your city, genres and instruments','Offers come straight to you and show in your activity','Turn it off and you leave the searches at once']]},
+   ekipman:{tr:['Ekipmanım','Çalgılarını ve ekipmanını fotoğrafı ve yılıyla bir vitrine diz. Satmak istediğini işaretle, teklifleri yönet.',['Fotoğraf, ad, tür ve yıl ile ekle','"Satılık" işaretle, fiyat koy','Gelen teklifleri kabul et ya da reddet','Beğendiğin ekipmanı kaydet','Fotoğraflar herkese açık bir adresle görünür']],
+           en:['My gear','Line up your instruments and gear with photos and years. Mark what you want to sell and handle the offers.',['Add a photo, name, type and year','Mark it for sale and set a price','Accept or decline the offers you get','Save gear you like','Photos are shown at a public address']]},
+   gruplar:{tr:['Gruplarım','Her grubun kendi sayfası olur: üyeler, bağlantılar ve konserler bir arada.',['Grup kur, adını ve fotoğrafını ekle','Üyeleri BC ID ile davet et','Sosyal bağlantıları ekle','Grubun konserleri herkesin panosunda','Grubu kuran ayrılsa da grup üyeleri için kalır']],
+           en:['My bands','Every band gets its own page: members, links and gigs together.',['Create a band, add its name and photo','Invite members by BC ID','Add social links','The band\'s gigs appear on every member\'s board','If the founder leaves, the band stays for its members']]},
+   muzisyen_bul:{tr:['Müzisyen bul','Bu akşam bir basçıya mı ihtiyacın var? Süzgeçleri seç, yakınındaki müzisyenleri gör.',['Çalgı, tür ve sahne rolü','Ülke, il, ilçe ve şehir','Yalnız "müsait" olanları göster','Profilini aç, takip et','Takip ettiklerinin konserleri sana hatırlatılır']],
+           en:['Find musicians','Need a bass player tonight? Pick the filters and see the musicians near you.',['Instrument, genre and stage role','Country, province, district and city','Show only those who are available','Open a profile and follow','You get reminded of the gigs of people you follow']]},
+   repertuvar:{tr:['Repertuvar','Çaldığın şarkıları profilinde göster; mekânlar ve gruplar neler çalabildiğini bilsin.',['Listenin tamamını ya da yalnız özetini yayınla','Şarkı adı, sanatçı, ton ve tempo görünür','Sözler asla yayınlanmaz','Yayınlanan listeler oylanabilir','İstediğin an yayından kaldır']],
+           en:['Repertoire','Show the songs you play on your profile so venues and bands know what you can do.',['Publish the full list or just a summary','Title, artist, key and tempo are shown','Lyrics are never published','Published setlists can be voted on','Unpublish whenever you like']]},
+   videolar:{tr:['Sahne videoları','Canlı performanslarını profiline ekle. YouTube videoları uygulamanın içinde oynar.',['YouTube bağlantısını yapıştır','Başlık ve tarih ekle','Videolar profilinde sıralanır','İzleyen uygulamadan çıkmadan izler']],
+           en:['Stage videos','Add your live performances to your profile. YouTube videos play inside the app.',['Paste a YouTube link','Add a title and date','Videos line up on your profile','Viewers watch without leaving the app']]},
+   sanatcilar:{tr:['Sanatçılar ve haberler','Çaldığın sanatçılar hakkında okumak için uygulamadan çıkma.',['Wikipedia biyografisi','Diskografi','Kütüphanendeki şarkıları','Müzik haberleri','Resimler yalnız özgür lisanslı kaynaklardan, künyesiyle']],
+           en:['Artists and news','Read about the artists you play without leaving the app.',['Wikipedia biography','Discography','Their songs in your library','Music news','Images only from freely licensed sources, with credits']]},
+   akis:{tr:['Hareket akışı','Seninle ilgili olan her şey tek akışta.',['Seni kim takip etti','Profilini kim ziyaret etti','Hangi teklifler geldi','Grup davetleri']],
+           en:['Activity','Everything about you in one feed.',['Who followed you','Who visited your profile','Which offers came in','Band invites']]},
+   gizlilik:{tr:['Gizliliğin','Neyin görüneceğine sen karar verirsin.',['Profil, konser, ekipman ve repertuvar için ayrı anahtarlar','Konum yalnız seçtiğin şehir; konum izni istenmez','Rahatsız eden profili tek dokunuşla bildir ya da engelle','Hesabını uygulamadan sil; profilin ve fotoğrafların silinir']],
+           en:['Your privacy','You decide what is shown.',['Separate switches for profile, gigs, gear and repertoire','Location is only the city you pick; no location permission','Report or block a profile in one tap','Delete your account in the app; your profile and photos go with it']]}
+  };
+  const pzSira=Object.keys(PZ);let pzAcik=0,pzOnceki=null;
+  const pzP=document.getElementById('pzPerde');
+  function pzGoster(i){pzAcik=(i+pzSira.length)%pzSira.length;const k=pzSira[pzAcik],v=PZ[k][dil==='en'?'en':'tr'];
+    const img=document.getElementById('pzImg');const yol='ekranlar/3/'+(dil==='en'?'en/':'')+'pano_'+k+'_yatay.jpg';
+    img.onerror=()=>{img.onerror=null;img.src='ekranlar/3/'+(dil==='en'?'en/':'')+'pano_yatay.jpg'};img.src=yol;img.alt=v[0];
+    document.getElementById('pzBaslik').textContent=v[0];document.getElementById('pzGiris').textContent=v[1];
+    const ul=document.getElementById('pzMaddeler');ul.innerHTML='';v[2].forEach(m=>{const li=document.createElement('li');li.textContent=m;ul.appendChild(li)});
+    document.getElementById('pzKapat').textContent=dil==='en'?'Close':'Kapat'}
+  function pzAc(k){pzOnceki=document.activeElement;pzGoster(pzSira.indexOf(k));pzP.hidden=false;document.getElementById('pzKapat').focus()}
+  function pzKapa(){pzP.hidden=true;pzOnceki&&pzOnceki.focus()}
+  if(pzP)document.body.appendChild(pzP); // site kabı container olduğu için fixed oraya göre kalıyordu
+  if(pzP){document.querySelectorAll('.pz').forEach(b=>b.addEventListener('click',()=>pzAc(b.dataset.pz)));
+    document.getElementById('pzKapat').onclick=pzKapa;document.getElementById('pzOnce').onclick=()=>pzGoster(pzAcik-1);document.getElementById('pzSonra').onclick=()=>pzGoster(pzAcik+1);
+    pzP.addEventListener('click',e=>{if(e.target===pzP)pzKapa()});
+    document.addEventListener('keydown',e=>{if(pzP.hidden)return;if(e.key==='Escape')pzKapa();if(e.key==='ArrowRight')pzGoster(pzAcik+1);if(e.key==='ArrowLeft')pzGoster(pzAcik-1)})}
+  // --- kopyala
+  const kb=document.getElementById('kopyala');
+  if(kb)kb.onclick=()=>{const a=document.getElementById('adres').textContent;const eski=kb.textContent;
+    const bitti=m=>{kb.textContent=m;setTimeout(()=>kb.textContent=eski,1600)};
+    if(navigator.clipboard)navigator.clipboard.writeText(a).then(()=>bitti(dil==='tr'?'Kopyalandı':'Copied'),()=>{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')});
+    else{getSelection().selectAllChildren(document.getElementById('adres'));bitti(dil==='tr'?'Seçildi, kopyala':'Selected, copy it')}};
+
+})();
+</script>
+<script>
+(function(){
+  'use strict';
+  document.documentElement.classList.add('jsHazir');
+  const az=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // kaydırınca belirme
+  const els=[...document.querySelectorAll('.gorun')];
+  if(az||!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('gor'))}
+  else{const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('gor');io.unobserve(en.target)}}),{rootMargin:'0px 0px -6% 0px'});els.forEach(e=>io.observe(e))}
+  // seçili sekme şeritte ortada görünsün
+  const ak=document.querySelector('.sekmeSerit .sk.aktif');
+  if(ak){const s=ak.parentElement;s.scrollLeft=ak.offsetLeft-s.clientWidth/2+ak.clientWidth/2}
+  // görsel eğimi fareyle
+  if(!az)document.querySelectorAll('.sGorsel').forEach(g=>{const ip=g.querySelector('.egik');if(!ip)return;
+    g.addEventListener('pointermove',ev=>{const r=g.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;ip.style.setProperty('--ry',(x*16-5).toFixed(2)+'deg');ip.style.setProperty('--rx',(-y*10+3).toFixed(2)+'deg')});
+    g.addEventListener('pointerleave',()=>{ip.style.removeProperty('--ry');ip.style.removeProperty('--rx')})});
+  // sekme kutularında ışık fareyi izlesin
+  document.querySelectorAll('.sekmeKutu').forEach(k=>k.addEventListener('pointermove',ev=>{const r=k.getBoundingClientRect();k.style.setProperty('--mx',(ev.clientX-r.left)+'px');k.style.setProperty('--my',(ev.clientY-r.top)+'px')}));
+  // ana sayfa: forumdaki son konular (herkese açık okuma)
+  const fl=document.getElementById('fvListe');
+  if(fl){
+    const U='https://xzvlayehgmkzddfncwyb.supabase.co',A='sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF';
+    const KT={hata:['Hata','Bug'],olmasi_gereken:['Olması gereken','Should be there'],fikir:['Fikir','Idea']};
+    const DR={sirada:['Sırada','In the queue'],yapiliyor:['Yapılıyor','In progress'],yapildi:['Yapıldı','Done']};
+    let veri=null;
+    const ciz=()=>{const en=document.documentElement.lang==='en',i=en?1:0;fl.innerHTML='';
+      if(!veri){const p=document.createElement('p');p.className='fvBos';p.textContent=en?'The forum is open: be the first to write.':'Forum açık: ilk yazan sen ol.';fl.append(p);return}
+      if(!veri.length){const p=document.createElement('p');p.className='fvBos';p.textContent=en?'No topics yet. Open the first one.':'Henüz konu yok. İlkini sen aç.';fl.append(p)}
+      veri.forEach((k,n)=>{const a=document.createElement('a');a.className='fvKonu';a.href='forum.html#konu-'+k.id;a.style.setProperty('--g',(n*90)+'ms');
+        const oy=document.createElement('span');oy.className='fvOy';oy.append('▲ '+k.oy_sayisi);const os=document.createElement('span');os.textContent=en?'votes':'oy';oy.append(os);
+        const m=document.createElement('span');const b=document.createElement('b');b.textContent=k.baslik;const s=document.createElement('small');
+        s.textContent=[(KT[k.kategori]||['',''])[i],(DR[k.durum]||null)?DR[k.durum][i]:null,k.yanit_sayisi+(en?' replies':' yanıt')].filter(Boolean).join(' · ');
+        m.append(b,s);a.append(oy,m);fl.append(a)});
+      const t=document.createElement('a');t.className='fvTum';t.href='forum.html';t.textContent=en?'All topics →':'Bütün konular →';fl.append(t)};
+    fetch(U+'/rest/v1/forum_konular?select=id,baslik,kategori,durum,oy_sayisi,yanit_sayisi&order=created_at.desc&limit=4',{headers:{apikey:A}})
+      .then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{veri=d;ciz()}).catch(()=>{veri=null;ciz()});
+    new MutationObserver(()=>{if(veri!==undefined)ciz()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  }
+})();
+
+</script>
+</body>
+</html>
