@@ -626,6 +626,38 @@ body{overflow-x:clip}
 .kabukUst{min-width:0}
 .kabuk .logo{min-width:0;flex-shrink:1}
 @media (max-width:520px){.kabuk .indir{display:none}.kabuk .dil{padding:5px 9px;font-size:11px;white-space:nowrap}.kabuk .logo{font-size:22px}}
+/* ===== telefon: uygulamadaki gibi alt çubuk + Daha paneli (2026-10-31) ===== */
+.altCubuk,.dahaPerde{display:none}
+@media (max-width:820px){
+  .kabuk .dugme.ana.indir{display:none}
+  .sekmeSerit{display:none}
+  .kabukUst{padding-block:10px}
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}
+  .altCubuk{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(12,12,15,.92);-webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid #2A2A31}
+  .altCubuk a,.altCubuk button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px;border-radius:14px;color:#8B8B95;font:600 11px/1.1 "Geist",system-ui,sans-serif;text-align:center;position:relative;-webkit-tap-highlight-color:transparent}
+  .altCubuk img{width:30px;height:30px;object-fit:contain;transition:transform .25s}
+  .altCubuk .ac.aktif{color:#F4F2EC;background:rgba(255,201,60,.10)}
+  .altCubuk .ac.aktif img{filter:drop-shadow(0 0 10px rgba(255,201,60,.45));transform:translateY(-2px)}
+  .altCubuk .ac.aktif::after{content:"";position:absolute;top:2px;left:50%;width:16px;height:3px;margin-left:-8px;border-radius:2px;background:#FFC93C}
+  .altCubuk .acForum .forumIk{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#FFC93C;color:#241A00;font-size:16px;box-shadow:0 0 0 0 rgba(255,201,60,.5);animation:forumNabiz 2.6s ease-out infinite}
+  .altCubuk .dahaIk{width:30px;height:30px;display:grid;place-items:center;font-size:22px;letter-spacing:1px;color:#F4F2EC}
+  .dahaPerde{display:block;position:fixed;inset:0;z-index:90;background:rgba(5,5,7,.6);opacity:0;pointer-events:none;transition:opacity .25s}
+  .dahaPerde.acik{opacity:1;pointer-events:auto}
+  .dahaPanel{position:absolute;left:0;right:0;bottom:0;max-height:82vh;overflow:auto;padding:10px 16px calc(20px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0;background:#141418;border-top:1px solid #3a321c;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .dahaPerde.acik .dahaPanel{transform:none}
+  .dahaTutamac{width:44px;height:5px;border-radius:3px;background:#3a3a42;margin:4px auto 14px}
+  .dahaPanel h3{font:600 12px "Geist Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#57575F;margin:6px 4px 10px}
+  .dahaIzgara{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .dahaIzgara a{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:16px;background:#1E1E24;color:#F4F2EC;text-decoration:none;font:600 11px/1.15 "Geist",system-ui,sans-serif;text-align:center}
+  .dahaIzgara a.aktif{box-shadow:inset 0 0 0 1px rgba(255,201,60,.5);background:rgba(255,201,60,.08)}
+  .dahaIzgara img{width:36px;height:36px;object-fit:contain}
+  .dahaSatir{display:grid;gap:6px}
+  .dahaSatir a{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:#1E1E24;color:#F4F2EC;text-decoration:none;font:600 15px "Geist",system-ui,sans-serif}
+  .dahaSatir a::after{content:"›";color:#57575F;font-size:20px}
+  /* telefonda dikey ekran, eğim yok */
+  .sGorsel .ipad.dikeyTel{aspect-ratio:3/4;width:min(100%,420px);margin-inline:auto}
+  .egik{transform:none!important}
+}
 
 </style>
 </head>
@@ -654,7 +686,7 @@ body{overflow-x:clip}
       
       <div class="satir"><a class="dugme ikinci" href="yardim.html#video" data-en="How it works →">Nasıl çalışır →</a><a class="dugme ana" href="https://apps.apple.com/app/id6804937931" target="_blank" rel="noopener" data-en="Download">İndir</a></div>
     </div>
-    <div class="sGorsel gorun"><div class="yuzen"><div class="ipad yatay gercek egik"><div class="ekran"><img src="ekranlar/3/video_yatay.jpg" alt="BC Stage 3.0 · Video"><span class="parilti2" aria-hidden="true"></span></div></div></div></div>
+    <div class="sGorsel gorun"><div class="yuzen"><div class="ipad yatay gercek egik dikeyTel"><div class="ekran"><picture><source media="(max-width:820px)" srcset="ekranlar/3/video_dikey.jpg" data-tr="ekranlar/3/video_dikey.jpg"><img src="ekranlar/3/video_yatay.jpg" alt="BC Stage 3.0 · Video"></picture><span class="parilti2" aria-hidden="true"></span></div></div></div></div>
   </div>
   <div class="alanIzgara"><article class="alanKart gorun"><header><img src="simgeler/video.png" alt=""><h3 data-en="Video practice">Video çalışma</h3></header><ul><li><span data-en="Videos from your gallery, a video library and playlists">Galeriden video, video kütüphanesi ve listeler</span></li><li><span data-en="Slow down 0.25×–1.0× without lowering the pitch">0,25×–1,0× yavaşlatma, ses kalınlaşmaz</span></li><li><span data-en="A–B selection on the waveform, zoom up to ×120">Dalga şeridinde A–B seçimi, ×120&#x27;ye kadar yakınlaştırma</span></li><li><span data-en="Loop lock, speed ladder (faster every pass)">Döngü kilidi, hız merdiveni (her turda hızlanır)</span></li><li><span data-en="Save a loop with a name">Döngüyü adıyla kaydet</span></li><li><span data-en="On iPad, Mac and phones in landscape">iPad, Mac ve yatay telefonda</span></li></ul></article></div>
   
@@ -672,6 +704,21 @@ body{overflow-x:clip}
 </div>
 </div>
 </div>
+<nav class="altCubuk" aria-label="Sekmeler"><a class="ac" href="sarkilar.html"><img src="simgeler/repertoire.png" alt=""><span data-en="Songs">Şarkılar</span></a><a class="ac" href="playlistler.html"><img src="simgeler/playlist.png" alt=""><span data-en="Playlists">Playlistler</span></a><a class="ac" href="akorlar.html"><img src="simgeler/acoustic-guitar.png" alt=""><span data-en="Chords">Akorlar</span></a>
+  <a class="ac acForum" href="forum.html"><span class="forumIk" aria-hidden="true">✦</span><span data-en="Forum">Forum</span></a>
+  <button class="ac aktif" type="button" id="dahaAc" aria-haspopup="dialog" aria-expanded="false"><span class="dahaIk" aria-hidden="true">•••</span><span data-en="More">Daha</span></button>
+</nav>
+<div class="dahaPerde" id="dahaPerde" role="dialog" aria-modal="true" aria-label="Bütün sekmeler">
+  <div class="dahaPanel"><div class="dahaTutamac"></div>
+    <h3 data-en="Every tab">Bütün sekmeler</h3><div class="dahaIzgara"><a class="" href="tablar.html"><img src="simgeler/pick.png" alt=""><span data-en="Tabs">Tablar</span></a><a class="" href="duzenlemeler.html"><img src="simgeler/arrangements.png" alt=""><span data-en="Arrangements">Düzenlemeler</span></a><a class="" href="karaoke.html"><img src="simgeler/karaoke.png" alt=""><span data-en="Karaoke">Karaoke</span></a><a class="" href="backing.html"><img src="simgeler/backing_track.png" alt=""><span data-en="Backing Track">Backing Track</span></a><a class="" href="bass.html"><img src="simgeler/bass.png" alt=""><span data-en="Bass">Bass</span></a><a class="aktif" href="video.html"><img src="simgeler/video.png" alt=""><span data-en="Video">Video</span></a><a class="" href="ai-davul.html"><img src="simgeler/ai_drums.png" alt=""><span data-en="AI Drums">AI Davul</span></a><a class="" href="akor-bulma.html"><img src="simgeler/chord_finder.png" alt=""><span data-en="Chord Finder">Akor Bulma</span></a><a class="" href="metronom-bul.html"><img src="simgeler/metronome.png" alt=""><span data-en="Beat Finder">Metronom Bul</span></a><a class="" href="one-man.html"><img src="simgeler/one_man_band.png" alt=""><span data-en="One Man">One Man</span></a><a class="" href="pano.html"><img src="simgeler/group_connection.png" alt=""><span data-en="BC Board">BC Pano</span></a></div>
+    <div class="dahaSatir"><a href="index.html"><span data-en="Home">Ana sayfa</span></a><a href="yardim.html"><span data-en="Help">Yardım</span></a><a href="ozellikler.html"><span data-en="Every feature">Bütün özellikler</span></a><a href="hakkinda.html"><span data-en="About">Hakkında</span></a><a href="gizlilik.html"><span data-en="Privacy">Gizlilik</span></a></div>
+  </div>
+</div>
+<script>(function(){var p=document.getElementById('dahaPerde'),b=document.getElementById('dahaAc');if(!p||!b)return;
+function ac(v){p.classList.toggle('acik',v);b.setAttribute('aria-expanded',v)}
+b.addEventListener('click',function(){ac(!p.classList.contains('acik'))});
+p.addEventListener('click',function(e){if(e.target===p)ac(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')ac(false)});})();</script>
 <script>
 (function(){
   let dil='tr';
@@ -1097,6 +1144,11 @@ body{overflow-x:clip}
       .then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{veri=d;ciz()}).catch(()=>{veri=null;ciz()});
     new MutationObserver(()=>{if(veri!==undefined)ciz()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   }
+})();
+(function(){
+  // telefon dikey görselleri dile göre (img'leri taban betiğindeki gorselDil değiştiriyor, source'ları burada)
+  const kur=()=>{const en=document.documentElement.lang==='en';document.querySelectorAll('source[data-tr]').forEach(s=>{const tr=s.dataset.tr;const yeni=en?tr.replace('ekranlar/3/','ekranlar/3/en/'):tr;if(s.getAttribute('srcset')!==yeni){const img=new Image();img.onload=()=>s.setAttribute('srcset',yeni);img.src=yeni}})};
+  kur();new MutationObserver(kur).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 
 </script>
