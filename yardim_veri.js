@@ -2,13 +2,13 @@
 window.KILAVUZ=[
 {k:'baslarken',g:'bas',i:'sarkilar',
  tr:{a:'Başlarken',o:'BC Stage\'i ilk açtığında şarkılarını ekle, sahneye hazırla. Hesap gerekmez.',
-  s:['Üstteki sekmelerden bölümlere geçersin: Şarkılar, Listeler, Akorlar, Karaoke, Looper ve diğerleri.','Sağ üstteki + ile şarkı eklersin. Adını ya da bir dizesini yaz, sözleri gelsin; ya da akorları yapıştır.','Soldaki kategoriler ve akıllı klasörler: Favoriler, En çok çalınan, Unutulanlar.','Şarkı listesinde her şarkının tonu ve temposu görünür.','Bir şarkıyı seçip "Sahneye çık" ile sahne sayfasını açarsın.','Ton, tempo ve kapo şarkıya kaydedilir; akor diyagramları altta.'],
+  s:['Üstteki sekmelerden bölümlere geçersin: Şarkılar, Playlistler, Akorlar, Düzenlemeler, Karaoke, Backing Track, Bass ve diğerleri.','Sağ üstteki + ile şarkı eklersin. Adını ya da bir dizesini yaz, sözleri gelsin; ya da akorları yapıştır.','Soldaki kategoriler ve akıllı klasörler: Favoriler, En çok çalınan, Unutulanlar.','Şarkı listesinde her şarkının tonu ve temposu görünür.','Bir şarkıyı seçip "Sahneye çık" ile sahne sayfasını açarsın.','Ton, tempo ve kapo şarkıya kaydedilir; akor diyagramları altta.'],
   e:['İlk açılışta kipini seç: Gitar + vokal, Şarkıcı ya da Tek kişilik grup. Görünüm buna göre ayarlanır.','Başka uygulamadan geliyorsan ChordPro, düz metin, SongBook ya da OnSong arşivini içe al.'],
-  t:'Telefonda alt çubukta Şarkılar, Listeler, Akorlar ve Ayarlar var; Tablar, Karaoke ve aranjelere şarkı sayfasından gidilir.'},
+  t:'Telefonda alt çubukta Şarkılar, Playlistler, Akorlar, Daha ve Ayarlar var; Düzenlemeler, Karaoke, Backing Track, Bass ve Video Daha\'nın içinde.'},
  en:{a:'Getting started',o:'When you first open BC Stage, add your songs and get them ready for the stage. No account needed.',
-  s:['The tabs on top take you to each part: Songs, Playlists, Chords, Karaoke, Looper and more.','Add a song with the + at the top right. Type its title or a line and the lyrics come, or paste your chords.','Categories and smart folders on the left: Favourites, Most played, Forgotten.','Every song in the list shows its key and tempo.','Pick a song and press "Go on stage" to open the stage page.','Key, tempo and capo are saved with the song; chord diagrams sit below.'],
+  s:['The tabs on top take you to each part: Songs, Playlists, Chords, Arrangements, Karaoke, Backing Track, Bass and more.','Add a song with the + at the top right. Type its title or a line and the lyrics come, or paste your chords.','Categories and smart folders on the left: Favourites, Most played, Forgotten.','Every song in the list shows its key and tempo.','Pick a song and press "Go on stage" to open the stage page.','Key, tempo and capo are saved with the song; chord diagrams sit below.'],
   e:['On first launch pick your mode: Guitar + vocals, Singer or One-person band. The layout follows it.','Coming from another app? Import ChordPro, plain text, SongBook or an OnSong archive.'],
-  t:'On phones the bottom bar has Songs, Playlists, Chords and Settings; Tabs, Karaoke and charts open from the song page.'},
+  t:'On phones the bottom bar has Songs, Playlists, Chords, More and Settings; Arrangements, Karaoke, Backing Track, Bass and Video are under More.'},
  n:[[50,12.5],[76,4],[8,30],[35,36],[62,47.5],[60,61]]},
 
 {k:'sahne',g:'sahne',i:'sahne',
@@ -41,17 +41,6 @@ window.KILAVUZ=[
   s:['Instrument: Guitar, Ukulele, Piano.','Root note: which note the chords are built on.','Tap a chord: it plays first, then the other voicings open.','Your chords: shapes you drew, fixed or hid.','+ Draw: draw a new chord shape.','Scales, Arpeggios, Exercises and Progressions (VIP).'],
   e:[],t:'The chord strip on the song page uses this dictionary too.'},
  n:[[12,50],[50,44],[14,69],[30,35],[53,35],[79,21]]},
-
-{k:'tablar',g:'calisma',i:'tablar',
- tr:{a:'Tablar',o:'Guitar Pro tablarını aç, kanal kanal çal, kendi tabını yaz.',
-  s:['Gelen tablar: BC ID ile sana gönderilenler; 7 gün bekler.','Tab listeleri: Prova, Solo çalışma gibi.','Şarkıya bağlı tablar.','Arama.','+ ile yeni tab yaz ya da Guitar Pro / MusicXML dosyası aç.'],
-  e:['Tabı açınca: kanal başına çalgı, sustur/solo, hız (%50–100), ölçü döngüsü ve hız antrenörü.','Kayıpsız kaydet (.bctab) ve dosya olarak paylaş.'],
-  t:'Ücretsiz sürümde 10 tab var.'},
- en:{a:'Tabs',o:'Open Guitar Pro tabs, play them channel by channel and write your own.',
-  s:['Incoming tabs: sent to you by BC ID; they wait 7 days.','Tab lists such as Rehearsal or Solo practice.','Tabs linked to songs.','Search.','+ writes a new tab or opens a Guitar Pro / MusicXML file.'],
-  e:['Inside a tab: instrument per channel, mute/solo, speed (50–100%), bar loop and speed trainer.','Lossless save (.bctab) and share as a file.'],
-  t:'The free version has 10 tabs.'},
- n:[[20,30],[15,26],[10,38],[84,21],[95,94]]},
 
 {k:'semalar',g:'calisma',i:'duzenlemeler',
  tr:{a:'Akor şemaları',o:'iReal tarzı akor şeması: söz yok, yalnız bölümler, ölçüler ve akorlar.',
@@ -108,15 +97,6 @@ window.KILAVUZ=[
   t:'Saved drums play as "Our drums" in the karaoke mixer.'},
  n:[[20,28],[10,37],[18,40],[50,41],[33,48],[30,56],[12,64],[80,51]]},
 
-{k:'looper',g:'ritim',i:'looper',
- tr:{a:'Looper',o:'Metronoma kilitli döngüler. Geç girsen bile kaydın birinci vuruşa oturur.',
-  s:['Klipler: dokun, kaydet ya da çal; katman katman üst üste kayıt.','Kayıt halkası: kaydın ilerleyişi.','Yeni klip.','Tempo, ölçü ve metronom; dokunarak tempo.','Döngü uzunluğu: ölçülü ya da serbest; ×2 ve ÷2.','KAYIT ve ÇAL.','Geri al, düzenle, hizala, temizle.','Giriş sayımı ve çıkış sayımı.','1. vuruşa ve ızgaraya oturtma.','Altta davul çubuğu: One Man ritmiyle birlikte çal.'],
-  e:['Geriye dönük yakalama: çaldığını kayıttan sonra al.','Pedalla kayıt ve geri al.'],t:'iPad\'de sekme, telefonda üst çubuktaki düğmeyle açılır.'},
- en:{a:'Looper',o:'Loops locked to the metronome. Come in late and your take still lands on beat one.',
-  s:['Clips: tap to record or play; overdub layer on layer.','Record ring: how far the take has gone.','New clip.','Tempo, meter and metronome; tap tempo.','Loop length: bar-based or free; ×2 and ÷2.','RECORD and PLAY.','Undo, edit, align, clear.','Count-in and count-out.','Snap to beat one and to the grid.','Drum bar underneath: play along with a One Man rhythm.'],
-  e:['Retrospective capture: grab what you played after the fact.','Record and undo from a pedal.'],t:'A tab on iPad; on phones it opens from the button in the top bar.'},
- n:[[18,33],[18,60],[18,80],[77,23],[78,36],[76,50],[76,57],[78,66],[78,81],[8,96]]},
-
 {k:'oneman',g:'ritim',i:'one_man',
  tr:{a:'One Man Mode',o:'Canlı çalınan beş kanallı davul ızgarası. Sen çalarken ritim seni izler. VIP, 3 gün deneme.',
   s:['Çal / dur: ölçü başında girer.','Tempo.','A, B, C varyasyonları.','FILL ve FINALE.','Hücreye dokun; dikey sürükleyerek vuruş şiddetini ayarla.','Kanal: ses seçimi, M (sustur), S (solo), seviye.','Kit seçimi.','Crash: fill\'i kapatır, sonraki ölçünün başına vurur.'],
@@ -137,10 +117,10 @@ window.KILAVUZ=[
 
 {k:'pano',g:'grup',i:'pano',
  tr:{a:'BC Pano',o:'Sahnedeki müzisyenin ana sayfası. BC hesabı ve internet gerekir.',
-  s:['Profilin ve üye numaran (ID).','Herkese açık profilin nasıl göründüğüne bak.','Kısayollar: One Man, AI Davul, Looper, Karaoke ve diğerleri.','Sıradaki konser: yol tarifi, bilet, hatırlatma.','Konserlere açığım: aramalarda görün, teklif al.','Hızlı işlemler: konser ekle, ekipman ekle, müzisyen bul, profili düzenle.','Ekipmanım.','Sol menü: Ekipmanım, Repertuvar, Konserler, Gruplarım, Sahne videoları, Müzisyen bul, haberler, sanatçılar.'],
+  s:['Profilin ve üye numaran (ID).','Herkese açık profilin nasıl göründüğüne bak.','Kısayollar: One Man, AI Davul, Karaoke ve diğerleri.','Sıradaki konser: yol tarifi, bilet, hatırlatma.','Konserlere açığım: aramalarda görün, teklif al.','Hızlı işlemler: konser ekle, ekipman ekle, müzisyen bul, profili düzenle.','Ekipmanım.','Sol menü: Ekipmanım, Repertuvar, Konserler, Gruplarım, Sahne videoları, Müzisyen bul, haberler, sanatçılar.'],
   e:['BC ID\'ni seç: 3–20 karakter; sonra değiştirebilirsin.'],t:'Hesabını uygulamadan silebilirsin; profilin ve fotoğrafların silinir.'},
  en:{a:'BC Board',o:'Home base for the musician on stage. Needs a BC account and internet.',
-  s:['Your profile and member number (ID).','See how your public profile looks.','Shortcuts: One Man, AI Drums, Looper, Karaoke and more.','Next gig: directions, tickets, reminder.','Open to gigs: show up in searches, get offers.','Quick actions: add a gig, add gear, find musicians, edit profile.','My gear.','Left menu: My gear, Repertoire, Gigs, My bands, Stage videos, Find musicians, news, artists.'],
+  s:['Your profile and member number (ID).','See how your public profile looks.','Shortcuts: One Man, AI Drums, Karaoke and more.','Next gig: directions, tickets, reminder.','Open to gigs: show up in searches, get offers.','Quick actions: add a gig, add gear, find musicians, edit profile.','My gear.','Left menu: My gear, Repertoire, Gigs, My bands, Stage videos, Find musicians, news, artists.'],
   e:['Choose your BC ID: 3–20 characters; you can change it later.'],t:'You can delete your account in the app; your profile and photos go with it.'},
  n:[[40,7],[82,9],[50,22],[30,44],[25,63],[58,66],[50,85],[8,30]]},
 
@@ -154,10 +134,10 @@ window.KILAVUZ=[
 
 {k:'pedal',g:'grup',
  tr:{a:'Pedal ve MIDI',o:'Bluetooth sayfa çevirici ya da MIDI pedalla ellerini çalgıdan kaldırmadan yönet. VIP, 3 gün deneme.',
-  e:['iOS\'ta pedalı önce sistemin Bluetooth ayarlarından eşleştir; Android\'de "Bluetooth pedalı bul" kullan.','Pedal ayarlarında bir eylem seç, "Öğret"e bas ve pedal düğmesine dokun.','Eylemler: sonraki/önceki şarkı, bölüm, ölçü; kaydırma; bas-konuş; ritim çal/dur, fill, final, A/B/C, crash; looper kaydet ve geri al.','MIDI çıkışı: şarkı açılınca bağlı klavyelerde ses değişir (Program Change, iki klavye).'],
+  e:['iOS\'ta pedalı önce sistemin Bluetooth ayarlarından eşleştir; Android\'de "Bluetooth pedalı bul" kullan.','Pedal ayarlarında bir eylem seç, "Öğret"e bas ve pedal düğmesine dokun.','Eylemler: sonraki/önceki şarkı, bölüm, ölçü; kaydırma; bas-konuş; ritim çal/dur, fill, final, A/B/C, crash; Backing Track çal/dur, sonraki şarkı ve bölüm.','MIDI çıkışı: şarkı açılınca bağlı klavyelerde ses değişir (Program Change, iki klavye).'],
   t:'MIDI kaydı penceresi pedalın ne gönderdiğini gösterir.'},
  en:{a:'Pedals and MIDI',o:'Run things with a Bluetooth page turner or MIDI pedal without taking your hands off the instrument. VIP, 3-day trial.',
-  e:['On iOS pair the pedal in the system Bluetooth settings first; on Android use "Find Bluetooth pedal".','In pedal settings pick an action, press "Learn" and step on the pedal button.','Actions: next/previous song, section, bar; scrolling; talkback; drums play/stop, fill, finale, A/B/C, crash; looper record and undo.','MIDI out: connected keyboards change sounds when a song opens (Program Change, two keyboards).'],
+  e:['On iOS pair the pedal in the system Bluetooth settings first; on Android use "Find Bluetooth pedal".','In pedal settings pick an action, press "Learn" and step on the pedal button.','Actions: next/previous song, section, bar; scrolling; talkback; drums play/stop, fill, finale, A/B/C, crash; Backing Track play/stop, next song and section.','MIDI out: connected keyboards change sounds when a song opens (Program Change, two keyboards).'],
   t:'The MIDI log window shows what your pedal sends.'}},
 
 {k:'yedek',g:'ayar',
