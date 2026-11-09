@@ -43,7 +43,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 
 <article lang-blok="tr">
 <h1>Gizlilik</h1>
-<p class="tarih">Son güncelleme: 19 Ekim 2026</p>
+<p class="tarih">Son güncelleme: 10 Kasım 2026</p>
 <div class="kisa"><p>Kısaca: BC Stage reklam ağı ya da izleme aracı kullanmaz, verini satmaz. Analitik ve çökme raporlama yazılımı yoktur. Şarkıların cihazında ve kendi bulut hesabında durur, ses işleme cihazında yapılır. Sunucumuzda yalnız isteğe bağlı BC hesabını açanların hesap ve topluluk verisi tutulur.</p></div>
 
 <h2>Veri sorumlusu</h2>
@@ -75,7 +75,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li><b>Bluetooth:</b> Bluetooth MIDI pedallar, sayfa çeviriciler ve denetleyiciler için.</li>
 <li><b>Fotoğraflar:</b> Şarkıya, profiline, ekipmanına ya da sanatçıya resim eklemek için. Yalnız seçtiğin resim alınır.</li>
 <li><b>Bildirimler (Android):</b> Cihazında kurduğun konser hatırlatmaları ve arka planda çalarken görünen oynatma bildirimi için. Sunucudan bildirim gönderilmez.</li>
-<li>Konum izni istenmez. Şehir bilgisi yalnız elle seçtiğin şehirdir.</li>
+<li><b>Konum:</b> Yalnız bugünkü konserinde "Canlıyım"a bastığında ve canlıyken uygulama açıkken birkaç dakikada bir, mekânda olduğunu doğrulamak için. Konumun saklanmaz: sunucu yalnız mekâna uzaklığı hesaplar, canlı kapanınca o da silinir. Bunun dışında şehir bilgisi yalnız elle seçtiğin şehirdir.</li>
 </ul>
 
 <h3>İsteğe bağlı BC hesabı ve BC Pano</h3>
@@ -89,6 +89,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li>Yayımladığın çalma listeleri ve oyları, etkinlik akışın.</li>
 <li>Başkasına gönderdiğin tablar (pakette şarkı sözü yoktur).</li>
 <li>Şikâyet ve engellemeler.</li>
+<li>"Canlıyım" açıkken: mekân, şehir ve gece kodu (BC Connect'te herkese görünür; canlı kapanınca ya da en geç 8 saatte silinir). Paylaşımların ve anketlerin.</li>
 </ul>
 <p><b>Herkese açık olanlar:</b> Profilin, konserlerin, ekipman ilanların ve yayımladığın listeler diğer kullanıcılara görünür. <b>Profil ve ekipman fotoğrafları sunucuya yüklenir ve herkese açık bir adresle görünür.</b> Gizlilik anahtarlarıyla neyin görüneceğini seçebilirsin.</p>
 <p>Uygulamada gösterilen kampanyaların gösterim ve tıklamaları yalnız kampanya, gün ve ülke başına toplam sayı olarak, kim olduğun bilinmeden sayılır.</p>
@@ -106,6 +107,62 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 
 <h3>Satın alma</h3>
 <p>Satın almalar App Store ya da Google Play üzerinden yapılır. Ödeme bilgilerini biz görmeyiz.</p>
+
+<h2>BC Connect uygulaması</h2>
+<h3>Hesapsız</h3>
+<ul>
+<li>BC Connect hesapsız çalışır. Takip ettiğin sanatçılar, gizlediklerin ve ayarların telefonunda saklanır.</li>
+<li>Sanatçı sahneye çıkınca haber verebilmemiz için telefonunun bildirim anahtarı, takip listen ve sessize aldığın sanatçılar sunucumuzda tutulur. Bildirimler Google Firebase Cloud Messaging ile gönderilir.</li>
+</ul>
+<h3>Konum</h3>
+<ul>
+<li><b>Keşfet:</b> "Yakınımda" seçince yakındaki canlı müziği bulmak için konumun o aramayla sunucuya gider; saklanmaz.</li>
+<li><b>Yakınımdan geçerken haber ver</b> (isteğe bağlı, "Her zaman" izni): mekân bölgeleri telefonuna kurulur, bölgeye girdiğini telefonun kendisi anlar. Konumun sunucuya gönderilmez.</li>
+<li><b>Buradayım:</b> konser pasaportuna damga için konumun bir kez sunucuya gider; mekâna uzaklık hesaplanır, konum saklanmaz. Saklanan yalnız "bu konserdeydin" kaydıdır.</li>
+<li><b>Gece yardımcısı:</b> yakındaki eczane, hastane gibi yerleri bulmak için konumun OpenStreetMap'in Overpass hizmetine gider. Haritalar OpenFreeMap'ten yüklenir.</li>
+</ul>
+<h3>Gece (canlı geceye katılınca)</h3>
+<ul>
+<li>Işık gösterisi, oylar, istekler ve hediyeler o gecenin kanalından anlık geçer; sunucuda saklanmaz.</li>
+<li>Afiş için çektiğin fotoğraf telefonunda kalır; sahneye yalnız 16×16 piksellik gri bir karo gider.</li>
+<li>Mikrofon yalnız salonun ses düzeyini ölçer, kayıt yapılmaz. Ses kapsülün yalnız telefonunda saklanır.</li>
+<li>Saat eşitlemesi için time.google.com'a saat sorulur.</li>
+</ul>
+<h3>İsteğe bağlı BC Account</h3>
+<ul>
+<li>BC Stage ile aynı hesaptır. Girersen takiplerin, anket oyların, dinleyici profilin (rumuz, hakkında, isteğe bağlı Instagram ve doğum yılı, neyin görüneceği) ve konser pasaportun sunucumuzda tutulur.</li>
+<li>Paylaşımları şikâyet edebilir, sanatçıyı telefonunda gizleyebilirsin. Şikâyette kim olduğun değil, telefonundan türetilmiş tek yönlü bir kimlik saklanır.</li>
+<li>Hesabını uygulamanın içinden silebilirsin (Ben → BC Account → Hesabımı sil). Hesap ortak olduğu için BC Stage profilin de silinir.</li>
+</ul>
+<p>Gömülü video oynatıcılar (YouTube, Vimeo, Instagram) kendi verilerini toplar. BC Connect'te reklam, izleme ve uygulama içi satın alma yoktur.</p>
+
+<h2>The BC Connect app</h2>
+<h3>No account needed</h3>
+<ul>
+<li>BC Connect works without an account. The musicians you follow, the ones you hide and your settings are stored on your phone.</li>
+<li>So that we can tell you when a musician goes on stage, your phone's notification token, your follow list and the musicians you muted are kept on our server. Notifications are sent with Google Firebase Cloud Messaging.</li>
+</ul>
+<h3>Location</h3>
+<ul>
+<li><b>Discover:</b> when you choose "Near me", your location is sent with that search to find live music nearby; it is not stored.</li>
+<li><b>Notify me when I pass by</b> (optional, "Always" permission): venue regions are set up on your phone and the phone itself notices when you enter one. Your location is not sent to our server.</li>
+<li><b>I'm here:</b> to stamp your gig passport, your location is sent once to check the distance to the venue; it is not stored. Only the record "you were at this gig" is kept.</li>
+<li><b>Night helper:</b> to find nearby pharmacies, hospitals and similar places, your location is sent to OpenStreetMap's Overpass service. Maps load from OpenFreeMap.</li>
+</ul>
+<h3>The night (when you join a live night)</h3>
+<ul>
+<li>The light show, votes, requests and gifts pass live through that night's channel; they are not stored on the server.</li>
+<li>The photo you take for the poster stays on your phone; only a 16×16 pixel grey tile goes to the stage.</li>
+<li>The microphone only measures the room's loudness; nothing is recorded. Your voice capsule is kept only on your phone.</li>
+<li>The clock is synchronised by asking time.google.com.</li>
+</ul>
+<h3>Optional BC Account</h3>
+<ul>
+<li>It is the same account as BC Stage. If you sign in, your follows, poll votes, listener profile (nickname, about, optional Instagram and birth year, what is visible) and gig passport are kept on our server.</li>
+<li>You can report posts and hide a musician on your phone. A report stores a one-way identifier derived from your phone, not who you are.</li>
+<li>You can delete your account inside the app (Me → BC Account → Delete my account). Because the account is shared, your BC Stage profile is deleted too.</li>
+</ul>
+<p>Embedded video players (YouTube, Vimeo, Instagram) collect their own data. BC Connect has no ads, no tracking and no in-app purchases.</p>
 
 <h2>Forum</h2>
 <ul>
@@ -127,7 +184,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 
 <article lang-blok="en">
 <h1>Privacy</h1>
-<p class="tarih">Last updated: 19 October 2026</p>
+<p class="tarih">Last updated: 10 November 2026</p>
 <div class="kisa"><p>In short: BC Stage uses no ad networks or trackers and does not sell your data. There is no analytics or crash-reporting software. Your songs stay on your device and in your own cloud account, and audio processing happens on your device. Our server only holds account and community data for people who choose to create a BC account.</p></div>
 
 <h2>Data controller</h2>
@@ -159,7 +216,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li><b>Bluetooth:</b> for Bluetooth MIDI pedals, page turners and controllers.</li>
 <li><b>Photos:</b> to add an image to a song, your profile, your gear or an artist. Only the image you pick is used.</li>
 <li><b>Notifications (Android):</b> for gig reminders set on your device and the playback notification while playing in the background. No notifications are sent from a server.</li>
-<li>No location permission. Your city is only the one you pick by hand.</li>
+<li><b>Location:</b> Only when you tap "I'm live" for today's gig, and every few minutes while you are live with the app open, to check that you are at the venue. Your location is not stored: the server only works out the distance to the venue, and that is deleted when your live status ends. Otherwise your city is only the one you pick by hand.</li>
 </ul>
 
 <h3>Optional BC account and BC Board</h3>
@@ -173,6 +230,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <li>Setlists you publish and their votes, your activity feed.</li>
 <li>Tabs you send to someone (song lyrics are never included).</li>
 <li>Reports and blocks.</li>
+<li>While "I'm live" is on: venue, city and night code (visible to everyone in BC Connect; deleted when your live status ends, at the latest after 8 hours). Your posts and polls.</li>
 </ul>
 <p><b>What is public:</b> your profile, gigs, gear listings and published setlists are visible to other users. <b>Profile and gear photos are uploaded to our server and shown at a public address.</b> Privacy switches let you choose what is shown.</p>
 <p>Views and taps on in-app campaigns are counted only as totals per campaign, day and country, without knowing who you are.</p>
