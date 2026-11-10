@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BC Connect · Geceye katıl</title>
+<meta name="description" content="Masadaki QR: BC Connect'te bu geceye katıl.">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Geist:wght@400;600&display=swap">
+<style>
+:root{--zemin:#0A0A0D;--yuzey:#16161A;--cizgi:#2A2A31;--metin:#F4F1EA;--soluk:#9a9aa4;--sari:#FFC93C;--sariUstu:#1a1300}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--zemin);color:var(--metin);font-family:Geist,system-ui,-apple-system,sans-serif}
+main{max-width:460px;margin:0 auto;padding:40px 20px 60px;min-height:100vh;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.logo{font:800 24px/1 "Barlow Condensed";letter-spacing:.04em}.logo span{color:var(--sari)}
+h1{font:800 clamp(40px,12vw,58px)/.95 "Barlow Condensed";text-transform:uppercase;margin:6px 0 0}h1 span{color:var(--sari)}
+p{color:var(--soluk);margin:0;line-height:1.5;font-size:16px}
+.kod{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:20px;padding:18px;text-align:center}
+.kod small{display:block;color:var(--soluk);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.kod b{display:block;font:800 64px/1 "Barlow Condensed";letter-spacing:.08em;margin-top:6px}
+a.dugme{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:16px;font-weight:600;font-size:17px;text-decoration:none}
+a.ana{background:var(--sari);color:var(--sariUstu)}
+a.ikinci{border:1px solid var(--cizgi);color:var(--metin)}
+.adim{font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">BC <span>CONNECT</span></div>
+  <h1 id="b1">Bu geceye<br><span>katıl</span></h1>
+  <p id="p1">Işığın sahneyle birlikte yanar; istek ve oylamalara katılırsın.</p>
+  <div class="kod" id="kodKutu" hidden><small id="kodEt">Gece kodu</small><b id="kod"></b></div>
+  <a class="dugme ana" id="ac" href="#">BC Connect'te aç</a>
+  <a class="dugme ikinci" id="indir" href="https://apps.apple.com/app/id6832741182">App Store'dan indir</a>
+  <p class="adim" id="p2">Uygulama açılmazsa: BC Connect'i indir, alttaki Gece sekmesine gir ve yukarıdaki kodu yaz.</p>
+</main>
+<script>
+(()=>{
+  const kod=(new URLSearchParams(location.search).get('kod')||'').replace(/[^\w]/g,'').slice(0,12);
+  const en=!(navigator.language||'').toLowerCase().startsWith('tr');
+  if(en){document.documentElement.lang='en';
+    document.getElementById('b1').innerHTML='Join<br><span>tonight</span>';
+    document.getElementById('p1').textContent='Your light glows with the stage; join requests and votes.';
+    document.getElementById('kodEt').textContent='Night code';
+    document.getElementById('ac').textContent='Open in BC Connect';
+    document.getElementById('indir').textContent='Download on the App Store';
+    document.getElementById('p2').textContent='If the app does not open: download BC Connect, go to the Night tab at the bottom and type the code above.';
+    document.title='BC Connect · Join tonight'}
+  const ac=document.getElementById('ac');
+  if(kod){document.getElementById('kodKutu').hidden=false;document.getElementById('kod').textContent=kod;
+    ac.href='bcconnect://gece?kod='+encodeURIComponent(kod);
+    // uygulama yüklüyse hemen açılır; değilse sayfa kalır
+    setTimeout(()=>{location.href=ac.href},350)}
+  else ac.hidden=true;
+})();
+</script>
+<script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
+  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
+    const ilk=k=>{try{if(localStorage.getItem(k)===gun)return false;localStorage.setItem(k,gun);return true}catch(e){return false}};
+    const say=(p,t)=>fetch('https://xzvlayehgmkzddfncwyb.supabase.co/rest/v1/rpc/site_ziyaret_say',{method:'POST',keepalive:true,
+      headers:{apikey:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF','Content-Type':'application/json'},body:JSON.stringify({p_sayfa:p,p_tekil:t})}).catch(()=>{});
+    say(sayfa,ilk('bc_z_'+sayfa));if(ilk('bc_z__site'))say('tum-site',true);
+  }catch(e){}})();</script>
+</body>
+</html>
