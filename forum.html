@@ -497,6 +497,13 @@ window.bcIlkDil=function(){const k=BC_DILLER.map(x=>x[0]);let d=(navigator.langu
   try{const s=localStorage.getItem('bcsite_dil');if(k.includes(s))d=s}catch(e){}
   const q=new URLSearchParams(location.search).get('dil');if(k.includes(q))d=q;const h=location.hash.slice(1);if(k.includes(h))d=h;return d};
 window.bcDilEtiket=d=>d.toUpperCase()+' ▾';
+window.BC_TREN={"Sekmeler": "Tabs", "Bütün sekmeler": "All tabs", "Sekmeler arası": "Between tabs", "Sürüm 3.0": "Version 3.0", "Site": "Site", "Çal / durdur": "Play / stop", "Yarım ses yukarı": "Semitone up", "Yarım ses aşağı": "Semitone down", "Metronom: çal / durdur": "Metronome: play / stop", "Favori": "Favourite", "Düzenle": "Edit", "Aranje": "Arrangement", "Yön": "Direction", "Önceki": "Previous", "Sonraki": "Next", "Konular": "Topics", "Alan süzgeci": "Area filter", "BC Stage 3.0 · Şarkılar": "BC Stage 3.0 · Songs", "BC Stage 3.0 · Düzenlemeler": "BC Stage 3.0 · Arrangements", "BC Stage 3.0 BC Pano: profil, ID 1 rozeti, sıradaki konser, Konserlere açığım, ekipmanım": "BC Stage 3.0 BC Board: profile, ID 1 badge, next gig, Open to gigs, my gear", "Barış Çekergil sahnede, altı telli bas gitarla, spot ışığı ve sis": "Barış Çekergil on stage with a six-string bass guitar, spotlight and haze", "AI Davul": "AI Drums", "Akor Bulma": "Chord Finder", "Akorlar": "Chords", "BC Pano": "BC Board", "Backing Track": "Backing Track", "Bass": "Bass", "Bütün özellikler": "Every feature", "Düzenlemeler": "Arrangements", "Gizlilik": "Privacy", "Hakkında": "About", "Karaoke": "Karaoke", "Metronom Bul": "Beat Finder", "One Man": "One Man", "Playlistler": "Playlists", "Video": "Video", "Şarkılar": "Songs"};
+window.bcEtiketler=function(d){const c=t=>{const e=BC_TREN[t];return d==='tr'||!e?(d==='tr'?t:bcC(e||t)):(d==='en'?e:bcC(e))};
+  document.querySelectorAll('[aria-label],img[alt]').forEach(el=>{['aria-label','alt'].forEach(a=>{if(!el.hasAttribute(a))return;const k='bcTr'+a.replace('-','');
+    if(el.dataset[k]===undefined)el.dataset[k]=el.getAttribute(a);const tr=el.dataset[k];if(BC_TREN[tr])el.setAttribute(a,c(tr))})});
+  if(window.bcBaslikTr===undefined)window.bcBaslikTr=document.title;const t=window.bcBaslikTr,m=t.match(/^(.*) · BC Stage$/);
+  if(m&&BC_TREN[m[1]])document.title=c(m[1])+' · BC Stage';else if(t==='BC Stage Yardım')document.title=d==='tr'?t:'BC Stage · '+(d==='en'?'Help':bcC('Help'));};
+
 window.BC_SOZ=window.BC_SOZ||{};window.bcSiteDil='tr';
 window.bcC=function(t){const d=window.bcSiteDil;if(typeof t!=='string'||d==='tr'||d==='en')return t;const m=t.match(/\|[a-z]$/),k=m?t.slice(0,-2):t,r=(window.BC_SOZ[d]||{})[k];return r?r+(m?m[0]:''):t};
 window.bcDerin=function(x){return typeof x==='string'?bcC(x):Array.isArray(x)?x.map(bcDerin):(x&&typeof x==='object')?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,bcDerin(v)])):x};
@@ -997,7 +1004,7 @@ window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDil
 
   // ---------- dil
   const ogeler=[...document.querySelectorAll('[data-en]')];ogeler.forEach(e=>e.dataset.tr=e.textContent);
-  function dilKur(d){siteDil=d;window.bcSiteDil=d;dil=d==='tr'?'tr':'en';document.documentElement.lang=d;ogeler.forEach(e=>e.textContent=e.dataset[d]??e.dataset.en);$('dil').textContent=bcDilEtiket(d);
+  function dilKur(d){siteDil=d;window.bcSiteDil=d;dil=d==='tr'?'tr':'en';document.documentElement.lang=d;ogeler.forEach(e=>e.textContent=e.dataset[d]??e.dataset.en);$('dil').textContent=bcDilEtiket(d);bcEtiketler(d);
     $('kimlik').placeholder=d==='tr'?'@bcid, ID no ya da e-posta':'@bcid, ID · e-mail';$('bcidGir').placeholder=d==='tr'?'kullaniciadi':'username';
     try{localStorage.setItem('bcsite_dil',d)}catch(e){}ciz()}
   let siteDil='tr';$('dil').onclick=e=>bcDilMenu(e.currentTarget,siteDil,dilKur);
@@ -1017,6 +1024,8 @@ window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDil
   // geri çağırmanın içinde sb'ye await etmek supabase-js'in oturum kilidini kilitliyor (bütün sorgular sonsuza dek bekliyordu);
   // iş bir sonraki tura bırakılır
   sb.auth.onAuthStateChange((olay,s)=>{const once=oturum&&oturum.user.id;oturum=s;if((s&&s.user.id)!==once)setTimeout(async()=>{await profilYukle();ciz()},0)});
+  // dil HEMEN (ağı beklemeden); oturum gelince yeniden çizilir
+  dilKur(ilk);
   (async()=>{const {data}=await sb.auth.getSession();oturum=data.session;
     if(oturum){const u=await sb.auth.getUser();if(u.error||!u.data||!u.data.user){try{await sb.auth.signOut({scope:'local'})}catch(e){}oturum=null}}
     await profilYukle();dilKur(ilk)})();
