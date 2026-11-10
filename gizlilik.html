@@ -36,6 +36,29 @@ a{color:var(--sari)}
 html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 :focus-visible{outline:2px solid var(--sari);outline-offset:3px}
 </style>
+<script id="bcDil">/* 9 dil (2026-11-10): menü + ilk dil. Çevirisi olmayan parça İngilizce görünür. */
+window.BC_DILLER=[['tr','Türkçe'],['en','English'],['de','Deutsch'],['fr','Français'],['es','Español'],['pt','Português'],['ru','Русский'],['ja','日本語'],['zh','中文']];
+window.bcIlkDil=function(){const k=BC_DILLER.map(x=>x[0]);let d=(navigator.language||'en').toLowerCase().slice(0,2);if(!k.includes(d))d='en';
+  try{const s=localStorage.getItem('bcsite_dil');if(k.includes(s))d=s}catch(e){}
+  const q=new URLSearchParams(location.search).get('dil');if(k.includes(q))d=q;const h=location.hash.slice(1);if(k.includes(h))d=h;return d};
+window.bcDilEtiket=d=>d.toUpperCase()+' ▾';
+window.BC_SOZ=window.BC_SOZ||{};window.bcSiteDil='tr';
+window.bcC=function(t){const d=window.bcSiteDil;if(typeof t!=='string'||d==='tr'||d==='en')return t;const m=t.match(/\|[a-z]$/),k=m?t.slice(0,-2):t,r=(window.BC_SOZ[d]||{})[k];return r?r+(m?m[0]:''):t};
+window.bcDerin=function(x){return typeof x==='string'?bcC(x):Array.isArray(x)?x.map(bcDerin):(x&&typeof x==='object')?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,bcDerin(v)])):x};
+window.bcDilYukle=function(d,sonra){if(d==='tr'||d==='en'||window.BC_SOZ[d])return sonra();const s=document.createElement('script');s.src='site_ceviri_'+d+'.js';s.onload=sonra;s.onerror=sonra;document.head.append(s)};
+(function(){const d=bcIlkDil();if(d!=='tr'&&d!=='en')document.write('<script src="site_ceviri_'+d+'.js"><\/script>')})();
+
+window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDilMenu');if(eski){eski.remove();return}
+  const m=document.createElement('div');m.id='bcDilMenu';m.setAttribute('role','menu');
+  m.style.cssText='position:fixed;z-index:200;background:#16161A;border:1px solid #2A2A31;border-radius:14px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.55);min-width:170px;font:500 14px Geist,system-ui,sans-serif';
+  BC_DILLER.forEach(([k,ad])=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','menuitem');
+    b.style.cssText='display:flex;justify-content:space-between;gap:14px;width:100%;background:'+(k===cur?'rgba(255,201,60,.12)':'none')+';border:0;border-radius:9px;color:'+(k===cur?'#FFC93C':'#F4F1EA')+';padding:9px 12px;cursor:pointer;font:inherit;text-align:left';
+    b.innerHTML='<span></span><span style="opacity:.55;font-size:11px;letter-spacing:.08em">'+k.toUpperCase()+'</span>';b.firstChild.textContent=ad;
+    b.onclick=()=>{m.remove();bcDilYukle(k,()=>sec(k))};m.append(b)});
+  document.body.append(m);const r=btn.getBoundingClientRect(),w=m.offsetWidth,hh=m.offsetHeight;
+  let x=Math.min(innerWidth-w-8,Math.max(8,r.right-w)),y=r.bottom+6;if(y+hh>innerHeight-8)y=Math.max(8,r.top-hh-6);m.style.left=x+'px';m.style.top=y+'px';
+  setTimeout(()=>{const kapat=e=>{if(!m.contains(e.target)){m.remove();document.removeEventListener('pointerdown',kapat,true)}};document.addEventListener('pointerdown',kapat,true)},0)};
+</script>
 </head>
 <body>
 <div class="ic">
@@ -271,12 +294,10 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 </div>
 <script>
 (function(){
-  const h=document.documentElement;let d=(navigator.language||'en').toLowerCase().startsWith('tr')?'tr':'en';
-  try{const k=localStorage.getItem('bcsite_dil');if(k==='tr'||k==='en')d=k}catch(e){}
-  if(location.hash==='#en')d='en';if(location.hash==='#tr')d='tr';
+  const h=document.documentElement;let d=bcIlkDil();
   const b=document.getElementById('dil');
-  function kur(x){d=x;h.lang=x;b.textContent=x==='tr'?'TR · EN':'EN · TR';document.title=x==='tr'?'Gizlilik · BC Stage':'Privacy · BC Stage';try{localStorage.setItem('bcsite_dil',x)}catch(e){}}
-  b.onclick=()=>kur(d==='tr'?'en':'tr');kur(d);
+  function kur(x){d=x;window.bcSiteDil=x;h.lang=x==='tr'?'tr':'en';b.textContent=bcDilEtiket(x);document.title=x==='tr'?'Gizlilik · BC Stage':'Privacy · BC Stage';try{localStorage.setItem('bcsite_dil',x)}catch(e){}}
+  b.onclick=e=>bcDilMenu(e.currentTarget,d,kur);kur(d);
 })();
 </script>
 <script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
