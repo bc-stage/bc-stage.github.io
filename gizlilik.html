@@ -52,6 +52,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <h2>Bu web sitesi</h2>
 <ul>
 <li>Çerez ve ziyaretçi takibi kullanmıyoruz.</li>
+<li>Kaç ziyaret aldığımızı anonim bir sayaçla sayarız: yalnız gün, sayfa adı ve sayı tutulur. IP adresin, çerez, kimlik ya da tarayıcı bilgisi kaydedilmez. Aynı gün ikinci kez sayılmaman için tarayıcın kendi içinde o günün tarihini saklar; bu bize gönderilmez.</li>
 <li>Seçtiğin site dili tarayıcında saklanır, bize gönderilmez.</li>
 <li>Yazı tipleri Google Fonts'tan yüklenir. Bu sırada Google tarayıcının IP adresini görebilir.</li>
 </ul>
@@ -193,6 +194,7 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
 <h2>This website</h2>
 <ul>
 <li>We use no cookies and no visitor tracking.</li>
+<li>We count visits with an anonymous counter: only the day, the page name and a number are stored. No IP address, cookie, ID or browser details are recorded. So you aren't counted twice on the same day, your browser keeps that day's date locally; it is never sent to us.</li>
 <li>Your chosen site language is stored in your browser and never sent to us.</li>
 <li>Fonts load from Google Fonts, so Google may see your browser's IP address.</li>
 </ul>
@@ -277,5 +279,12 @@ html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
   b.onclick=()=>kur(d==='tr'?'en':'tr');kur(d);
 })();
 </script>
+<script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
+  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
+    const ilk=k=>{try{if(localStorage.getItem(k)===gun)return false;localStorage.setItem(k,gun);return true}catch(e){return false}};
+    const say=(p,t)=>fetch('https://xzvlayehgmkzddfncwyb.supabase.co/rest/v1/rpc/site_ziyaret_say',{method:'POST',keepalive:true,
+      headers:{apikey:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF','Content-Type':'application/json'},body:JSON.stringify({p_sayfa:p,p_tekil:t})}).catch(()=>{});
+    say(sayfa,ilk('bc_z_'+sayfa));if(ilk('bc_z__site'))say('tum-site',true);
+  }catch(e){}})();</script>
 </body>
 </html>

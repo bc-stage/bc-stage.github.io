@@ -513,7 +513,7 @@ p{max-width:65ch}
 @keyframes vtGir{from{opacity:0;transform:translateY(14px)}}
 .site .ic{--pad:clamp(18px,4cqw,48px)}
 .kap{--pad:clamp(16px,3vw,40px)}
-.kabuk{view-transition-name:kabuk;position:sticky;top:env(safe-area-inset-top,0px);z-index:60;margin-inline:calc(-1*var(--pad,24px));padding-inline:var(--pad,24px);background:rgba(10,10,13,.84);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--cizgi)}
+.kabuk{view-transition-name:kabuk;position:sticky;top:env(safe-area-inset-top,0px);z-index:60;margin-inline:calc(-1*var(--pad,24px));padding-inline:var(--pad,24px);background:rgba(10,10,13,.97);border-bottom:1px solid var(--cizgi)}
 .kabukUst{display:flex;align-items:center;gap:12px;padding-block:12px 4px}
 .kabuk .bos{flex:1}
 .kabuk .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--murekkep);font-family:var(--baslik);font-weight:800;font-size:30px;line-height:1;letter-spacing:.01em}
@@ -527,7 +527,9 @@ p{max-width:65ch}
 .skMetin:hover,.skMetin.aktif{color:var(--murekkep);background:var(--yuzey)}
 .skMetin.forumSk{color:var(--sariUstu);background:var(--sari);animation:forumNabiz 2.6s ease-out infinite}
 .skMetin.forumSk:hover,.skMetin.forumSk.aktif{color:var(--sariUstu);background:#ffd666}
-@keyframes forumNabiz{0%{box-shadow:0 0 0 0 rgba(255,201,60,.5)}70%{box-shadow:0 0 0 11px rgba(255,201,60,0)}100%{box-shadow:0 0 0 0 rgba(255,201,60,0)}}
+@keyframes forumNabiz{0%{transform:scale(1);opacity:.75}70%{transform:scale(1.22,1.5);opacity:0}100%{transform:scale(1.22,1.5);opacity:0}}
+.skMetin.forumSk,.altCubuk .acForum .forumIk{position:relative;animation:none!important;box-shadow:none}
+.skMetin.forumSk::after,.altCubuk .acForum .forumIk::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 3px rgba(255,201,60,.6);animation:forumNabiz 2.6s ease-out infinite;pointer-events:none;will-change:transform,opacity}
 .kabuk .dugme.ana{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--sari);color:var(--sariUstu);border:0;border-radius:12px;padding:10px 16px;font-weight:700;text-decoration:none;font-family:var(--govde);font-size:15px}
 .sekmeSerit{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 10px;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 28px),transparent)}
 .sekmeSerit::-webkit-scrollbar{display:none}
@@ -633,7 +635,7 @@ body{overflow-x:clip}
   .sekmeSerit{display:none}
   .kabukUst{padding-block:10px}
   body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}
-  .altCubuk{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(12,12,15,.92);-webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid #2A2A31}
+  .altCubuk{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(12,12,15,.97);border-top:1px solid #2A2A31}
   .altCubuk a,.altCubuk button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px;border-radius:14px;color:#8B8B95;font:600 11px/1.1 "Geist",system-ui,sans-serif;text-align:center;position:relative;-webkit-tap-highlight-color:transparent}
   .altCubuk img{width:30px;height:30px;object-fit:contain;transition:transform .25s}
   .altCubuk .ac.aktif{color:#F4F2EC;background:rgba(255,201,60,.10)}
@@ -1012,7 +1014,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ac(false)});
   if(katlar.length&&!azHareket){let ki=0;const par=document.getElementById('parilti');
     setInterval(()=>{const eski=katlar[ki];eski.classList.remove('on');eski.classList.add('cik');setTimeout(()=>eski.classList.remove('cik'),2000);
       ki=(ki+1)%katlar.length;katlar[ki].classList.add('on');if(par){par.classList.remove('git');void par.offsetWidth;par.classList.add('git')}},4600)}
-  function ciz(z){kahraman(z);bant(z);vitrin(z);if(!azHareket)requestAnimationFrame(ciz)}
+  // yalnız ekranda görünen bölüm çizilir (kaydırırken üst çubuğun altı her karede yeniden boyanmasın)
+  const gorunen=new Set();
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>en.isIntersecting?gorunen.add(en.target):gorunen.delete(en.target)));
+    [document.getElementById('isikKahraman'),document.getElementById('isikKalabalik'),sozEl,mk].forEach(e=>{if(e)io.observe(e)})}
+  const gor=e=>!e||!('IntersectionObserver' in window)||gorunen.has(e);
+  function ciz(z){if(gor(document.getElementById('isikKahraman')))kahraman(z);if(gor(document.getElementById('isikKalabalik')))bant(z);if(gor(sozEl)||gor(mk))vitrin(z);if(!azHareket)requestAnimationFrame(ciz)}
   requestAnimationFrame(z=>ciz(azHareket?9000:z));
   addEventListener('resize',()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}});
   new ResizeObserver(()=>{if(azHareket){kahraman(0);bant(0);vitrin(9000)}}).observe(document.getElementById('site'));
@@ -1276,5 +1283,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ac(false)});
 })();
 
 </script>
+<script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
+  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
+    const ilk=k=>{try{if(localStorage.getItem(k)===gun)return false;localStorage.setItem(k,gun);return true}catch(e){return false}};
+    const say=(p,t)=>fetch('https://xzvlayehgmkzddfncwyb.supabase.co/rest/v1/rpc/site_ziyaret_say',{method:'POST',keepalive:true,
+      headers:{apikey:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF','Content-Type':'application/json'},body:JSON.stringify({p_sayfa:p,p_tekil:t})}).catch(()=>{});
+    say(sayfa,ilk('bc_z_'+sayfa));if(ilk('bc_z__site'))say('tum-site',true);
+  }catch(e){}})();</script>
 </body>
 </html>
