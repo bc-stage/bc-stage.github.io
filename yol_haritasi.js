@@ -6,11 +6,15 @@
    d: sirada | yapiliyor | yapildi · alan: site_uret.py SEKMELER anahtarı ya da 'genel'
    surum: yalnız yapildi için (Yapıldı sütunu sürüme göre gruplanır) */
 window.BC_YOL = {
-  guncel: '2026-11-05',
+  guncel: '2026-11-10',
   isler: [
     // ---- yapılıyor
-    {d:'yapiliyor', alan:'genel', tr:'3.0 mağazalara çıkıyor', en:'3.0 is heading to the stores',
-     ac_tr:'Son testler bitince App Store ve Google Play’e gönderilecek.', ac_en:'It goes to the App Store and Google Play once the final tests are done.'},
+    {d:'yapiliyor', alan:'genel', tr:'Mac için 3.0', en:'3.0 for Mac',
+     ac_tr:'Mac App Store incelemesinde. iPad’de VIP aldıysan Mac’te aynı Apple hesabıyla yeniden ödemezsin.', ac_en:'In Mac App Store review. If you bought VIP on iPad, the same Apple account unlocks it on Mac at no extra cost.'},
+    {d:'yapiliyor', alan:'genel', tr:'Android için 3.0', en:'3.0 for Android',
+     ac_tr:'Google Play’e hazırlanıyor.', ac_en:'Getting ready for Google Play.'},
+    {d:'yapiliyor', alan:'pano', tr:'3.0.1: Canlıyım ve BC Connect', en:'3.0.1: “I’m live” and BC Connect',
+     ac_tr:'Sahneye çıkınca “Canlıyım”a bas, seni takip eden dinleyicilere haber gitsin. Dinleyiciler için ayrı uygulama: BC Connect. İkisi de App Store incelemesinde.', ac_en:'Tap “I’m live” when you go on stage and your followers get notified. A separate app for listeners: BC Connect. Both are in App Store review.'},
     {d:'yapiliyor', alan:'duzenlemeler', tr:'Android: düzenleme hücrelerinin üstündeki çizgiler', en:'Android: lines above arrangement cells',
      ac_tr:'Bildirilen hata. Çizgiler Android’de görünmüyor.', ac_en:'Reported bug: the lines don’t show on Android.'},
     {d:'yapiliyor', alan:'genel', tr:'iPad bölünmüş ekranda üst çubuk', en:'Top bar in iPad Split View',
@@ -32,6 +36,8 @@ window.BC_YOL = {
     {d:'sirada', alan:'genel', tr:'Uygulama içinde “Sahne için modem önerisi”', en:'In-app “Router tips for the stage”'},
 
     // ---- yapıldı · 3.0
+    {d:'yapildi', surum:'3.0', alan:'genel', tr:'BC Stage 3.0 yayında', en:'BC Stage 3.0 is out',
+     ac_tr:'App Store’da, iPhone ve iPad için.', ac_en:'On the App Store, for iPhone and iPad.'},
     {d:'yapildi', surum:'3.0', alan:'genel', tr:'Yeni görünüm', en:'New look',
      ac_tr:'Eski görünüm “BC Stage 2.0” seçeneği olarak duruyor.', ac_en:'The old look stays available as “BC Stage 2.0”.'},
     {d:'yapildi', surum:'3.0', alan:'sarkilar', tr:'Şarkı sayfası 3.0', en:'Song page 3.0',

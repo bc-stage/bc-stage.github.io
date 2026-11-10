@@ -82,6 +82,17 @@ nav.sekmeler button[aria-selected="true"]{color:var(--sariUstu);background:var(-
 .cip.fikir{color:var(--sari);border-color:#4a3d1c}
 .cip.d-sirada{color:var(--murekkep)}.cip.d-yapiliyor{color:var(--turuncu);border-color:#5a3a1a}.cip.d-yapildi{background:var(--sari);color:var(--sariUstu);border-color:var(--sari)}.cip.d-reddedildi{color:var(--sonuk)}
 .yonRozet{font:10px var(--mono);background:var(--sari);color:var(--sariUstu);padding:1px 6px;border-radius:6px;text-transform:uppercase}
+.kutular{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:6px}
+.kutular .katKutu{margin-top:0;display:flex;flex-direction:column}
+.katKutu .kBas{display:flex;align-items:center;gap:10px}
+.katKutu .kBas h2{font-family:var(--baslik);font-weight:800;text-transform:uppercase;font-size:28px;line-height:1;margin:0}
+.katKutu .kSay{font:500 13px/1 var(--mono);color:var(--solgun);border:1px solid var(--cizgi);border-radius:999px;padding:4px 9px}
+.katKutu>p{margin:8px 0 0}
+.katKutu .liste{margin-top:14px}
+.katKutu .kAlt{margin-top:auto;padding-top:16px}
+.katKutu .kBos{color:var(--solgun);font-size:14px;margin:0;padding:18px;border:1px dashed var(--cizgi);border-radius:14px;text-align:center}
+.k-hata{border-top:3px solid var(--kirmizi)}.k-olmasi_gereken{border-top:3px solid #b8b8c2}.k-fikir{border-top:3px solid var(--sari)}.k-destek{border-top:3px solid var(--cizgi)}
+@media (max-width:820px){.kutular{grid-template-columns:minmax(0,1fr)}}
 .bosDurum{color:var(--solgun);padding:30px 0;text-align:center}
 .pano{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
 .sutun{background:var(--zemin);border:1px solid var(--cizgi);border-radius:18px;padding:14px;display:grid;gap:8px;align-content:start}
@@ -485,7 +496,7 @@ body{overflow-x:clip}
 <div class="kap">
   <header class="kabuk">
   <div class="kabukUst">
-    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="coming soon">çok yakında</span></span></a>
+    <a class="logo" href="index.html" aria-label="BC Stage"><img src="simgeler/logo.png" alt="" width="52" height="52"><b>BC <span>STAGE</span></b><span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="out now">yayında</span></span></a>
     <span class="bos"></span>
     <nav class="sagMenu" aria-label="Site"><a class="skMetin forumSk aktif" href="forum.html"><span data-en="Forum">Forum</span></a><a class="skMetin" href="yardim.html"><span data-en="Help">Yardım</span></a><a class="skMetin" href="hakkinda.html"><span data-en="About">Hakkında</span></a></nav>
     <button class="dil" id="dil" type="button">TR · EN</button>
@@ -588,7 +599,9 @@ body{overflow-x:clip}
       alinmis:'Bu kimlik alınmış.',gecersiz:'Geçerli bir BC ID değil.',
       destekBas:'Destek talebi',destekAc:'Bize özel olarak yaz. Talebini yalnız sen ve ekip görür.',konu:'Konu',taleplerim:'Taleplerim',talepYok:'Henüz talebin yok.',
       tdur:{acik:'Açık',yanitlandi:'Yanıtlandı',kapandi:'Kapandı'},kapat:'Talebi kapat',ekipYaniti:'Ekibin yanıtı',destekGiris:'Destek talebi açmak için giriş yap.',
-      simdi:'Şu an yapılıyor',uye:'Üye'},
+      simdi:'Şu an yapılıyor',uye:'Üye',konular:'Konular',yeniEksik:'Eksik bildir',destekGit:'Destek talebi aç',hepsiniGor:'Hepsini gör',
+      kutuAc:{hata:'Bir şey ters mi gitti? Herkes görür, oylar; ekip durumunu burada yazar.',olmasi_gereken:'Uygulamada olması gerekip de olmayanlar.',fikir:'Yeni fikirler: sahnede, provada işine ne yarar?'},
+      kutuBos:{hata:'Henüz bildirilmiş hata yok.',olmasi_gereken:'Henüz bir eksik yazılmadı.',fikir:'Henüz fikir yok. İlk sen yaz.'}},
     en:{kat:{hata:'Bug',olmasi_gereken:'Should be there',fikir:'Idea'},kats:{hata:'Bugs',olmasi_gereken:'Should be there',fikir:'Ideas'},
       dur:{yeni:'New',sirada:'In the queue',yapiliyor:'In progress',yapildi:'Done',reddedildi:'Won\'t do'},
       tum:'All',pano:'Roadmap',
@@ -619,7 +632,9 @@ body{overflow-x:clip}
       alinmis:'That ID is taken.',gecersiz:'Not a valid BC ID.',
       destekBas:'Support request',destekAc:'Write to us privately. Only you and the team can see it.',konu:'Subject',taleplerim:'My requests',talepYok:'No requests yet.',
       tdur:{acik:'Open',yanitlandi:'Answered',kapandi:'Closed'},kapat:'Close request',ekipYaniti:'Team reply',destekGiris:'Sign in to open a support request.',
-      simdi:'In progress now',uye:'Member'}
+      simdi:'In progress now',uye:'Member',konular:'Topics',yeniEksik:'Report a gap',destekGit:'Open a support request',hepsiniGor:'See all',
+      kutuAc:{hata:'Something went wrong? Everyone can see and vote; the team posts its status here.',olmasi_gereken:'Things the app should have but doesn’t yet.',fikir:'New ideas: how would it help you on stage or in rehearsal?'},
+      kutuBos:{hata:'No bugs reported yet.',olmasi_gereken:'No gaps reported yet.',fikir:'No ideas yet. Be the first.'}}
   };
   const t=()=>T[dil];
   const $=id=>document.getElementById(id);
@@ -630,7 +645,7 @@ body{overflow-x:clip}
   const sb=window.supabase.createClient(AYAR.url,AYAR.anahtar,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 
   let oturum=null,profil=null,yonetici=false,oylarim=new Set();
-  let sekme='pano',sirala='oy',acikKonu=null,yeniForm=null,girisIstendi=false,alanSecili=null,tesekkur=false;
+  let sekme='tum',sirala='oy',acikKonu=null,yeniForm=null,girisIstendi=false,alanSecili=null,tesekkur=false;
   const azHareket=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- bölümler (sitedeki sekmelerle aynı adlar ve simgeler)
@@ -750,7 +765,7 @@ body{overflow-x:clip}
   // ---------- çizim
   function sekmeCiz(){
     const n=$('sekmeler');n.innerHTML='';
-    [['pano',t().pano],['tum',t().tum],['hata',t().kats.hata],['olmasi_gereken',t().kats.olmasi_gereken],['fikir',t().kats.fikir],['destek',t().destek]].forEach(([k,ad])=>
+    [['tum',t().konular],['pano',t().pano],['hata',t().kats.hata],['olmasi_gereken',t().kats.olmasi_gereken],['fikir',t().kats.fikir],['destek',t().destek]].forEach(([k,ad])=>
       n.append(el('button',{type:'button',role:'tab','aria-selected':String(sekme===k),onclick:()=>{sekme=k;acikKonu=null;yeniForm=null;alanSecili=null;history.replaceState(null,'',location.pathname);ciz()}},ad)))}
   async function ciz(){
     ustCiz();sekmeCiz();sayaclarCiz();
@@ -759,6 +774,7 @@ body{overflow-x:clip}
       if(acikKonu)return await ayrintiCiz(a);
       if(sekme==='destek')return await destekCiz(a);
       if(sekme==='pano')return await panoCiz(a);
+      if(sekme==='tum'&&yeniForm!=='sihirbaz')return await kutularCiz(a);
       await listeCiz(a);
     }catch(e){a.append(el('p',{class:'bosDurum'},t().hataGenel))}
   }
@@ -778,10 +794,29 @@ body{overflow-x:clip}
     const l=el('div',{class:'liste'});
     const gor=konular.filter(k=>!alanSecili||alanOku(k.govde)===alanSecili);
     if(!gor.length)l.append(el('p',{class:'bosDurum'},tt.bos));
-    gor.forEach(k=>l.append(el('div',{class:'konu',role:'button',tabindex:'0',onclick:()=>konuAc(k.id),onkeydown:e=>{if(e.key==='Enter')konuAc(k.id)}},
-      oyDugmesi(k),
-      el('div',null,el('h3',null,k.baslik),el('div',{class:'meta'},el('span',{class:'cip '+(k.kategori==='hata'?'hata':k.kategori==='fikir'?'fikir':'')},tt.kat[k.kategori]),alanCip(alanOku(k.govde)),k.durum!=='yeni'?el('span',{class:'cip d-'+k.durum},tt.dur[k.durum]):null,el('span',null,yazarAdi(k.yazar)),el('span',null,tarih(k.created_at)),el('span',null,k.yanit_sayisi+' '+tt.yanit))))));
+    gor.forEach(k=>l.append(konuSatir(k)));
     a.append(l);
+  }
+  function konuSatir(k,katsiz){const tt=t();
+    return el('div',{class:'konu',role:'button',tabindex:'0',onclick:()=>konuAc(k.id),onkeydown:e=>{if(e.key==='Enter')konuAc(k.id)}},
+      oyDugmesi(k),
+      el('div',null,el('h3',null,k.baslik),el('div',{class:'meta'},katsiz?null:el('span',{class:'cip '+(k.kategori==='hata'?'hata':k.kategori==='fikir'?'fikir':'')},tt.kat[k.kategori]),alanCip(alanOku(k.govde)),k.durum!=='yeni'?el('span',{class:'cip d-'+k.durum},tt.dur[k.durum]):null,el('span',null,yazarAdi(k.yazar)),el('span',null,tarih(k.created_at)),el('span',null,k.yanit_sayisi+' '+tt.yanit))))}
+  // ---------- Konular: her kategori ayrı kutu, herkes görür (Barış 2026-11-10)
+  const KUTU_EN_FAZLA=6;
+  async function kutularCiz(a){
+    const tt=t(),konular=await konulariGetir(),izgara=el('div',{class:'kutular'});
+    [['hata',tt.hataBildir],['olmasi_gereken',tt.yeniEksik],['fikir',tt.fikirVer]].forEach(([kat,dugmeAd])=>{
+      const ks=konular.filter(k=>k.kategori===kat),l=el('div',{class:'liste'});
+      ks.slice(0,KUTU_EN_FAZLA).forEach(k=>l.append(konuSatir(k,true)));
+      if(!ks.length)l.append(el('p',{class:'kBos'},tt.kutuBos[kat]));
+      izgara.append(el('section',{class:'kutu katKutu k-'+kat},
+        el('div',{class:'kBas'},el('h2',null,tt.kats[kat]),el('span',{class:'kSay'},String(ks.length))),
+        el('p',null,tt.kutuAc[kat]),l,
+        el('div',{class:'satir kAlt'},el('button',{type:'button',class:'dugme ana',onclick:()=>sihirbazAc(kat)},dugmeAd),
+          ks.length>KUTU_EN_FAZLA?el('button',{type:'button',class:'ince',onclick:()=>{sekme=kat;ciz()}},tt.hepsiniGor+' ('+ks.length+') →'):null)))});
+    izgara.append(el('section',{class:'kutu katKutu k-destek'},el('div',{class:'kBas'},el('h2',null,tt.destekBas)),el('p',null,tt.destekAc),
+      el('div',{class:'satir kAlt'},el('button',{type:'button',class:'dugme',onclick:()=>{sekme='destek';ciz()}},tt.destekGit))));
+    a.append(izgara);
   }
 
   // ---------- sihirbaz: 1 nerede · 2 başlık (+ benzer konular) · 3 ayrıntılar
