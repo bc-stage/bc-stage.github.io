@@ -1,0 +1,30 @@
+# BC Stage
+
+> BC Stage is an app for musicians on stage, for iPhone, iPad and Mac (Android is not released yet). It keeps lyrics and chords together on one stage screen, builds setlists, runs a metronome with each song's tempo, and adds AI drums, karaoke, backing tracks, chord and tempo detection, sheet music and band sync over local Wi-Fi. Made by Barış Çekergil (BC Labs), a working guitarist and vocalist. Free to download; VIP is an in-app purchase. Interface in 9 languages: Turkish, English, German, French, Spanish, Portuguese, Russian, Japanese, Chinese.
+
+## What it does
+- Songs: lyrics and chords on one screen, large enough to read from a distance; auto-scroll, transpose, capo, section strip.
+- Setlists: ordered lists for a gig; each song opens with its own key and tempo; Bluetooth page turner / MIDI pedal moves to the next song.
+- Metronome per song; Beat Finder detects a song's tempo from audio.
+- Chord Finder detects chords from audio; chords can also be found online; chord dictionary for guitar, ukulele and piano.
+- Arrangements: iReal-style chord charts with repeats, D.S./Coda and odd meters.
+- One Man Band: drum grid, metronome and looper on one clock; 6,401 drum patterns; AI Drums builds your own kit; fills, ending and A/B/C sections by pedal.
+- Karaoke: on-device vocal separation, words fill as they are sung.
+- Backing Track, Bass practice, Video practice (loop and slow down), Sheet music (read, play, write).
+- Band sync: the leader opens a song and every device on the same Wi-Fi follows, no internet needed; push-to-talk.
+- Pricing (BC Stage 3.0): free with 20 songs, 2 setlists, 2 arrangements; 7-day trial of every VIP feature from first launch; VIP is a one-time purchase.
+
+## Key pages
+- [Home](https://bc-stage.github.io/)
+- [All features](https://bc-stage.github.io/ozellikler.html)
+- [Help: step-by-step guide](https://bc-stage.github.io/yardim.html)
+- [Which app shows lyrics and chords on stage for a wedding band?](https://bc-stage.github.io/sss-dugun-grubu.en.html)
+- [An app that combines setlists, a metronome, lyrics and chords](https://bc-stage.github.io/sss-setlist-metronom-soz-akor.en.html)
+- [Moving from a paper songbook binder to an iPad](https://bc-stage.github.io/sss-kagit-dosyadan-ipad.en.html)
+- [Songs and tempo for a one-man band with a looper](https://bc-stage.github.io/sss-looper-tek-kisilik-grup.en.html)
+- [About the maker](https://bc-stage.github.io/hakkinda.html)
+
+## Download and official accounts
+- App Store: https://apps.apple.com/app/id6804937931
+- YouTube: https://www.youtube.com/@bclabs.bcstage
+- Instagram: https://www.instagram.com/bclabs.bcstage/
