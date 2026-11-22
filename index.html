@@ -819,6 +819,10 @@ window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDil
   let x=Math.min(innerWidth-w-8,Math.max(8,r.right-w)),y=r.bottom+6;if(y+hh>innerHeight-8)y=Math.max(8,r.top-hh-6);m.style.left=x+'px';m.style.top=y+'px';
   setTimeout(()=>{const kapat=e=>{if(!m.contains(e.target)){m.remove();document.removeEventListener('pointerdown',kapat,true)}};document.addEventListener('pointerdown',kapat,true)},0)};
 </script>
+<!-- bc-jsonld -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BC Stage","applicationCategory":"MusicApplication","operatingSystem":"iOS, iPadOS, macOS","url":"https://bc-stage.github.io/","downloadUrl":"https://apps.apple.com/app/id6804937931","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Ücretsiz indirilir; VIP uygulama içi satın alma."},"author":{"@type":"Person","name":"Barış Çekergil"},"description":"Sahnedeki müzisyen için şarkılar, akorlar, setlist, metronom, AI davul, karaoke, nota ve backing track tek uygulamada.","inLanguage":["tr","en","de","fr","es","pt","ru","ja","zh"],"installUrl":"https://apps.apple.com/app/id6804937931","sameAs":["https://apps.apple.com/app/id6804937931"],"publisher":{"@type":"Person","name":"Barış Çekergil"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"BC Stage","url":"https://bc-stage.github.io/","inLanguage":"tr","publisher":{"@type":"Person","name":"Barış Çekergil"}}</script>
+<!-- /bc-jsonld -->
 </head>
 <body class="anaSayfa">
 <div class="sahne" id="sahne">

@@ -819,6 +819,10 @@ window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDil
   let x=Math.min(innerWidth-w-8,Math.max(8,r.right-w)),y=r.bottom+6;if(y+hh>innerHeight-8)y=Math.max(8,r.top-hh-6);m.style.left=x+'px';m.style.top=y+'px';
   setTimeout(()=>{const kapat=e=>{if(!m.contains(e.target)){m.remove();document.removeEventListener('pointerdown',kapat,true)}};document.addEventListener('pointerdown',kapat,true)},0)};
 </script>
+<!-- bc-jsonld -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BC Stage","applicationCategory":"MusicApplication","operatingSystem":"iOS, iPadOS, macOS","url":"https://bc-stage.github.io/","downloadUrl":"https://apps.apple.com/app/id6804937931","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Ücretsiz indirilir; VIP uygulama içi satın alma."},"author":{"@type":"Person","name":"Barış Çekergil"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BC Stage","item":"https://bc-stage.github.io/"},{"@type":"ListItem","position":2,"name":"Şarkılar","item":"https://bc-stage.github.io/sarkilar.html"}]}</script>
+<!-- /bc-jsonld -->
 </head>
 <body class="">
 <div class="sahne" id="sahne">
