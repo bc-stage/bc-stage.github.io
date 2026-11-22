@@ -819,6 +819,19 @@ window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDil
   let x=Math.min(innerWidth-w-8,Math.max(8,r.right-w)),y=r.bottom+6;if(y+hh>innerHeight-8)y=Math.max(8,r.top-hh-6);m.style.left=x+'px';m.style.top=y+'px';
   setTimeout(()=>{const kapat=e=>{if(!m.contains(e.target)){m.remove();document.removeEventListener('pointerdown',kapat,true)}};document.addEventListener('pointerdown',kapat,true)},0)};
 </script>
+<!-- bc-hreflang -->
+<link rel="alternate" hreflang="tr" href="https://bc-stage.github.io/karaoke.tr.html">
+<link rel="alternate" hreflang="en" href="https://bc-stage.github.io/karaoke.en.html">
+<link rel="alternate" hreflang="de" href="https://bc-stage.github.io/karaoke.de.html">
+<link rel="alternate" hreflang="fr" href="https://bc-stage.github.io/karaoke.fr.html">
+<link rel="alternate" hreflang="es" href="https://bc-stage.github.io/karaoke.es.html">
+<link rel="alternate" hreflang="pt" href="https://bc-stage.github.io/karaoke.pt.html">
+<link rel="alternate" hreflang="ru" href="https://bc-stage.github.io/karaoke.ru.html">
+<link rel="alternate" hreflang="ja" href="https://bc-stage.github.io/karaoke.ja.html">
+<link rel="alternate" hreflang="zh" href="https://bc-stage.github.io/karaoke.zh.html">
+<link rel="alternate" hreflang="x-default" href="https://bc-stage.github.io/karaoke.html">
+<script>window.BC_SAYFA_DILLERI={"tr": "/karaoke.tr.html", "en": "/karaoke.en.html", "de": "/karaoke.de.html", "fr": "/karaoke.fr.html", "es": "/karaoke.es.html", "pt": "/karaoke.pt.html", "ru": "/karaoke.ru.html", "ja": "/karaoke.ja.html", "zh": "/karaoke.zh.html", "x": "/karaoke.html"};addEventListener("DOMContentLoaded",function(){var e=window.bcDilMenu;if(!e||e.bcSarili)return;window.bcDilMenu=function(b,c,s){return e(b,c,function(k){s(k);try{history.replaceState(null,"",window.BC_SAYFA_DILLERI[k]||window.BC_SAYFA_DILLERI.x)}catch(_){}})};window.bcDilMenu.bcSarili=1});</script>
+<!-- /bc-hreflang -->
 <!-- bc-jsonld -->
 <link rel="canonical" href="https://bc-stage.github.io/karaoke.html">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BC Stage","applicationCategory":"MusicApplication","operatingSystem":"iOS, iPadOS, macOS","url":"https://bc-stage.github.io/","downloadUrl":"https://apps.apple.com/app/id6804937931","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Ücretsiz indirilir; VIP uygulama içi satın alma."},"author":{"@type":"Person","name":"Barış Çekergil"}}</script>

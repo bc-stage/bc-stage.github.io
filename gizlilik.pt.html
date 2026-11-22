@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gizlilik · BC Stage</title>
+<meta name="theme-color" content="#0A0A0D">
+<link rel="icon" href="simgeler/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap">
+<style>
+:root{color-scheme:dark;--zemin:#0A0A0D;--yuzey:#16161A;--cizgi:#2A2A31;--murekkep:#F4F2EC;--solgun:#8B8B95;--sonuk:#57575F;--sari:#FFC93C;--sariUstu:#241A00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font:16px/1.7 "Geist",system-ui,-apple-system,sans-serif}
+.ic{max-width:780px;margin:0 auto;padding:28px 18px 80px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px}
+.logo{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;text-decoration:none;color:var(--murekkep)}
+.logo span{color:var(--sari)}
+.surumKap{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:middle;margin-left:6px;line-height:1}
+.surumKap .sy-tr,.surumKap .sy-en{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:10px;color:#8B8B95;letter-spacing:.06em;white-space:nowrap}
+html[lang="tr"] .sy-en,html[lang="en"] .sy-tr{display:none}
+@media (max-width:520px){.surumKap .sy-tr,.surumKap .sy-en{display:none}}
+.logo .surum{white-space:nowrap;font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:500;color:#FFC93C;border:1px solid rgba(255,201,60,.55);background:rgba(255,201,60,.08);border-radius:999px;padding:3px 9px}
+.dil{font:12px "Geist Mono",monospace;color:var(--solgun);background:none;border:1px solid var(--cizgi);border-radius:999px;padding:6px 12px;cursor:pointer}
+h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(40px,8vw,64px);line-height:1;margin:0 0 10px}
+h2{font-family:"Barlow",sans-serif;font-size:21px;margin:38px 0 8px}
+h3{font-family:"Barlow",sans-serif;font-size:17px;margin:22px 0 4px;color:var(--murekkep)}
+p,li{color:#d6d3cb}
+ul{padding-left:20px}
+li{margin-bottom:4px}
+.tarih{font:12px "Geist Mono",monospace;color:var(--sonuk);letter-spacing:.08em;text-transform:uppercase}
+.kisa{background:var(--yuzey);border:1px solid var(--cizgi);border-left:3px solid var(--sari);border-radius:14px;padding:16px 18px;margin-top:24px}
+.kisa p{margin:0}
+.bekle{display:inline-block;border:1px dashed var(--sonuk);color:var(--solgun);font:11px "Geist Mono",monospace;padding:1px 6px;border-radius:6px;margin-left:4px}
+a{color:var(--sari)}
+[lang-blok]{display:none}
+html[lang="tr"] [lang-blok="tr"],html[lang="en"] [lang-blok="en"]{display:block}
+:focus-visible{outline:2px solid var(--sari);outline-offset:3px}
+</style>
+<script id="bcDil">/* 9 dil (2026-11-10): menü + ilk dil. Çevirisi olmayan parça İngilizce görünür. */
+window.BC_DILLER=[['tr','Türkçe'],['en','English'],['de','Deutsch'],['fr','Français'],['es','Español'],['pt','Português'],['ru','Русский'],['ja','日本語'],['zh','中文']];
+window.BC_SAYFA_DILI="pt";window.bcIlkDil=function(){if(window.BC_SAYFA_DILI)return window.BC_SAYFA_DILI;const k=BC_DILLER.map(x=>x[0]);let d=(navigator.language||'en').toLowerCase().slice(0,2);if(!k.includes(d))d='en';
+  try{const s=localStorage.getItem('bcsite_dil');if(k.includes(s))d=s}catch(e){}
+  const q=new URLSearchParams(location.search).get('dil');if(k.includes(q))d=q;const h=location.hash.slice(1);if(k.includes(h))d=h;return d};
+window.bcDilEtiket=d=>d.toUpperCase()+' ▾';
+window.BC_TREN={"Sekmeler": "Tabs", "Bütün sekmeler": "All tabs", "Sekmeler arası": "Between tabs", "Sürüm 3.0": "Version 3.0", "Site": "Site", "Çal / durdur": "Play / stop", "Yarım ses yukarı": "Semitone up", "Yarım ses aşağı": "Semitone down", "Metronom: çal / durdur": "Metronome: play / stop", "Favori": "Favourite", "Düzenle": "Edit", "Aranje": "Arrangement", "Yön": "Direction", "Önceki": "Previous", "Sonraki": "Next", "Konular": "Topics", "Alan süzgeci": "Area filter", "BC Stage 3.0 · Şarkılar": "BC Stage 3.0 · Songs", "BC Stage 3.0 · Düzenlemeler": "BC Stage 3.0 · Arrangements", "BC Stage 3.0 BC Pano: profil, ID 1 rozeti, sıradaki konser, Konserlere açığım, ekipmanım": "BC Stage 3.0 BC Board: profile, ID 1 badge, next gig, Open to gigs, my gear", "Barış Çekergil sahnede, altı telli bas gitarla, spot ışığı ve sis": "Barış Çekergil on stage with a six-string bass guitar, spotlight and haze", "AI Davul": "AI Drums", "Akor Bulma": "Chord Finder", "Akorlar": "Chords", "BC Pano": "BC Board", "Backing Track": "Backing Track", "Bass": "Bass", "Bütün özellikler": "Every feature", "Düzenlemeler": "Arrangements", "Gizlilik": "Privacy", "Hakkında": "About", "Karaoke": "Karaoke", "Metronom Bul": "Beat Finder", "One Man": "One Man", "Playlistler": "Playlists", "Video": "Video", "Şarkılar": "Songs"};
+window.bcEtiketler=function(d){const c=t=>{const e=BC_TREN[t];return d==='tr'||!e?(d==='tr'?t:bcC(e||t)):(d==='en'?e:bcC(e))};
+  document.querySelectorAll('[aria-label],img[alt]').forEach(el=>{['aria-label','alt'].forEach(a=>{if(!el.hasAttribute(a))return;const k='bcTr'+a.replace('-','');
+    if(el.dataset[k]===undefined)el.dataset[k]=el.getAttribute(a);const tr=el.dataset[k];if(BC_TREN[tr])el.setAttribute(a,c(tr))})});
+  if(window.bcBaslikTr===undefined)window.bcBaslikTr=document.title;const t=window.bcBaslikTr,m=t.match(/^(.*) · BC Stage$/);
+  if(m&&BC_TREN[m[1]])document.title=c(m[1])+' · BC Stage';else if(t==='BC Stage Yardım')document.title=d==='tr'?t:'BC Stage · '+(d==='en'?'Help':bcC('Help'));};
+
+window.BC_SOZ=window.BC_SOZ||{};window.bcSiteDil='tr';
+window.bcC=function(t){const d=window.bcSiteDil;if(typeof t!=='string'||d==='tr'||d==='en')return t;const m=t.match(/\|[a-z]$/),k=m?t.slice(0,-2):t,r=(window.BC_SOZ[d]||{})[k];return r?r+(m?m[0]:''):t};
+window.bcDerin=function(x){return typeof x==='string'?bcC(x):Array.isArray(x)?x.map(bcDerin):(x&&typeof x==='object')?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,bcDerin(v)])):x};
+window.bcDilYukle=function(d,sonra){if(d==='tr'||d==='en'||window.BC_SOZ[d])return sonra();const s=document.createElement('script');s.src='site_ceviri_'+d+'.js';s.onload=sonra;s.onerror=sonra;document.head.append(s)};
+(function(){const d=bcIlkDil();if(d!=='tr'&&d!=='en')document.write('<script src="site_ceviri_'+d+'.js"><\/script>')})();
+
+window.bcDilMenu=function(btn,cur,sec){const eski=document.getElementById('bcDilMenu');if(eski){eski.remove();return}
+  const m=document.createElement('div');m.id='bcDilMenu';m.setAttribute('role','menu');
+  m.style.cssText='position:fixed;z-index:200;background:#16161A;border:1px solid #2A2A31;border-radius:14px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.55);min-width:170px;font:500 14px Geist,system-ui,sans-serif';
+  BC_DILLER.forEach(([k,ad])=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','menuitem');
+    b.style.cssText='display:flex;justify-content:space-between;gap:14px;width:100%;background:'+(k===cur?'rgba(255,201,60,.12)':'none')+';border:0;border-radius:9px;color:'+(k===cur?'#FFC93C':'#F4F1EA')+';padding:9px 12px;cursor:pointer;font:inherit;text-align:left';
+    b.innerHTML='<span></span><span style="opacity:.55;font-size:11px;letter-spacing:.08em">'+k.toUpperCase()+'</span>';b.firstChild.textContent=ad;
+    b.onclick=()=>{m.remove();bcDilYukle(k,()=>sec(k))};m.append(b)});
+  document.body.append(m);const r=btn.getBoundingClientRect(),w=m.offsetWidth,hh=m.offsetHeight;
+  let x=Math.min(innerWidth-w-8,Math.max(8,r.right-w)),y=r.bottom+6;if(y+hh>innerHeight-8)y=Math.max(8,r.top-hh-6);m.style.left=x+'px';m.style.top=y+'px';
+  setTimeout(()=>{const kapat=e=>{if(!m.contains(e.target)){m.remove();document.removeEventListener('pointerdown',kapat,true)}};document.addEventListener('pointerdown',kapat,true)},0)};
+</script>
+<!-- bc-hreflang -->
+<link rel="alternate" hreflang="tr" href="https://bc-stage.github.io/gizlilik.tr.html">
+<link rel="alternate" hreflang="en" href="https://bc-stage.github.io/gizlilik.en.html">
+<link rel="alternate" hreflang="de" href="https://bc-stage.github.io/gizlilik.de.html">
+<link rel="alternate" hreflang="fr" href="https://bc-stage.github.io/gizlilik.fr.html">
+<link rel="alternate" hreflang="es" href="https://bc-stage.github.io/gizlilik.es.html">
+<link rel="alternate" hreflang="pt" href="https://bc-stage.github.io/gizlilik.pt.html">
+<link rel="alternate" hreflang="ru" href="https://bc-stage.github.io/gizlilik.ru.html">
+<link rel="alternate" hreflang="ja" href="https://bc-stage.github.io/gizlilik.ja.html">
+<link rel="alternate" hreflang="zh" href="https://bc-stage.github.io/gizlilik.zh.html">
+<link rel="alternate" hreflang="x-default" href="https://bc-stage.github.io/gizlilik.html">
+<script>window.BC_SAYFA_DILLERI={"tr": "/gizlilik.tr.html", "en": "/gizlilik.en.html", "de": "/gizlilik.de.html", "fr": "/gizlilik.fr.html", "es": "/gizlilik.es.html", "pt": "/gizlilik.pt.html", "ru": "/gizlilik.ru.html", "ja": "/gizlilik.ja.html", "zh": "/gizlilik.zh.html", "x": "/gizlilik.html"};addEventListener("DOMContentLoaded",function(){var e=window.bcDilMenu;if(!e||e.bcSarili)return;window.bcDilMenu=function(b,c,s){return e(b,c,function(k){s(k);try{history.replaceState(null,"",window.BC_SAYFA_DILLERI[k]||window.BC_SAYFA_DILLERI.x)}catch(_){}})};window.bcDilMenu.bcSarili=1});</script>
+<!-- /bc-hreflang -->
+<!-- bc-jsonld -->
+<link rel="canonical" href="https://bc-stage.github.io/gizlilik.pt.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BC Stage","applicationCategory":"MusicApplication","operatingSystem":"iOS, iPadOS, macOS","url":"https://bc-stage.github.io/","downloadUrl":"https://apps.apple.com/app/id6804937931","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Ücretsiz indirilir; VIP uygulama içi satın alma."},"author":{"@type":"Person","name":"Barış Çekergil"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BC Stage","item":"https://bc-stage.github.io/"},{"@type":"ListItem","position":2,"name":"Gizlilik","item":"https://bc-stage.github.io/gizlilik.pt.html"}]}</script>
+<!-- /bc-jsonld -->
+</head>
+<body>
+<div class="ic">
+<header><a class="logo" href="index.pt.html">BC <span>STAGE</span> <span class="surumKap"><span class="surum" aria-label="Sürüm 3.0">3.0</span><span class="sy" data-en="out now" data-de="jetzt erhältlich" data-fr="disponible" data-es="ya disponible" data-pt="já disponível" data-ru="уже вышла" data-ja="配信中" data-zh="现已推出" style="font-family:'Geist Mono',ui-monospace,Menlo,monospace;font-size:10px;color:#8B8B95;letter-spacing:.06em;white-space:nowrap">yayında</span></span></a><button class="dil" id="dil" type="button">TR · EN</button></header>
+
+<article lang-blok="tr">
+<h1>Gizlilik</h1>
+<p class="tarih">Son güncelleme: 11 Kasım 2026</p>
+<div class="kisa"><p>Kısaca: BC Stage reklam ağı ya da izleme aracı kullanmaz, verini satmaz. Üçüncü taraf analitik ya da çökme raporlama yazılımı yoktur; uygulamanın hangi bölümlerinin kullanıldığını kendi sunucumuzda sayarız ve bunu Ayarlar'dan kapatabilirsin. Şarkıların cihazında ve kendi bulut hesabında durur, ses işleme cihazında yapılır. Sunucumuzda yalnız isteğe bağlı BC hesabını açanların hesap ve topluluk verisi tutulur.</p></div>
+
+<h2>Veri sorumlusu</h2>
+<p>Barış Çekergil (Türkiye). İletişim: <a href="mailto:bariscekergil@gmail.com">bariscekergil@gmail.com</a></p>
+
+<h2>Bu web sitesi</h2>
+<ul>
+<li>Çerez ve ziyaretçi takibi kullanmıyoruz.</li>
+<li>Kaç ziyaret aldığımızı anonim bir sayaçla sayarız: yalnız gün, sayfa adı ve sayı tutulur. IP adresin, çerez, kimlik ya da tarayıcı bilgisi kaydedilmez. Aynı gün ikinci kez sayılmaman için tarayıcın kendi içinde o günün tarihini saklar; bu bize gönderilmez.</li>
+<li>Seçtiğin site dili tarayıcında saklanır, bize gönderilmez.</li>
+<li>Yazı tipleri Google Fonts'tan yüklenir. Bu sırada Google tarayıcının IP adresini görebilir.</li>
+</ul>
+
+<h2>BC Stage uygulaması</h2>
+<h3>Cihazında kalanlar</h3>
+<ul>
+<li>Uygulamanın tamamı hesapsız çalışır.</li>
+<li>Şarkıların, listelerin, tabların, kayıtların ve ayarların cihazında saklanır.</li>
+<li>Ses işleme (vokal ayırma, akor bulma, tempo bulma, söz tanıma ve hizalama) cihazında yapılır. Ses dosyaların hiçbir yere yüklenmez.</li>
+<li>Uygulamanın ayrıntılı tanı günlüğü cihazında kalır. Kullanım bilgisiyle yalnız karşılaşılan hatanın türü gönderilir (aşağıda).</li>
+</ul>
+
+<h3>Bulut eşitleme (isteğe bağlı)</h3>
+<p>Açarsan verilerin <b>kendi</b> iCloud Drive, Dropbox ya da Google Drive (yalnız Android) hesabına gider. Bizim sunucumuza gitmez.</p>
+
+<h3>İzinler ve neden istendikleri</h3>
+<ul>
+<li><b>Mikrofon:</b> Karaoke ve ses kaydı, grup senkronundaki bas-konuş ve gecikme ölçümü için. Yalnız sen başlatınca kullanılır. Kayıtlar cihazında kalır, bas-konuş sesi yalnız aynı Wi-Fi'daki grup cihazlarına gider.</li>
+<li><b>Yerel ağ:</b> Grup senkronu için. Cihazlar aynı Wi-Fi üzerinden birbirine doğrudan bağlanır, araya sunucu girmez.</li>
+<li><b>Bluetooth:</b> Bluetooth MIDI pedallar, sayfa çeviriciler ve denetleyiciler için.</li>
+<li><b>Fotoğraflar:</b> Şarkıya, profiline, ekipmanına ya da sanatçıya resim eklemek için. Yalnız seçtiğin resim alınır.</li>
+<li><b>Bildirimler (Android):</b> Cihazında kurduğun konser hatırlatmaları ve arka planda çalarken görünen oynatma bildirimi için. Sunucudan bildirim gönderilmez.</li>
+<li><b>Konum:</b> Yalnız bugünkü konserinde "Canlıyım"a bastığında ve canlıyken uygulama açıkken birkaç dakikada bir, mekânda olduğunu doğrulamak için. Konumun saklanmaz: sunucu yalnız mekâna uzaklığı hesaplar, canlı kapanınca o da silinir. Bunun dışında şehir bilgisi yalnız elle seçtiğin şehirdir.</li>
+</ul>
+
+<h3>İsteğe bağlı BC hesabı ve BC Pano</h3>
+<p>BC hesabını Apple ile ya da e-posta koduyla açabilirsin. Hesap açarsan şu bilgiler sunucumuzda (Supabase) tutulur:</p>
+<ul>
+<li>E-posta adresin (ya da Apple'ın verdiği gizli adres).</li>
+<li>Profilin: kullanıcı adı, görünen ad, profil fotoğrafı, şehir, çalgılar, türler, biyografi.</li>
+<li>Grupların ve üyeleri, takip ettiklerin, konserlerin.</li>
+<li>Ekipman ilanların ve teklifler.</li>
+<li>Paylaştığın performans videoları (YouTube bağlantısı olarak).</li>
+<li>Yayımladığın çalma listeleri ve oyları, etkinlik akışın.</li>
+<li>Başkasına gönderdiğin tablar (pakette şarkı sözü yoktur).</li>
+<li>Şikâyet ve engellemeler.</li>
+<li>"Canlıyım" açıkken: mekân, şehir ve gece kodu (BC Connect'te herkese görünür; canlı kapanınca ya da en geç 8 saatte silinir). Paylaşımların ve anketlerin.</li>
+</ul>
+<p><b>Herkese açık olanlar:</b> Profilin, konserlerin, ekipman ilanların ve yayımladığın listeler diğer kullanıcılara görünür. <b>Profil ve ekipman fotoğrafları sunucuya yüklenir ve herkese açık bir adresle görünür.</b> Gizlilik anahtarlarıyla neyin görüneceğini seçebilirsin.</p>
+<p>Uygulamada gösterilen kampanyaların gösterim ve tıklamaları yalnız kampanya, gün ve ülke başına toplam sayı olarak, kim olduğun bilinmeden sayılır.</p>
+<p>Duyurulara verdiğin emoji tepkisi ve anket oyu, telefonunda üretilen rastgele bir cihaz kimliğiyle saklanır; kim olduğun kaydedilmez.</p>
+
+<h3>Kullanım bilgisi (Ayarlar'dan kapatılabilir)</h3>
+<p>Uygulamayı geliştirmek için hangi bölümlerinin kullanıldığını sayarız. Bu varsayılan olarak açıktır. Ayarlar'daki "BC Stage'i geliştirmek için kullanım bilgisi paylaş" anahtarıyla kapatabilirsin; kapatınca telefonunda gönderilmeyi bekleyen kayıtlar da silinir.</p>
+<ul>
+<li><b>Hesapsız:</b> yalnız olay adı (örneğin "Nota sekmesi açıldı"), günlük sayı, platform, uygulama sürümü ve dil gönderilir. Hesap, cihaz kimliği ya da IP adresi kaydedilmez.</li>
+<li><b>BC hesabınla girdiysen:</b> aynı bilgiler hesabına bağlı olarak saklanır: hangi sekmeyi ne zaman açtığın ve ne kadar kaldığın, uygulamayı açıp kapattığın zamanlar, platform ve sürüm, karşılaştığın hataların türü (yalnız türün adı). Şarkı adı, söz, dosya adı, yazdığın metin ya da ses gönderilmez.</li>
+<li>Bu kayıtları yalnız uygulamanın yöneticisi (veri sorumlusu) görür. Reklam ya da satış için kullanılmaz, kimseyle paylaşılmaz. 180 gün sonra kendiliğinden silinir.</li>
+<li>Yönetici, destek ve hesap güvenliği için üyelerin e-posta adresini görebilir. E-posta adresin başka kullanıcılara görünmez.</li>
+</ul>
+
+<h3>Üçüncü taraflara giden bilgiler</h3>
+<p>Aşağıdaki özellikleri kullandığında aradığın şarkı ya da sanatçı adı ilgili hizmete gider. Bu hizmetlerin kendi gizlilik kuralları geçerlidir.</p>
+<ul>
+<li>Söz arama: LRCLIB, sarki.alternatifim.com.</li>
+<li>Akor siteleri (akorlar.com, Cifra Club ve diğerleri): uygulama içi tarayıcıda açılır, bu siteler kendi çerezlerini kullanabilir.</li>
+<li>Sanatçı bilgisi ve fotoğrafları: Wikipedia, Wikidata, Wikimedia Commons, iTunes Search, Deezer.</li>
+<li>Şarkı bağlantıları: song.link. Tempo arama: songbpm. Web'de arama: Google.</li>
+<li>Gömülü oynatıcılar: YouTube (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google gizlilik politikası</a>) ve Spotify (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify gizlilik politikası</a>). Bu oynatıcılar kendi verilerini toplar.</li>
+<li>Model indirmeleri (söz tanıma, hizalama, AI Davul) ilk kullanımda bizim depolamamızdan ve Hugging Face'ten iner.</li>
+</ul>
+
+<h3>Satın alma</h3>
+<p>Satın almalar App Store ya da Google Play üzerinden yapılır. Ödeme bilgilerini biz görmeyiz.</p>
+
+<h2>BC Connect uygulaması</h2>
+<h3>Hesapsız</h3>
+<ul>
+<li>BC Connect hesapsız çalışır. Takip ettiğin sanatçılar, gizlediklerin ve ayarların telefonunda saklanır.</li>
+<li>Sanatçı sahneye çıkınca haber verebilmemiz için telefonunun bildirim anahtarı, takip listen ve sessize aldığın sanatçılar sunucumuzda tutulur. Bildirimler Google Firebase Cloud Messaging ile gönderilir.</li>
+</ul>
+<h3>Konum</h3>
+<ul>
+<li><b>Keşfet:</b> "Yakınımda" seçince yakındaki canlı müziği bulmak için konumun o aramayla sunucuya gider; saklanmaz.</li>
+<li><b>Yakınımdan geçerken haber ver</b> (isteğe bağlı, "Her zaman" izni): mekân bölgeleri telefonuna kurulur, bölgeye girdiğini telefonun kendisi anlar. Konumun sunucuya gönderilmez.</li>
+<li><b>Buradayım:</b> konser pasaportuna damga için konumun bir kez sunucuya gider; mekâna uzaklık hesaplanır, konum saklanmaz. Saklanan yalnız "bu konserdeydin" kaydıdır.</li>
+<li><b>Gece yardımcısı:</b> yakındaki eczane, hastane gibi yerleri bulmak için konumun OpenStreetMap'in Overpass hizmetine gider. Haritalar OpenFreeMap'ten yüklenir.</li>
+</ul>
+<h3>Gece (canlı geceye katılınca)</h3>
+<ul>
+<li>Işık gösterisi, oylar, istekler ve hediyeler o gecenin kanalından anlık geçer; sunucuda saklanmaz.</li>
+<li>Afiş için çektiğin fotoğraf telefonunda kalır; sahneye yalnız 16×16 piksellik gri bir karo gider.</li>
+<li>Mikrofon yalnız salonun ses düzeyini ölçer, kayıt yapılmaz. Ses kapsülün yalnız telefonunda saklanır.</li>
+<li>Saat eşitlemesi için time.google.com'a saat sorulur.</li>
+</ul>
+<h3>İsteğe bağlı BC Account</h3>
+<ul>
+<li>BC Stage ile aynı hesaptır. Girersen takiplerin, anket oyların, dinleyici profilin (rumuz, hakkında, isteğe bağlı Instagram ve doğum yılı, neyin görüneceği) ve konser pasaportun sunucumuzda tutulur.</li>
+<li>Paylaşımları şikâyet edebilir, sanatçıyı telefonunda gizleyebilirsin. Şikâyette kim olduğun değil, telefonundan türetilmiş tek yönlü bir kimlik saklanır.</li>
+<li>Hesabını uygulamanın içinden silebilirsin (Ben → BC Account → Hesabımı sil). Hesap ortak olduğu için BC Stage profilin de silinir.</li>
+</ul>
+<p>Gömülü video oynatıcılar (YouTube, Vimeo, Instagram) kendi verilerini toplar. BC Connect'te reklam, izleme ve uygulama içi satın alma yoktur.</p>
+
+<h2>The BC Connect app</h2>
+<h3>No account needed</h3>
+<ul>
+<li>BC Connect works without an account. The musicians you follow, the ones you hide and your settings are stored on your phone.</li>
+<li>So that we can tell you when a musician goes on stage, your phone's notification token, your follow list and the musicians you muted are kept on our server. Notifications are sent with Google Firebase Cloud Messaging.</li>
+</ul>
+<h3>Location</h3>
+<ul>
+<li><b>Discover:</b> when you choose "Near me", your location is sent with that search to find live music nearby; it is not stored.</li>
+<li><b>Notify me when I pass by</b> (optional, "Always" permission): venue regions are set up on your phone and the phone itself notices when you enter one. Your location is not sent to our server.</li>
+<li><b>I'm here:</b> to stamp your gig passport, your location is sent once to check the distance to the venue; it is not stored. Only the record "you were at this gig" is kept.</li>
+<li><b>Night helper:</b> to find nearby pharmacies, hospitals and similar places, your location is sent to OpenStreetMap's Overpass service. Maps load from OpenFreeMap.</li>
+</ul>
+<h3>The night (when you join a live night)</h3>
+<ul>
+<li>The light show, votes, requests and gifts pass live through that night's channel; they are not stored on the server.</li>
+<li>The photo you take for the poster stays on your phone; only a 16×16 pixel grey tile goes to the stage.</li>
+<li>The microphone only measures the room's loudness; nothing is recorded. Your voice capsule is kept only on your phone.</li>
+<li>The clock is synchronised by asking time.google.com.</li>
+</ul>
+<h3>Optional BC Account</h3>
+<ul>
+<li>It is the same account as BC Stage. If you sign in, your follows, poll votes, listener profile (nickname, about, optional Instagram and birth year, what is visible) and gig passport are kept on our server.</li>
+<li>You can report posts and hide a musician on your phone. A report stores a one-way identifier derived from your phone, not who you are.</li>
+<li>You can delete your account inside the app (Me → BC Account → Delete my account). Because the account is shared, your BC Stage profile is deleted too.</li>
+</ul>
+<p>Embedded video players (YouTube, Vimeo, Instagram) collect their own data. BC Connect has no ads, no tracking and no in-app purchases.</p>
+
+<h2>Forum</h2>
+<ul>
+<li>Foruma BC hesabınla girersin. Giriş için e-posta adresine tek kullanımlık bir kod gönderilir.</li>
+<li>Saklananlar: e-posta adresin, görünen adın, yazdığın konular, yanıtlar ve oyların.</li>
+<li>Yazdıkların forumu açan herkese görünür, e-posta adresin görünmez.</li>
+<li>Şarkı sözü paylaşmak yasaktır (telif).</li>
+</ul>
+
+<h2>Saklama ve silme</h2>
+<p>Hesabını uygulamanın içinden silebilirsin (BC hesabı → Hesabı sil). Profilin, fotoğrafların ve paylaştığın her şey (takipler, ilanlar, teklifler, konserler, videolar, listeler, oylar, gönderdiğin tablar, şikâyet ve engellemeler) silinir. Başka üyeleri olan bir grubu kurduysan grup onlar için kalır, adın kaldırılır. Hesabına bağlı kullanım kayıtları da hesapla birlikte silinir; silmezsen 180 günde kendiliğinden silinir. Cihazındaki veriler uygulamayı silene kadar cihazında kalır.</p>
+
+<h2>Hakların</h2>
+<p>KVKK ve GDPR kapsamında verine erişme, düzeltme, silme ve itiraz etme hakkın var. İstekler için bize yaz.</p>
+
+<h2>Çocuklar</h2>
+<p>BC Stage çocuklara yönelik değildir. BC hesabı ve BC Pano için yaş sınırı mağaza yaş derecelendirmesine uyar.</p>
+</article>
+
+<article lang-blok="en">
+<h1>Privacy</h1>
+<p class="tarih">Last updated: 11 November 2026</p>
+<div class="kisa"><p>In short: BC Stage uses no ad networks or trackers and does not sell your data. There is no third-party analytics or crash-reporting software; we count which parts of the app are used on our own server, and you can turn this off in Settings. Your songs stay on your device and in your own cloud account, and audio processing happens on your device. Our server only holds account and community data for people who choose to create a BC account.</p></div>
+
+<h2>Data controller</h2>
+<p>Barış Çekergil (Türkiye). Contact: <a href="mailto:bariscekergil@gmail.com">bariscekergil@gmail.com</a></p>
+
+<h2>This website</h2>
+<ul>
+<li>We use no cookies and no visitor tracking.</li>
+<li>We count visits with an anonymous counter: only the day, the page name and a number are stored. No IP address, cookie, ID or browser details are recorded. So you aren't counted twice on the same day, your browser keeps that day's date locally; it is never sent to us.</li>
+<li>Your chosen site language is stored in your browser and never sent to us.</li>
+<li>Fonts load from Google Fonts, so Google may see your browser's IP address.</li>
+</ul>
+
+<h2>The BC Stage app</h2>
+<h3>What stays on your device</h3>
+<ul>
+<li>The whole app works without an account.</li>
+<li>Your songs, setlists, tabs, recordings and settings are stored on your device.</li>
+<li>Audio processing (vocal separation, chord finding, tempo finding, lyric recognition and alignment) runs on your device. Your audio is never uploaded.</li>
+<li>The app's detailed diagnostic log stays on your device. Only the type of an error is sent with usage data (see below).</li>
+</ul>
+
+<h3>Cloud sync (optional)</h3>
+<p>If you turn it on, your data goes to <b>your own</b> iCloud Drive, Dropbox or Google Drive (Android only) account, never to our server.</p>
+
+<h3>Permissions and why we ask</h3>
+<ul>
+<li><b>Microphone:</b> for karaoke and audio recording, talkback in group sync, and latency measurement. Used only when you start it. Recordings stay on your device; talkback audio only goes to the group's devices on the same Wi-Fi.</li>
+<li><b>Local network:</b> for group sync. Devices connect directly over the same Wi-Fi with no server in between.</li>
+<li><b>Bluetooth:</b> for Bluetooth MIDI pedals, page turners and controllers.</li>
+<li><b>Photos:</b> to add an image to a song, your profile, your gear or an artist. Only the image you pick is used.</li>
+<li><b>Notifications (Android):</b> for gig reminders set on your device and the playback notification while playing in the background. No notifications are sent from a server.</li>
+<li><b>Location:</b> Only when you tap "I'm live" for today's gig, and every few minutes while you are live with the app open, to check that you are at the venue. Your location is not stored: the server only works out the distance to the venue, and that is deleted when your live status ends. Otherwise your city is only the one you pick by hand.</li>
+</ul>
+
+<h3>Optional BC account and BC Board</h3>
+<p>You can create a BC account with Apple or an email code. If you do, we keep the following on our server (Supabase):</p>
+<ul>
+<li>Your email address (or the private relay address Apple gives).</li>
+<li>Your profile: username, display name, profile photo, city, instruments, genres, bio.</li>
+<li>Your bands and members, who you follow, your gigs.</li>
+<li>Your gear listings and offers.</li>
+<li>Performance videos you share (as YouTube links).</li>
+<li>Setlists you publish and their votes, your activity feed.</li>
+<li>Tabs you send to someone (song lyrics are never included).</li>
+<li>Reports and blocks.</li>
+<li>While "I'm live" is on: venue, city and night code (visible to everyone in BC Connect; deleted when your live status ends, at the latest after 8 hours). Your posts and polls.</li>
+</ul>
+<p><b>What is public:</b> your profile, gigs, gear listings and published setlists are visible to other users. <b>Profile and gear photos are uploaded to our server and shown at a public address.</b> Privacy switches let you choose what is shown.</p>
+<p>Views and taps on in-app campaigns are counted only as totals per campaign, day and country, without knowing who you are.</p>
+<p>Emoji reactions and poll votes on announcements are stored with a random device identifier created on your phone; who you are is not recorded.</p>
+
+<h3>Usage data (can be turned off in Settings)</h3>
+<p>To improve the app we count which parts of it are used. This is on by default. You can turn it off with the "Share usage data to improve BC Stage" switch in Settings; turning it off also deletes any records waiting on your phone to be sent.</p>
+<ul>
+<li><b>Without an account:</b> only the event name (for example "Notation tab opened"), a daily count, platform, app version and language are sent. No account, device identifier or IP address is recorded.</li>
+<li><b>If you are signed in to a BC account:</b> the same data is stored linked to your account: which tab you opened, when and for how long, when you opened and closed the app, platform and version, and the type of any error you ran into (only the type's name). No song titles, lyrics, file names, text you wrote or audio are sent.</li>
+<li>Only the app's administrator (the data controller) sees these records. They are not used for advertising or sold, and are not shared with anyone. They are deleted automatically after 180 days.</li>
+<li>For support and account security, the administrator can see members' email addresses. Your email address is never shown to other users.</li>
+</ul>
+
+<h3>Information sent to third parties</h3>
+<p>When you use these features, the song or artist name you search for goes to the relevant service. Their own privacy rules apply.</p>
+<ul>
+<li>Lyric search: LRCLIB, sarki.alternatifim.com.</li>
+<li>Chord sites (akorlar.com, Cifra Club and others): opened in an in-app browser; these sites may set their own cookies.</li>
+<li>Artist info and photos: Wikipedia, Wikidata, Wikimedia Commons, iTunes Search, Deezer.</li>
+<li>Song links: song.link. Tempo search: songbpm. Web search: Google.</li>
+<li>Embedded players: YouTube (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy policy</a>) and Spotify (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify privacy policy</a>). These players collect their own data.</li>
+<li>Model downloads (lyric recognition, alignment, AI Drums) come from our storage and from Hugging Face on first use.</li>
+</ul>
+
+<h3>Purchases</h3>
+<p>Purchases go through the App Store or Google Play. We never see your payment details.</p>
+
+<h2>Forum</h2>
+<ul>
+<li>You sign in to the forum with your BC account. A one-time code is sent to your email address.</li>
+<li>We store your email address, display name, the topics and replies you write, and your votes.</li>
+<li>What you write is visible to everyone who opens the forum; your email address is not.</li>
+<li>Posting song lyrics is not allowed (copyright).</li>
+</ul>
+
+<h2>Retention and deletion</h2>
+<p>You can delete your account inside the app (BC account → Delete account). Your profile, photos and everything you shared (follows, listings, offers, gigs, videos, setlists, votes, tabs you sent, reports and blocks) are deleted. If you founded a band that has other members, the band stays for them and your name is removed. Usage records linked to your account are deleted with it; otherwise they are deleted automatically after 180 days. Data on your device stays there until you delete the app.</p>
+
+<h2>Your rights</h2>
+<p>Under KVKK and GDPR you can access, correct, delete and object to the processing of your data. Write to us for any request.</p>
+
+<h2>Children</h2>
+<p>BC Stage is not directed at children. The age limit for the BC account and BC Board follows the store age rating.</p>
+</article>
+</div>
+<script>
+(function(){
+  const h=document.documentElement;let d=bcIlkDil();
+  const b=document.getElementById('dil');
+  function kur(x){d=x;window.bcSiteDil=x;h.lang=x==='tr'?'tr':'en';b.textContent=bcDilEtiket(x);bcEtiketler(x);document.title=x==='tr'?'Gizlilik · BC Stage':(x==='en'?'Privacy':bcC('Privacy'))+' · BC Stage';document.querySelectorAll('[data-en]').forEach(e=>{if(e.dataset.tr===undefined)e.dataset.tr=e.textContent;e.textContent=x==='tr'?e.dataset.tr:(e.dataset[x]??e.dataset.en)});try{localStorage.setItem('bcsite_dil',x)}catch(e){}}
+  b.onclick=e=>bcDilMenu(e.currentTarget,d,kur);kur(d);
+})();
+</script>
+<script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
+  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
+    const ilk=k=>{try{if(localStorage.getItem(k)===gun)return false;localStorage.setItem(k,gun);return true}catch(e){return false}};
+    const say=(p,t)=>fetch('https://xzvlayehgmkzddfncwyb.supabase.co/rest/v1/rpc/site_ziyaret_say',{method:'POST',keepalive:true,
+      headers:{apikey:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF','Content-Type':'application/json'},body:JSON.stringify({p_sayfa:p,p_tekil:t})}).catch(()=>{});
+    say(sayfa,ilk('bc_z_'+sayfa));if(ilk('bc_z__site'))say('tum-site',true);
+  }catch(e){}})();</script>
+</body>
+</html>
