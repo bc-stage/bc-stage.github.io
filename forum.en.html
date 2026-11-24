@@ -1066,7 +1066,7 @@ b.addEventListener('click',function(){ac(!p.classList.contains('acik'))});
 p.addEventListener('click',function(e){if(e.target===p)ac(false)});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ac(false)});})();</script>
 <script id="ziyaretSayaci">(()=>{ // ziyaret sayacı (0062): yalnız gün + sayfa sayılır; IP, çerez, kimlik yok. "Tekil" kararı bu tarayıcının kendi işaretinden.
-  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
+  try{const sayfa=((location.pathname.split('/').pop()||'index').replace(/\.html$/,'').replace(/\./g,'-')||'index').toLowerCase(),gun=new Date().toISOString().slice(0,10);
     const ilk=k=>{try{if(localStorage.getItem(k)===gun)return false;localStorage.setItem(k,gun);return true}catch(e){return false}};
     const say=(p,t)=>fetch('https://xzvlayehgmkzddfncwyb.supabase.co/rest/v1/rpc/site_ziyaret_say',{method:'POST',keepalive:true,
       headers:{apikey:'sb_publishable_zt5XksE5pXRue6L55o-KRg__m8xZkGF','Content-Type':'application/json'},body:JSON.stringify({p_sayfa:p,p_tekil:t})}).catch(()=>{});
